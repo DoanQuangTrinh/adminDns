@@ -66,7 +66,7 @@ export default function AuthNavbar(props) {
   hamburgerColor = { base: "white" };
   var linksAuth = (
     <HStack display={{ sm: "none", lg: "flex" }}>
-      <NavLink to="/admin/dashboard">
+      <NavLink to="/admin">
         <Button
           fontSize="sm"
           ms="0px"

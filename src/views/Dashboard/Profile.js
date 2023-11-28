@@ -133,14 +133,14 @@ function Profile() {
                   fontWeight="bold"
                   ms={{ sm: "8px", md: "0px" }}
                 >
-                  {userInfo.username}
+                  {userInfo?.username}
                 </Text>
                 <Text
                   fontSize={{ sm: "sm", md: "md" }}
                   color={emailColor}
                   fontWeight="semibold"
                 >
-                  {userInfo.email}
+                  {userInfo?.email}
                 </Text>
               </Flex>
             </Flex>

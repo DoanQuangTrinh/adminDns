@@ -79,7 +79,7 @@ function SignIn() {
             if (res.data.isMember) {
                history.push("/admin/profile");
             } else {
-              history.push("/admin/dashboard");
+              history.push("/admin/");
             }
           }
         })
