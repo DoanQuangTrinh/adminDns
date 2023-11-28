@@ -10,6 +10,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "theme/theme.js";
 import { UserProvider } from "context/UserContext";
 import "./styles/globals.css";
+import "@trendmicro/react-paginations/dist/react-paginations.css";
+
 
 ReactDOM.render(
   <ChakraProvider theme={theme} resetCss={false} position="relative">
