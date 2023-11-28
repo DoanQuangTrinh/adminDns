@@ -20,7 +20,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 
 import React, { useState, useEffect } from "react";
 import DomainDialog from "./DomainDialog";
-import { vendorDomain, pbnStage } from "config/config";
+import { pbnStage } from "config/config";
 import "./style.css";
 
 

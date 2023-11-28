@@ -21,9 +21,8 @@ import { checkLogin, login } from "../../utils/authentication";
 import { useHistory } from "react-router-dom";
 import { useUserDispatch, loginUser } from "context/UserContext";
 
-const loginUrl =
-  process.env.REACT_APP_API_HOST + process.env.REACT_APP_LOGIN_PATH;
-
+const loginUrl = 'http://localhost:8080/api/v1/user/loginUser'
+// console.log(loginUrl);
 function SignIn() {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
@@ -43,6 +42,7 @@ function SignIn() {
 
   useEffect(() => {
     if (isLoggedIn) {
+      console.log('connecting to')
       return history.push("/admin");
     }
   }, [isLoggedIn]);
@@ -96,24 +96,24 @@ function SignIn() {
     }
   };
 
-  // // handler
-  // useEffect(() => {
-  //   if (error) {
-  //     const status = error.response?.status;
-  //     switch (status) {
-  //       case 400:
-  //         setErrors("Sai thông tin đăng nhập");
-  //         break;
-  //       default:
-  //         setErrors("Lỗi không xác định");
-  //     }
-  //   } else if (data) {
-  //     setErrors("");
-  //     login(data.token, data.data);
-  //     // navigate("/");
-  //     return history.push('/admin/dashboard')
-  //   }
-  // }, [error, response, data]);
+  // handler
+  useEffect(() => {
+    if (error) {
+      const status = error.response?.status;
+      switch (status) {
+        case 400:
+          setErrors("Sai thông tin đăng nhập");
+          break;
+        default:
+          setErrors("Lỗi không xác định");
+      }
+    } else if (data) {
+      setErrors("");
+      login(data.token, data.data);
+      // navigate("/");
+      return history.push('/admin/dashboard')
+    }
+  }, [error, response, data]);
 
   return (
     <Flex position="relative">

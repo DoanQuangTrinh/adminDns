@@ -18,6 +18,14 @@ import {
 } from "@chakra-ui/react";
 
 import { axiosPost } from "../../utils/api";
+import { vendorDomain } from "config/config";
+import { teamControl } from "config/config";
+import { typeDomain } from "config/config";
+// const vendorDomain = [
+//   { value: "vendor1", color: "blue" },
+//   { value: "vendor2", color: "green" },
+//   // ... các giá trị khác
+// ];
 
 const createDomainApi =
   process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN;
@@ -73,8 +81,16 @@ const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
                 onChange={(event) => setDomain(event.target.value)}
               />
             </FormControl>
-
             <FormControl>
+            <FormLabel>IP</FormLabel>
+            <Input
+                type="text"
+                placeholder="100.000.000.000"
+                onChange={(event) => setDomain(event.target.value)}
+              />
+            </FormControl>
+
+            {/* <FormControl>
               <FormLabel>Nhà Cung Cấp</FormLabel>
               <Select
                 onChange={(e) => {
@@ -179,7 +195,7 @@ const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
             </FormControl>
             <FormControl>
               <FormLabel>IP Server : {ipServer}</FormLabel>
-            </FormControl> */}
+            </FormControl> */} 
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
