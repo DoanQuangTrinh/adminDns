@@ -15,11 +15,12 @@ import {
   import Card from "components/Card/Card.js";
   import CardBody from "components/Card/CardBody.js";
   import CardHeader from "components/Card/CardHeader.js";
-  import DomainTableRow from "components/Domain/DomainTableRow1";
+  import DomainTableRow from "components/Domain/DomainTableRow";
+  import DomainRow from "components/Domain/DomainRow";
   import React, { useState, useEffect } from "react";
   import { checkLogin, logout, getToken } from "../../../utils/authentication";
-  
-  const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_USERS;
+  import axios from "axios";
+  // const userApi = process.env.REACT_APP_API_HOST + '/api/v1/domain/:id';
   import AddDomainDialog from "components/Domain/AddDomainDialog";
   import { TablePagination } from "@trendmicro/react-paginations";
   import { initialFilter } from "utils/constant";
@@ -29,6 +30,26 @@ import {
   ];
 
 const Domain = () => {
+  const [data , setData] = useState([]);
+  useEffect(() => {
+    const fetchDomainData = async () => {
+      try {
+        const headers = {
+          'Content-Type': 'application/json',
+          'xToken': 'ab8uoVd0M9FqAwmbWp5eyg==',
+        };
+        const response = await axios.get(`http://localhost:8080/api/v1/domain`);
+      
+      // Chuyển đổi response.data thành mảng nếu không phải
+      setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
+    } catch (error) {
+      console.error('Error fetching domain data:', error);
+    }
+    };
+
+    fetchDomainData();
+  }, []);
+  console.log(data._id)
     const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const [filter, setFilter] = useState(initialFilter);
@@ -42,25 +63,25 @@ const Domain = () => {
     onClose: onRegisterClose,
   } = useDisclosure();
 
-  const [users, setUsers] = useState([]);
+  const [domain, setDomain] = useState([]);
 
   const isLoggedIn = checkLogin();
 
-  const [{ data, loading, error }, refetch] = useAxios({
-    url: userApi,
-    headers: {
-      xToken,
-    },
-    params: filter
-  });
+  // const [{ data, loading, error }, refetch] = useAxios({
+  //   url: userApi,
+  //   headers: {
+  //     xToken,
+  //   },
+  //   params: filter
+  // });
 
-  useEffect(() => {
-    if (data == undefined) {
-      refetch;
-    }
-    setUsers(data?.data);
-  }, [data, setUsers]);
-
+  // useEffect(() => {
+  //   if (data == undefined) {
+  //     refetch;
+  //   }
+  //   setDomain(data?.data);
+  // }, [data, setDomain]);
+  // console.log(domain)
   const handelUpdateUser = userDetail => {
     setUserDetail(userDetail)
     onRegisterOpen()
@@ -71,6 +92,7 @@ const Domain = () => {
     setUserDetail()
     onRegisterClose()
   }
+  
     return (
         <>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -94,34 +116,32 @@ const Domain = () => {
               <Thead>
                 <Tr my=".8rem" pl="0px" color="gray.400">
                   <Th pl="0px" borderColor={borderColor} color="gray.400">
-                  api_key
+                  ApiKey
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  name
+                  Name
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  ip
+                  IP
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  zone_id
+                  Zone_Id
                   </Th>
                   <Th borderColor={borderColor}></Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {users?.map((row, index, arr) => {
+                {data?.map((row, index, arr) => {
                   return (
-                    <DomainTableRow
-
-                      name={row.username}
-                      id={row._id}
-                      email={row.email}
-                      phone={row.phone}
-                      role={row.role}
-                      isLast={index === arr.length - 1 ? true : false}
-                      userDetail={row}
-                      refetch={refetch}
-                      handelUpdateUser={handelUpdateUser}
+                    <DomainRow
+                    ApiKey={row.api_key}
+                    name={row.name}
+                    ip={row.ip}
+                    zone_id={row.zone_id}
+                      // role={row.role}
+                      // isLast={index === arr.length - 1 ? true : false}
+                      // userDetail={row}
+                      // handelUpdateUser={handelUpdateUser}
                     />
                   );
                 })}
@@ -153,7 +173,7 @@ const Domain = () => {
         userDetail={userDetail}
         onOpen={onRegisterOpen}
         onClose={handelCloseModal}
-        fetchData={refetch}
+        // fetchData={refetch}
       // data={rowDomain}
       />}
     </>

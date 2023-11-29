@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import axios from "axios";
 import {
   Select,
   Button,
@@ -27,36 +27,105 @@ import { typeDomain } from "config/config";
 //   // ... các giá trị khác
 // ];
 
-const createDomainApi =
-  process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN;
+const createDomainApi ='http://localhost:8080/api/v1/domain/';
 
 const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
   const cancelRef = React.useRef();
-  const [name, setName] = useState();
-  const [url, setUrl] = useState();
+  const [name, setName] = useState("");
+  const [ip, setIp] = useState("");
+  const [apiKey, setApiKey] = useState("");
+  const [zoneId, setZoneId] = useState("");
   const toast = useToast();
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [isMounted, setIsMounted] = useState(true);
+  useEffect(() => {
+    return () => {
+      // Component sẽ unmount, set isMounted thành false
+      setIsMounted(false);
+    };
+  }, []);
 
   useEffect(() => {}, []);
 
   const [value, setValue] = useState();
 
   const clickAddButton = async () => {
-    let domainData = {
-      name: name,
-      url: url,
-    };
-
-    let data = await axiosPost(createDomainApi, domainData);
-    if (data.code == 0) {
-      // alert("Thêm domain thành công");
-      // onclick();
-
+    // let domainData = {
+    //   apiKey: apiKey,
+    //   name: name,
+    //   ip:ip,
+    //   zoneId:zoneId
+    // };
+    // console.log(domainData);
+  //   try {
+  //     let data = await axiosPost(createDomainApi, domainData, {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'xToken': 'wOPo5PsL0Ft+RCgUqEVCTQ==',
+  //       },
+  //     });
+  //     console.log('API Response:', data);
+  //     if (data.code === 0) {
+  //       toast({
+  //         title: "Thêm domain thành công",
+  //         status: "success",
+  //       });
+  //       onclick();
+  //     } else {
+  //       toast({
+  //         title: "Thêm domain thất bại",
+  //         status: "error",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('API Error:', error);
+  //     toast({
+  //       title: "Có lỗi xảy ra khi gửi yêu cầu",
+  //       status: "error",
+  //     });
+  //   }
+  
+  //   onClose();
+  // };
+  try {
+    const response = await axios.post(
+      "http://localhost:8080/api/v1/domain/",
+      {
+        name,
+        ip,
+        api_key: apiKey,
+        zone_id: zoneId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "xToken" : "wOPo5PsL0Ft+RCgUqEVCTQ=="
+          // Add any additional headers if needed
+        },
+      }
+    );
+    console.log(response.data); 
+    if (response.data.code === 0) {
+      toast({
+        title: "Create Domain Success",
+        status: "success",
+      });
+      fetchData();
     } else {
-      // alert("Thêm domain thất bại");
+      toast({
+        title: "Failed to create domain",
+        status: "error",
+      });
     }
-
-    onClose();
-  };
+  } catch (error) {
+    console.error("API Error:", error);
+    toast({
+      title: "Error creating domain",
+      status: "error",
+    });
+  }
+};
 
   return (
     <>
@@ -74,22 +143,43 @@ const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
           <AlertDialogCloseButton />
           <AlertDialogBody>
             <FormControl>
-              <FormLabel>Domain Name</FormLabel>
+              <FormLabel>Api Key</FormLabel>
               <Input
                 type="text"
-                placeholder="domainxxx.com"
-                onChange={(event) => setDomain(event.target.value)}
+                placeholder="Enter API key"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
               />
+            </FormControl>
+            <FormControl>
+            <FormLabel>Name</FormLabel>
+            <Input
+          type="text"
+          placeholder="Enter domain name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
             </FormControl>
             <FormControl>
             <FormLabel>IP</FormLabel>
             <Input
-                type="text"
-                placeholder="100.000.000.000"
-                onChange={(event) => setDomain(event.target.value)}
-              />
+          type="text"
+          placeholder="Enter IP address"
+          value={ip}
+          onChange={(e) => setIp(e.target.value)}
+        />
             </FormControl>
-
+            <FormControl>
+            <FormLabel>Zone ID</FormLabel>
+            <Input
+              type="text"
+              placeholder="Enter Zone ID"
+              value={zoneId}
+              onChange={(e) => setZoneId(e.target.value)}
+            />
+            </FormControl>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {success && <p style={{ color: 'green' }}>{success}</p>}
             {/* <FormControl>
               <FormLabel>Nhà Cung Cấp</FormLabel>
               <Select

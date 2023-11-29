@@ -23,6 +23,7 @@ import { axiosPost } from "../../utils/api";
 import { roleUser } from "config/config";
 import useAxios from "axios-hooks";
 import { defautlPassword } from "utils/constant";
+import axios from "axios";
 
 const updateDomainApi =
   process.env.REACT_APP_API_HOST + process.env.REACT_APP_REGISTER_USER;
@@ -37,11 +38,13 @@ const UserRegisterDialog = ({ isOpen, userDetail, onOpen, onClose, fetchData }) 
   const cancelRef = React.useRef();
   const toast = useToast();
 
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState(defautlPassword);
-  const [email, setEmail] = useState();
+  const [username, setUsername] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [passwordConf, setPasswordConf] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [show, setShow] = useState(false);
-  const [phone, setPhone] = useState();
+  const [phone, setPhone] = useState("");
   const [active, setActive] = useState(false);
   const [role, setRole] = useState(roleUser[0].value);
   const [groupUser, setGroupUser] = useState([]);
@@ -74,7 +77,7 @@ const UserRegisterDialog = ({ isOpen, userDetail, onOpen, onClose, fetchData }) 
   }, [userDetail])
 
   const clickUpdateButton = async () => {
-    console.log("update user detail");
+    // console.log("update user detail");
 
     if(userDetail) {
       let userData = {
@@ -142,7 +145,44 @@ const UserRegisterDialog = ({ isOpen, userDetail, onOpen, onClose, fetchData }) 
       }
     }
   };
-
+  const CreateUser = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/user/registerUser",
+        {
+          fullname,
+          username,
+          email, 
+          password,
+          passwordConf,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      if (response.data.code === 0) {
+        toast({
+          // title: "Create Domain Success",
+          status: "success",
+        });
+        fetchData(); 
+      } else {
+        toast({
+          // title: "Failed to create domain",
+          status: "error",
+        });
+      }
+    }
+    catch (error) {
+      console.error("API Error:", error);
+      toast({
+        title: "Error creating domain",
+        status: "error",
+      });
+    }
+  }
   return (
     <>
       <AlertDialog
@@ -170,7 +210,7 @@ const UserRegisterDialog = ({ isOpen, userDetail, onOpen, onClose, fetchData }) 
             {userDetail ? (
               <>
                 <FormControl>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>username</FormLabel>
                   <Input
                     type="text"
                     placeholder="Username"
@@ -183,7 +223,7 @@ const UserRegisterDialog = ({ isOpen, userDetail, onOpen, onClose, fetchData }) 
             ) : (
               <>
                 <FormControl>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>username</FormLabel>
                   <Input
                     type="text"
                     placeholder="Username"
@@ -191,7 +231,15 @@ const UserRegisterDialog = ({ isOpen, userDetail, onOpen, onClose, fetchData }) 
                     onChange={(event) => setUsername(event.target.value)}
                   />
                 </FormControl>
-
+                <FormControl>
+                <FormLabel>fullname</FormLabel>
+                <Input
+                  type="fullname"
+                  placeholder="fullname"
+                  value={fullname}
+                  onChange={(event) => setFullname(event.target.value)}
+                />
+                </FormControl>
                 <FormControl>
                   <FormLabel>Password</FormLabel>
                   <InputGroup>
@@ -199,7 +247,29 @@ const UserRegisterDialog = ({ isOpen, userDetail, onOpen, onClose, fetchData }) 
                       type={show ? "text" : "password"}
                       placeholder="Password"
                       value={password}
-                      // onChange={(event) => setPassword(event.target.value)}
+                      onChange={(event) => setPassword(event.target.value)}
+                    />
+                    <InputRightElement width="4.5rem">
+                      <Button
+                        h="1.75rem"
+                        size="sm"
+                        onClick={() =>
+                          setShow(!show)
+                        }
+                      >
+                        {show ? "Hide" : "Show"}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                </FormControl>
+                <FormControl>
+                  <FormLabel>passwordConf</FormLabel>
+                  <InputGroup>
+                    <Input
+                      type={show ? "text" : "passwordConf"}
+                      placeholder="passwordConf"
+                      value={passwordConf}
+                      onChange={(event) => setPasswordConf(event.target.value)}
                     />
                     <InputRightElement width="4.5rem">
                       <Button
@@ -236,40 +306,7 @@ const UserRegisterDialog = ({ isOpen, userDetail, onOpen, onClose, fetchData }) 
               />
             </FormControl>
 
-            <FormControl>
-              <FormLabel>Role User</FormLabel>
-              <Select
-                value={role}
-                onChange={(e) => {
-                  setRole(e.target.value);
-                }}
-              >
-                {roleUser?.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.value}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-
-            {role === "user" && (
-              <FormControl>
-                <FormLabel>Group User</FormLabel>
-                <Select
-                  value={groupUserSelected}
-                  onChange={(e) => {
-                    setGroupUserSelected(e.target.value);
-                  }}
-                >
-                  {groupUser &&
-                    groupUser?.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.value}
-                      </option>
-                    ))}
-                </Select>
-              </FormControl>
-            )}
+            
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
@@ -278,9 +315,9 @@ const UserRegisterDialog = ({ isOpen, userDetail, onOpen, onClose, fetchData }) 
             <Button
               colorScheme="red"
               ml={3}
-              onClick={() => clickUpdateButton()}
+              onClick={() => CreateUser()}
             >
-              Update
+              Add
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

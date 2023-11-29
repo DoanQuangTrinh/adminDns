@@ -81,7 +81,7 @@ const DomainDialog = ({ isOpen, onOpen, onClose, data }) => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Domain Name : {vendor}</FormLabel>
+              <FormLabel>Domain Name  : {vendor}</FormLabel>
             </FormControl>
             <FormControl>
               <FormLabel>Team Name : {team}</FormLabel>
