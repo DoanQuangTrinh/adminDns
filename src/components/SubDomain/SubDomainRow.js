@@ -11,33 +11,34 @@ import {
     useDisclosure
   } from "@chakra-ui/react";
   import React,{useState} from "react";
+  import { useEffect } from "react";
 //   import { useState } from "react";
 //   import UserDetailDialog from "./UserDetailDialog";
   import { DeleteIcon, EditIcon, UnlockIcon } from "@chakra-ui/icons";
 import axios from "axios";
-import EditDomainDialog from "./EditDomainDialog";
-const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
-console.log(deleteDomain)
-  function DomainRow(props) {
-    const { zone_id,_id,userDetail, logo, ip, name, email, phone, role, status, date, isLast, handelUpdateUser, refetch,ApiKey } = props;
+// import EditDomainDialog from "./EditDomainDialog";
+const DeleteSubDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_SUBDOMAIN
+console.log(DeleteSubDomain)
+function SubDomainRow(props) {
+    const {_id, ip, name, isLast,domain, link ,id , type,date, handelUpdateUser } = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const xToken = localStorage.getItem('xToken');
-    console.log(_id)
+    console.log(domain)
       
     const [loading, setLoading] = useState(false);
-      
+    
         const handleDelete = async () => {
           try {
             setLoading(true);
       
             const response = await axios.post(
-              deleteDomain,
+              DeleteSubDomain,
               {
-                id: _id,
+                id: id,
               },
               {
                 headers: {
@@ -50,6 +51,7 @@ console.log(deleteDomain)
             if (response.data.code === 0) {
               onDeleted && onDeleted();
               console.log("Domain deleted successfully!");
+              setData((prevData) => prevData.filter((item) => item.id !== id));
             } else {
               console.error("Error deleting domain:", response.data.msg);
             }
@@ -59,7 +61,9 @@ console.log(deleteDomain)
             setLoading(false);
           }
         };
-        
+        // useEffect(() => {
+        //     handleDelete();
+        // }, []);
         const [isEditModalOpen, setIsEditModalOpen] = useState(false);
         const [selectedRow, setSelectedRow] = useState(null);
         const handleEditClick = (row) => {
@@ -75,20 +79,6 @@ console.log(deleteDomain)
           borderColor={borderColor}
           borderBottom={isLast ? "none" : null}
         >
-          {/* <UserDetailDialog
-            isOpen={isDetailOpen}
-            onOpen={onDetailOpen}
-            onClose={onDetailClose}
-            // tool={name}
-            data={props}
-          /> */}
-          {/* <UserResetPasswordDialog
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onClose={onClose}
-            fetchData={refetch}
-            id={id}
-          /> */}
           <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
             <Flex direction="column">
               <Text
@@ -97,7 +87,7 @@ console.log(deleteDomain)
                 fontWeight="bold"
                 minWidth="100%"
               >
-                {ApiKey}
+                {domain}
               </Text>
             </Flex>
           </Flex>
@@ -106,7 +96,7 @@ console.log(deleteDomain)
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
-              {name}
+              {link}
             </Text>
           </Flex>
         </Td>
@@ -114,7 +104,7 @@ console.log(deleteDomain)
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
-              {ip}
+              {id}
             </Text>
           </Flex>
         </Td>
@@ -127,7 +117,7 @@ console.log(deleteDomain)
             p="3px 10px"
             borderRadius="8px"
           >
-            {zone_id}
+            {type}
           </Badge>
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
@@ -170,5 +160,5 @@ console.log(deleteDomain)
     );
   }
   
-  export default DomainRow;
+  export default SubDomainRow;
   

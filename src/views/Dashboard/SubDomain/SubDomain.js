@@ -10,47 +10,41 @@ import {
     useColorModeValue,
     useDisclosure,
   } from "@chakra-ui/react";
-  // Custom components
-  import useAxios from "axios-hooks";
   import Card from "components/Card/Card.js";
   import CardBody from "components/Card/CardBody.js";
   import CardHeader from "components/Card/CardHeader.js";
-  import DomainTableRow from "components/Domain/DomainTableRow";
-  import DomainRow from "components/Domain/DomainRow";
   import React, { useState, useEffect } from "react";
   import { checkLogin, logout, getToken } from "../../../utils/authentication";
   import axios from "axios";
-  
-  import AddDomainDialog from "components/Domain/AddDomainDialog";
+  import AddSubDomain from "components/SubDomain/AddSubDomain";
   import { TablePagination } from "@trendmicro/react-paginations";
   import { initialFilter } from "utils/constant";
-  import EditDomainDialog from "components/Domain/EditDomainDialog"; 
+  import EditSubDomain from "components/SubDomain/EditSubDomain";
+  import SubDomainRow from "components/SubDomain/SubDomainRow";
   const vendorDomain = [
     { value: "vendor1", color: "blue" },
     { value: "vendor2", color: "green" },
   ];
-const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
+const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
 const xToken = localStorage.getItem('xToken');
 console.log(userApi)
-const Domain = () => {
+const SubDomain = () => {
   const [data , setData] = useState([]);
+  const fetchDomainData = async () => {
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+        'xToken': xToken,
+      };
+      const response = await axios.get(userApi);
+    setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
+  } catch (error) {
+    console.error('Error fetching domain data:', error);
+  }}
   useEffect(() => {
-    const fetchDomainData = async () => {
-      try {
-        const headers = {
-          'Content-Type': 'application/json',
-          'xToken': xToken,
-        };
-        const response = await axios.get(userApi);
-      setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
-    } catch (error) {
-      console.error('Error fetching domain data:', error);
-    }
-  };
-
     fetchDomainData();
   }, []);
-  console.log(data._id)
+  console.log(data)
     const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const [filter, setFilter] = useState(initialFilter);
@@ -68,21 +62,7 @@ const Domain = () => {
 
   const isLoggedIn = checkLogin();
 
-  // const [{ data, loading, error }, refetch] = useAxios({
-  //   url: userApi,
-  //   headers: {
-  //     xToken,
-  //   },
-  //   params: filter
-  // });
 
-  // useEffect(() => {
-  //   if (data == undefined) {
-  //     refetch;
-  //   }
-  //   setDomain(data?.data);
-  // }, [data, setDomain]);
-  // console.log(domain)
   const handelUpdateUser = userDetail => {
     setUserDetail(userDetail)
     onRegisterOpen()
@@ -110,7 +90,7 @@ const Domain = () => {
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
             <Text fontSize="xl" color={textColor} fontWeight="bold">
-              Domain
+              SubDomain
             </Text>
             <Button
               variant="primary"
@@ -127,16 +107,16 @@ const Domain = () => {
               <Thead>
                 <Tr my=".8rem" pl="0px" color="gray.400">
                   <Th pl="0px" borderColor={borderColor} color="gray.400">
-                  ApiKey
+                  domain id
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  Name
+                  link
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  IP
+                  id
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  Zone_Id
+                  type
                   </Th>
                   <Th borderColor={borderColor}></Th>
                 </Tr>
@@ -144,24 +124,21 @@ const Domain = () => {
               <Tbody>
                 {data?.map((row, index, arr) => {
                   return (
-                    <DomainRow
-                      _id={row._id}
-                      ApiKey={row.api_key}
-                      name={row.name}
-                      ip={row.ip}
+                    <SubDomainRow
+                      key={index}
+                      domain={row.domain}
+                      link={row.link}
+                      id={row._id}
+                      type={row.type}
                       zone_id={row.zone_id}
                       onClick={() => handleEditClick(row)}
-                      // role={row.role}
-                      // isLast={index === arr.length - 1 ? true : false}
-                      // userDetail={row}
-                      // handelUpdateUser={handelUpdateUser}
                     />
                   );
                 })}
               </Tbody>
             </Table>
             {isEditModalOpen && (
-              <EditDomainDialog
+              <EditSubDomain
                 isOpen={isEditModalOpen}
                 initialData={selectedRow}
                 onUpdate={handleUpdate}
@@ -188,16 +165,14 @@ const Domain = () => {
           </CardBody>
         </Card>
       </Flex>
-      {isRegisterOpen && <AddDomainDialog
+      {isRegisterOpen && <AddSubDomain
         isOpen={isRegisterOpen}
         userDetail={userDetail}
         onOpen={onRegisterOpen}
         onClose={handelCloseModal}
-        // fetchData={refetch}
-      // data={rowDomain}
       />}
     </>
     )
 }
 
-export default Domain;
+export default SubDomain;

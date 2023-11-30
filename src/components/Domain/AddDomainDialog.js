@@ -21,11 +21,6 @@ import { axiosPost } from "../../utils/api";
 import { vendorDomain } from "config/config";
 import { teamControl } from "config/config";
 import { typeDomain } from "config/config";
-// const vendorDomain = [
-//   { value: "vendor1", color: "blue" },
-//   { value: "vendor2", color: "green" },
-//   // ... các giá trị khác
-// ];
 
 const createDomainApi =
   process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN;
@@ -49,45 +44,8 @@ const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
   useEffect(() => {}, []);
 
   const [value, setValue] = useState();
-
+  const xToken = localStorage.getItem('xToken');
   const clickAddButton = async () => {
-    // let domainData = {
-    //   apiKey: apiKey,
-    //   name: name,
-    //   ip:ip,
-    //   zoneId:zoneId
-    // };
-    // console.log(domainData);
-  //   try {
-  //     let data = await axiosPost(createDomainApi, domainData, {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'xToken': 'wOPo5PsL0Ft+RCgUqEVCTQ==',
-  //       },
-  //     });
-  //     console.log('API Response:', data);
-  //     if (data.code === 0) {
-  //       toast({
-  //         title: "Thêm domain thành công",
-  //         status: "success",
-  //       });
-  //       onclick();
-  //     } else {
-  //       toast({
-  //         title: "Thêm domain thất bại",
-  //         status: "error",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error('API Error:', error);
-  //     toast({
-  //       title: "Có lỗi xảy ra khi gửi yêu cầu",
-  //       status: "error",
-  //     });
-  //   }
-  
-  //   onClose();
-  // };
   try {
     const response = await axios.post(
       createDomainApi,
@@ -100,7 +58,7 @@ const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
       {
         headers: {
           "Content-Type": "application/json",
-          "xToken" : "ab8uoVd0M9FqAwmbWp5eyg=="
+          "xToken" : xToken
         },
       }
     );
