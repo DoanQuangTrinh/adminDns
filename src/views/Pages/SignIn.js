@@ -21,7 +21,10 @@ import { checkLogin, login } from "../../utils/authentication";
 import { useHistory } from "react-router-dom";
 import { useUserDispatch, loginUser } from "context/UserContext";
 
-const loginUrl = 'http://localhost:8080/api/v1/user/loginUser'
+// const loginUrl = 'http://localhost:8080/api/v1/user/loginUser'
+const loginUrl =
+  process.env.REACT_APP_API_HOST + process.env.REACT_APP_LOGIN_PATH;
+console.log(loginUrl);
 // console.log(loginUrl);
 function SignIn() {
   // Chakra color mode

@@ -27,8 +27,9 @@ import { typeDomain } from "config/config";
 //   // ... các giá trị khác
 // ];
 
-const createDomainApi ='http://localhost:8080/api/v1/domain/';
-
+const createDomainApi =
+  process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN;
+console.log(createDomainApi);
 const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
   const cancelRef = React.useRef();
   const [name, setName] = useState("");
@@ -41,7 +42,6 @@ const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
   const [isMounted, setIsMounted] = useState(true);
   useEffect(() => {
     return () => {
-      // Component sẽ unmount, set isMounted thành false
       setIsMounted(false);
     };
   }, []);
@@ -90,7 +90,7 @@ const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
   // };
   try {
     const response = await axios.post(
-      "http://localhost:8080/api/v1/domain/",
+      createDomainApi,
       {
         name,
         ip,
@@ -100,30 +100,29 @@ const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
       {
         headers: {
           "Content-Type": "application/json",
-          "xToken" : "wOPo5PsL0Ft+RCgUqEVCTQ=="
-          // Add any additional headers if needed
+          "xToken" : "ab8uoVd0M9FqAwmbWp5eyg=="
         },
       }
     );
     console.log(response.data); 
     if (response.data.code === 0) {
-      toast({
-        title: "Create Domain Success",
-        status: "success",
-      });
+      // toast({
+      //   // title: "Create Domain Success",
+      //   // status: "success",
+      // });
       fetchData();
     } else {
-      toast({
-        title: "Failed to create domain",
-        status: "error",
-      });
+      // toast({
+      //   // title: "Failed to create domain",
+      //   // status: "error",
+      // });
     }
   } catch (error) {
     console.error("API Error:", error);
-    toast({
-      title: "Error creating domain",
-      status: "error",
-    });
+    // toast({
+    //   title: "Error creating domain",
+    //   status: "error",
+    // });
   }
 };
 

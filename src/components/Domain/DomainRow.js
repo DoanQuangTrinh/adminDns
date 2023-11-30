@@ -15,17 +15,18 @@ import {
 //   import UserDetailDialog from "./UserDetailDialog";
   import { DeleteIcon, EditIcon, UnlockIcon } from "@chakra-ui/icons";
 import axios from "axios";
-
-//   import UserResetPasswordDialog from "./UserResetPasswordDialog";
-  
+import EditDomainDialog from "./EditDomainDialog";
+const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
+console.log(deleteDomain)
   function DomainRow(props) {
-    const { zone_id,userDetail, logo, ip, name, email, phone, role, status, date, isLast, handelUpdateUser, refetch,ApiKey } = props;
+    const { zone_id,_id,userDetail, logo, ip, name, email, phone, role, status, date, isLast, handelUpdateUser, refetch,ApiKey } = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const { isOpen, onOpen, onClose } = useDisclosure();
-  
+    const xToken = localStorage.getItem('xToken');
+    console.log(_id)
       
     const [loading, setLoading] = useState(false);
       
@@ -34,14 +35,14 @@ import axios from "axios";
             setLoading(true);
       
             const response = await axios.post(
-              "http://localhost:8080/api/v1/domain/delete",
+              deleteDomain,
               {
-                id: '656712c6ad8324d21318ec46',
+                id: _id,
               },
               {
                 headers: {
                   'Content-Type': 'application/json',
-                  'xToken': 'ab8uoVd0M9FqAwmbWp5eyg==',
+                  'xToken': xToken,
                 },
               }
             );
@@ -58,7 +59,14 @@ import axios from "axios";
             setLoading(false);
           }
         };
-    
+        
+        const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+        const [selectedRow, setSelectedRow] = useState(null);
+        const handleEditClick = (row) => {
+          setSelectedRow(row);
+          setIsEditModalOpen(true);
+        };
+        
     return (
       <Tr>
         <Td
@@ -130,6 +138,15 @@ import axios from "axios";
           <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
             {date}
           </Text>
+        </Td>
+        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+          <IconButton
+            p={2}
+            bg="transparent"
+            onClick={props.onClick}
+          >
+            <EditIcon />
+          </IconButton>
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <IconButton

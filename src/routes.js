@@ -4,7 +4,7 @@ import Profile from "views/Dashboard/Profile.js";
 import SignIn from "views/Pages/SignIn.js";
 import User from "views/Dashboard/User/User";
 import Domain from "views/Dashboard/Domain/Domain";
-import CreateDomainForm from "views/createDomain";
+// import CreateDomainForm from "views/createDomain";
 
 import { StatsIcon, PersonIcon } from "components/Icons/Icons";
 import { Roles } from "utils/constant";
@@ -23,7 +23,7 @@ var dashRoutes = [
     path: "/create",
     name: "create",
     icon: <StatsIcon color="inherit" />,
-    component: CreateDomainForm,
+    // component: CreateDomainForm,
     layout: "/admin",
     role: [Roles.ADMIN],
   },

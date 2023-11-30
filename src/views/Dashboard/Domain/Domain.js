@@ -20,15 +20,17 @@ import {
   import React, { useState, useEffect } from "react";
   import { checkLogin, logout, getToken } from "../../../utils/authentication";
   import axios from "axios";
-  // const userApi = process.env.REACT_APP_API_HOST + '/api/v1/domain/:id';
+  
   import AddDomainDialog from "components/Domain/AddDomainDialog";
   import { TablePagination } from "@trendmicro/react-paginations";
   import { initialFilter } from "utils/constant";
+  import EditDomainDialog from "components/Domain/EditDomainDialog"; 
   const vendorDomain = [
     { value: "vendor1", color: "blue" },
     { value: "vendor2", color: "green" },
   ];
-
+const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
+console.log(userApi)
 const Domain = () => {
   const [data , setData] = useState([]);
   useEffect(() => {
@@ -38,14 +40,12 @@ const Domain = () => {
           'Content-Type': 'application/json',
           'xToken': 'ab8uoVd0M9FqAwmbWp5eyg==',
         };
-        const response = await axios.get(`http://localhost:8080/api/v1/domain`);
-      
-      // Chuyển đổi response.data thành mảng nếu không phải
+        const response = await axios.get(userApi);
       setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
     } catch (error) {
       console.error('Error fetching domain data:', error);
     }
-    };
+  };
 
     fetchDomainData();
   }, []);
@@ -92,6 +92,16 @@ const Domain = () => {
     setUserDetail()
     onRegisterClose()
   }
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const handleEditClick = (row) => {
+    setSelectedRow(row);
+    setIsEditModalOpen(true);
+  };
+  const handleUpdate = (updatedData) => {
+    console.log("Updated data:", updatedData);
+    setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
+  };
   
     return (
         <>
@@ -134,10 +144,12 @@ const Domain = () => {
                 {data?.map((row, index, arr) => {
                   return (
                     <DomainRow
-                    ApiKey={row.api_key}
-                    name={row.name}
-                    ip={row.ip}
-                    zone_id={row.zone_id}
+                      _id={row._id}
+                      ApiKey={row.api_key}
+                      name={row.name}
+                      ip={row.ip}
+                      zone_id={row.zone_id}
+                      onClick={() => handleEditClick(row)}
                       // role={row.role}
                       // isLast={index === arr.length - 1 ? true : false}
                       // userDetail={row}
@@ -147,6 +159,13 @@ const Domain = () => {
                 })}
               </Tbody>
             </Table>
+            {isEditModalOpen && (
+              <EditDomainDialog
+                isOpen={isEditModalOpen}
+                initialData={selectedRow}
+                onUpdate={handleUpdate}
+                onClose={() => setIsEditModalOpen(false)}
+              />)}
             <Flex justifyContent={"flex-end"}>
               <TablePagination
                 type="full"
