@@ -16,6 +16,7 @@ import {
   import React, { useState, useEffect } from "react";
   import { checkLogin, logout, getToken } from "../../../utils/authentication";
   import axios from "axios";
+  import { axiosGet } from "utils/api";
   import AddSubDomain from "components/SubDomain/AddSubDomain";
   import { TablePagination } from "@trendmicro/react-paginations";
   import { initialFilter } from "utils/constant";
@@ -25,32 +26,53 @@ import {
     { value: "vendor1", color: "blue" },
     { value: "vendor2", color: "green" },
   ];
+  const xToken = getToken();
 const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
-const xToken = localStorage.getItem('xToken');
+// const xToken = localStorage.getItem('xToken');
 console.log(userApi)
-const SubDomain = () => {
+const SubDomain = ({onClose}) => {
   const [data , setData] = useState([]);
-  const fetchDomainData = async () => {
-    try {
-      const headers = {
-        'Content-Type': 'application/json',
-        'xToken': xToken,
-      };
-      const response = await axios.get(userApi);
-    setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
-  } catch (error) {
-    console.error('Error fetching domain data:', error);
-  }}
+  // const fetchDomainData = async () => {
+  //   try {
+  //     const headers = {
+  //       'Content-Type': 'application/json',
+  //       'xToken': xToken,
+  //     };
+  //     const response = await axios.get(userApi);
+  //   setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
+  // } catch (error) {
+  //   console.error('Error fetching domain data:', error);
+  // }}
+  // useEffect(() => {
+  //   fetchDomainData();
+  // }, []);
+
+  const fetchSubDomain = async () => {
+    try{
+      const response = await axiosGet(
+        userApi
+      )
+      setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
+      if (response?.data?.code == 0) {
+        onClose();
+      }
+    }
+    catch (err) {
+      console.log(err)
+    }
+    await refetch();
+  }
   useEffect(() => {
-    fetchDomainData();
-  }, []);
+    fetchSubDomain();
+    }, []); 
+  
   console.log(data)
     const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const [filter, setFilter] = useState(initialFilter);
   const [userDetail, setUserDetail] = useState();
 
-  const xToken = getToken();
+ 
 
   const {
     isOpen: isRegisterOpen,
@@ -131,6 +153,7 @@ const SubDomain = () => {
                       id={row._id}
                       type={row.type}
                       zone_id={row.zone_id}
+                      onClose = {onClose}
                       onClick={() => handleEditClick(row)}
                     />
                   );
