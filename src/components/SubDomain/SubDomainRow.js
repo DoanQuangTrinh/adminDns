@@ -35,6 +35,12 @@ function SubDomainRow(props) {
       
     const [loading, setLoading] = useState(false);
     const handleDelete = async () => {
+      const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
+
+      if (!confirmDelete) {
+        return;
+      }
+
       const deleteId = {
         id: id
       }
