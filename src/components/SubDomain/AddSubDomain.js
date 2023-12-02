@@ -22,12 +22,13 @@ import { vendorDomain } from "config/config";
 import { teamControl } from "config/config";
 import { typeDomain } from "config/config";
 import { getToken } from "utils/authentication";
+import { useDataContext } from "context/UserContext"; 
 import useAxios from "axios-hooks";
 const source = axios.CancelToken.source();
 const CreateSubDomain =
   process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
 console.log(CreateSubDomain);
-const AddSubDomain = ({ isOpen, onOpen, onClose }) => {
+const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
   const cancelRef = React.useRef();
   const [id, setId] = useState("");
   const toast = useToast();
@@ -35,8 +36,8 @@ const AddSubDomain = ({ isOpen, onOpen, onClose }) => {
   const [success, setSuccess] = useState(null);
   const [isMounted, setIsMounted] = useState(true);
   const xToken = getToken();
-  console.log(xToken)
-  console.log(id)
+  const {otherData , refetchOtherData} = useDataContext();
+
   useEffect(() => {
     return () => {
       setIsMounted(false);
@@ -44,7 +45,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose }) => {
   }, []);
   const [subDomains, setSubDomains] = useState([]);
   useEffect(() => {}, []);
-
+  console.log(id)
   const [value, setValue] = useState();
   const clickCreateButton = async () => {
     const subData = {
@@ -55,28 +56,9 @@ const AddSubDomain = ({ isOpen, onOpen, onClose }) => {
         CreateSubDomain,
         subData
       );
-      if (response?.data?.code == 0) {
-        toast({
-          // title: data ? "Update Link Successfully" : "Create Link Successfully",
-          // status: "success",
-          // duration: 9000,
-          // isClosable: true,
-        });
-        // fetchData();
-        onClose();
-      }
+      refetchOtherData();
     } catch (error) {
-      toast({
-        // title:
-        //   error?.response?.data?.errors?.errors[0]?.msg ||
-        //   error?.response?.data?.msg ||
-        //   (data ? "Update Link Fail" : "Create Link Fail"),
-        // status: "error",
-        // duration: 9000,
-        // isClosable: true,
-      });
     }
-    await refetch();
   };
   
 

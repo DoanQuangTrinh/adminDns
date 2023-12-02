@@ -14,7 +14,7 @@ import {
   } from "@chakra-ui/react";
   import React, { useState, useEffect } from "react";
   
-  const EditDomainDialog = ({ isOpen, initialData, onUpdate, onClose }) => {
+  const EditDomainDialog = ({refetch, isOpen, initialData, onUpdate, onClose }) => {
     const [editedData, setEditedData] = useState(initialData);
   
     useEffect(() => {
@@ -24,10 +24,13 @@ import {
     const handleInputChange = (e) => {
       const { name, value } = e.target;
       setEditedData((prevData) => ({ ...prevData, [name]: value }));
+      refetch() 
     };
   
     const handleUpdate = () => {
+      console.log("Edited Data:", editedData);
       onUpdate(editedData);
+      refetch()
       onClose();
     };
   

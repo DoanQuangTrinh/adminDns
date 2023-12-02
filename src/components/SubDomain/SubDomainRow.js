@@ -11,7 +11,9 @@ import {
     useDisclosure
   } from "@chakra-ui/react";
   import React,{useState} from "react";
+  import { axiosPost } from "utils/api";
   import { useEffect } from "react";
+  import { useDataContext } from "context/UserContext";
 //   import { useState } from "react";
 //   import UserDetailDialog from "./UserDetailDialog";
   import { DeleteIcon, EditIcon, UnlockIcon } from "@chakra-ui/icons";
@@ -20,50 +22,35 @@ import axios from "axios";
 const DeleteSubDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_SUBDOMAIN
 console.log(DeleteSubDomain)
 function SubDomainRow(props) {
-    const {_id, ip, name, isLast,domain, link ,id , type,date, handelUpdateUser } = props;
+    const {data,refetch,_id, ip, name, isLast,domain, link ,id , type,date, handelUpdateUser,onDeleted } = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const xToken = localStorage.getItem('xToken');
+    const {otherData , refetchOtherData} = useDataContext();
+
     console.log(domain)
       
     const [loading, setLoading] = useState(false);
-    
-        const handleDelete = async () => {
-          try {
-            setLoading(true);
-      
-            const response = await axios.post(
-              DeleteSubDomain,
-              {
-                id: id,
-              },
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                  'xToken': xToken,
-                },
-              }
-            );
-      
-            if (response.data.code === 0) {
-              onDeleted && onDeleted();
-              console.log("Domain deleted successfully!");
-              setData((prevData) => prevData.filter((item) => item.id !== id));
-            } else {
-              console.error("Error deleting domain:", response.data.msg);
-            }
-          } catch (error) {
-            console.error("Error deleting domain:", error);
-          } finally {
-            setLoading(false);
-          }
-        };
-        // useEffect(() => {
-        //     handleDelete();
-        // }, []);
+    const handleDelete = async () => {
+      const deleteId = {
+        id: id
+      }
+      try {
+        const response = await axiosPost(
+          DeleteSubDomain,
+          deleteId
+        )
+        console.log("Data before refetch:", data);
+        refetchOtherData()
+        console.log("Data after refetch:", data);
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
         const [isEditModalOpen, setIsEditModalOpen] = useState(false);
         const [selectedRow, setSelectedRow] = useState(null);
         const handleEditClick = (row) => {

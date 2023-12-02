@@ -74,6 +74,13 @@ var dashRoutes = [
         layout: "/admin",
         icon: <PersonIcon color="inherit" />,
       },
+      {
+        path: "/signin",
+        name: "Sign In",
+        component: SignIn,
+        layout: "/auth",
+        icon: <PersonIcon color="inherit" />,
+      },
       
     ],
   },

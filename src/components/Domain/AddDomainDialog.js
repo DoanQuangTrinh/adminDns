@@ -17,15 +17,19 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-import { axiosPost } from "../../utils/api";
+// import { axiosPost } from "../../utils/api";
 import { vendorDomain } from "config/config";
 import { teamControl } from "config/config";
 import { typeDomain } from "config/config";
+import Domain from "views/Dashboard/Domain/Domain";
+import { axiosPost } from "../../utils/api";
+import { useDataContext } from "context/UserContext";
 
 const createDomainApi =
   process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN;
 console.log(createDomainApi);
-const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
+const AddDomainDialog = (props) => {
+  const {onClose, isOpen,zone_id,_id,userDetail, logo, email, phone, role, status, date, isLast, refetch,ApiKey } = props;
   const cancelRef = React.useRef();
   const [name, setName] = useState("");
   const [ip, setIp] = useState("");
@@ -35,54 +39,30 @@ const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isMounted, setIsMounted] = useState(true);
-  useEffect(() => {
-    return () => {
-      setIsMounted(false);
-    };
-  }, []);
+  const { data, refetchData } = useDataContext();
 
-  useEffect(() => {}, []);
 
   const [value, setValue] = useState();
-  const xToken = localStorage.getItem('xToken');
   const clickAddButton = async () => {
-  try {
-    const response = await axios.post(
-      createDomainApi,
-      {
-        name,
-        ip,
-        api_key: apiKey,
-        zone_id: zoneId,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "xToken" : xToken
-        },
-      }
-    );
-    console.log(response.data); 
-    if (response.data.code === 0) {
-      // toast({
-      //   // title: "Create Domain Success",
-      //   // status: "success",
-      // });
-      fetchData();
-    } else {
-      // toast({
-      //   // title: "Failed to create domain",
-      //   // status: "error",
-      // });
+    
+    const requestBody = {
+              api_key: apiKey,
+              name: name,
+              ip: ip,
+              zone_id: zoneId,
+            };
+    try{
+      const response = await axiosPost (
+        createDomainApi,
+        requestBody
+      )
+      refetchData();
     }
-  } catch (error) {
-    console.error("API Error:", error);
-    // toast({
-    //   title: "Error creating domain",
-    //   status: "error",
-    // });
+    catch (err){
+      console.log(err)
+    }
+    // window.location.reload();
   }
-};
 
   return (
     <>
@@ -137,112 +117,6 @@ const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
             </FormControl>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
-            {/* <FormControl>
-              <FormLabel>Nhà Cung Cấp</FormLabel>
-              <Select
-                onChange={(e) => {
-                  setVendor(e.target.value);
-                }}
-              >
-                {vendorDomain.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                    colorScheme={option.color}
-                  >
-                    {option.value}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Team</FormLabel>
-              <Select
-                onChange={(e) => {
-                  setTeam(e.target.value);
-                }}
-              >
-                {teamControl.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.value}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Type</FormLabel>
-              <Select
-                onChange={(e) => {
-                  setType(e.target.value);
-                }}
-              >
-                {typeDomain.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.value}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl>
-              <FormLabel>IP Server</FormLabel>
-              <Input
-                type="text"
-                placeholder="Server"
-                onChange={(event) => setIpServer(event.target.value)}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Expired Date</FormLabel>
-              <Input
-                placeholder="Select Date and Time"
-                size="md"
-                type="datetime-local"
-                onChange={(event) => {
-                  console.log("======> " + event.target.value);
-                  setExpired(event.target.value);
-                }}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>NameServer</FormLabel>
-              <Input
-                type="text"
-                placeholder="Name Server 1"
-                onChange={(event) => setNameserver1(event.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="Name Server 2"
-                onChange={(event) => setNameserver2(event.target.value)}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Admin Site</FormLabel>
-              <Input
-                type="text"
-                placeholder="Admin Url"
-                onChange={(event) => setAdminUrl(event.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="Admin User"
-                onChange={(event) => setAdminUser(event.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="Admin Pass"
-                onChange={(event) => setAdminPass(event.target.value)}
-              />
-            </FormControl>
-            {/* <FormControl>
-              <FormLabel>Domain Name : {vendor}</FormLabel>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Team Name : {team}</FormLabel>
-            </FormControl>
-            <FormControl>
-              <FormLabel>IP Server : {ipServer}</FormLabel>
-            </FormControl> */} 
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
@@ -254,6 +128,7 @@ const AddDomainDialog = ({ isOpen, onOpen, onClose }) => {
               onClick={() => {
                 clickAddButton();
                 onClose();
+                // refetch();
               }}
             >
               Thêm

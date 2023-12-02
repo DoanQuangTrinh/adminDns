@@ -11,54 +11,41 @@ import {
     useDisclosure
   } from "@chakra-ui/react";
   import React,{useState} from "react";
-//   import { useState } from "react";
-//   import UserDetailDialog from "./UserDetailDialog";
   import { DeleteIcon, EditIcon, UnlockIcon } from "@chakra-ui/icons";
 import axios from "axios";
+import { axiosPost } from "utils/api";
 import EditDomainDialog from "./EditDomainDialog";
+import { useDataContext } from "context/UserContext";
 const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
 console.log(deleteDomain)
   function DomainRow(props) {
-    const { zone_id,_id,userDetail, logo, ip, name, email, phone, role, status, date, isLast, handelUpdateUser, refetch,ApiKey } = props;
+    const { zone_id,_id,userDetail, logo, ip, name, email, phone, role, status, date, isLast, refetch,ApiKey } = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { data, refetchData } = useDataContext();
     const xToken = localStorage.getItem('xToken');
-    console.log(_id)
       
     const [loading, setLoading] = useState(false);
-      
-        const handleDelete = async () => {
-          try {
-            setLoading(true);
-      
-            const response = await axios.post(
-              deleteDomain,
-              {
-                id: _id,
-              },
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                  'xToken': xToken,
-                },
-              }
-            );
-      
-            if (response.data.code === 0) {
-              onDeleted && onDeleted();
-              console.log("Domain deleted successfully!");
-            } else {
-              console.error("Error deleting domain:", response.data.msg);
-            }
-          } catch (error) {
-            console.error("Error deleting domain:", error);
-          } finally {
-            setLoading(false);
-          }
-        };
+    const handleDelete = async () => {
+      const deleteId = {
+        id : _id
+      }
+      try{
+        const response = await axiosPost(
+          deleteDomain,
+          deleteId
+        )
+        console.log("Data before refetch:", data);
+        refetchData();
+        console.log("Data after refetch:", data);
+      }
+      catch (err){
+        console.log(err)
+      }
+    }
         
         const [isEditModalOpen, setIsEditModalOpen] = useState(false);
         const [selectedRow, setSelectedRow] = useState(null);
@@ -122,10 +109,14 @@ console.log(deleteDomain)
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Badge
             bg={status === "Online" ? "green.400" : bgStatus}
-            color={status === "Online" ? "white" : "white"}
+            color="white"
             fontSize="16px"
             p="3px 10px"
             borderRadius="8px"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            width="100px"
           >
             {zone_id}
           </Badge>

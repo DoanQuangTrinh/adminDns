@@ -22,6 +22,7 @@ import {
   import { initialFilter } from "utils/constant";
   import EditSubDomain from "components/SubDomain/EditSubDomain";
   import SubDomainRow from "components/SubDomain/SubDomainRow";
+  import { useDataContext } from "context/UserContext";
   const vendorDomain = [
     { value: "vendor1", color: "blue" },
     { value: "vendor2", color: "green" },
@@ -32,39 +33,14 @@ const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREAT
 console.log(userApi)
 const SubDomain = ({onClose}) => {
   const [data , setData] = useState([]);
-  // const fetchDomainData = async () => {
-  //   try {
-  //     const headers = {
-  //       'Content-Type': 'application/json',
-  //       'xToken': xToken,
-  //     };
-  //     const response = await axios.get(userApi);
-  //   setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
-  // } catch (error) {
-  //   console.error('Error fetching domain data:', error);
-  // }}
-  // useEffect(() => {
-  //   fetchDomainData();
-  // }, []);
+  const {otherData , refetchOtherData} = useDataContext();
 
-  const fetchSubDomain = async () => {
-    try{
-      const response = await axiosGet(
-        userApi
-      )
-      setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
-      if (response?.data?.code == 0) {
-        onClose();
-      }
-    }
-    catch (err) {
-      console.log(err)
-    }
-    await refetch();
+  const fetchSubDomain = () => {
+    refetchOtherData()
   }
-  useEffect(() => {
-    fetchSubDomain();
-    }, []); 
+  // useEffect(() => {
+  //   fetchSubDomain();
+  //   }, []); 
   
   console.log(data)
     const textColor = useColorModeValue("gray.700", "white");
@@ -144,7 +120,7 @@ const SubDomain = ({onClose}) => {
                 </Tr>
               </Thead>
               <Tbody>
-                {data?.map((row, index, arr) => {
+                {otherData?.map((row, index, arr) => {
                   return (
                     <SubDomainRow
                       key={index}
@@ -154,6 +130,7 @@ const SubDomain = ({onClose}) => {
                       type={row.type}
                       zone_id={row.zone_id}
                       onClose = {onClose}
+                      refetch = {fetchSubDomain}
                       onClick={() => handleEditClick(row)}
                     />
                   );
@@ -167,6 +144,7 @@ const SubDomain = ({onClose}) => {
                 onUpdate={handleUpdate}
                 onClose={() => setIsEditModalOpen(false)}
               />)}
+            <AddSubDomain refetch = {fetchSubDomain} />
             <Flex justifyContent={"flex-end"}>
               <TablePagination
                 type="full"

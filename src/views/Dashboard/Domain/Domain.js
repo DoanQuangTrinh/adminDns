@@ -20,6 +20,9 @@ import {
   import React, { useState, useEffect } from "react";
   import { checkLogin, logout, getToken } from "../../../utils/authentication";
   import axios from "axios";
+  import { useDataContext } from "context/UserContext";
+
+  import { axiosGet } from "utils/api";
   
   import AddDomainDialog from "components/Domain/AddDomainDialog";
   import { TablePagination } from "@trendmicro/react-paginations";
@@ -31,26 +34,38 @@ import {
   ];
 const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
 const xToken = localStorage.getItem('xToken');
-console.log(userApi)
-const Domain = () => {
-  const [data , setData] = useState([]);
-  useEffect(() => {
-    const fetchDomainData = async () => {
-      try {
-        const headers = {
-          'Content-Type': 'application/json',
-          'xToken': xToken,
-        };
-        const response = await axios.get(userApi);
-      setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
-    } catch (error) {
-      console.error('Error fetching domain data:', error);
-    }
-  };
+// const { data, refetchData } = useDataContext();
 
-    fetchDomainData();
-  }, []);
-  console.log(data._id)
+console.log(userApi)
+const Domain = (refetch) => {
+  const { data, refetchData } = useDataContext();
+
+  // Do something with the data
+
+  const fetchDomainData = () => {
+    // Trigger a refetch of data
+    refetchData();
+  };
+  // const [data , setData] = useState([]);
+  // const fetchDomainData = async () => {
+  //   try {
+  //     const response = await axiosGet(
+  //       userApi
+  //     )
+  //     setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
+  //   }
+  //   catch(err){
+  //     console.log(err)
+  //   }
+  // }
+  // useEffect(() => {
+  //   fetchDomainData();
+  // }, []); 
+  // console.log(data._id)
+    // refetchData();
+  // useEffect(() => {
+  //   fetchDomainData();
+  // }, []);
     const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const [filter, setFilter] = useState(initialFilter);
@@ -68,21 +83,6 @@ const Domain = () => {
 
   const isLoggedIn = checkLogin();
 
-  // const [{ data, loading, error }, refetch] = useAxios({
-  //   url: userApi,
-  //   headers: {
-  //     xToken,
-  //   },
-  //   params: filter
-  // });
-
-  // useEffect(() => {
-  //   if (data == undefined) {
-  //     refetch;
-  //   }
-  //   setDomain(data?.data);
-  // }, [data, setDomain]);
-  // console.log(domain)
   const handelUpdateUser = userDetail => {
     setUserDetail(userDetail)
     onRegisterOpen()
@@ -142,26 +142,33 @@ const Domain = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {data?.map((row, index, arr) => {
-                  return (
+                  {data?.map((row, index, arr) => (
                     <DomainRow
+                      key={row._id} // Đặt key để đảm bảo tính duy nhất trong mảng
+                      data={data}
                       _id={row._id}
                       ApiKey={row.api_key}
                       name={row.name}
                       ip={row.ip}
                       zone_id={row.zone_id}
                       onClick={() => handleEditClick(row)}
-                      // role={row.role}
-                      // isLast={index === arr.length - 1 ? true : false}
-                      // userDetail={row}
-                      // handelUpdateUser={handelUpdateUser}
+                      refetch={fetchDomainData}
                     />
-                  );
-                })}
-              </Tbody>
+                    ))}
+                    {data?.map((row, index, arr) => (
+                    <AddDomainDialog 
+                    data={data}
+                    refetch={fetchDomainData} 
+                  />
+                  ))}
+                </Tbody>
+                  
+
             </Table>
             {isEditModalOpen && (
               <EditDomainDialog
+                refetch={fetchDomainData} 
+
                 isOpen={isEditModalOpen}
                 initialData={selectedRow}
                 onUpdate={handleUpdate}
