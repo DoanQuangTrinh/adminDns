@@ -30,40 +30,46 @@ function UserProvider({ children }) {
     userInfo: userInfo,
   });
 
-  const [data, setData] = React.useState([]);
-  const [otherData, setOtherData] = React.useState([]);
-  const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
-  const otherApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
+  const [domain, setDomain] = React.useState([]);
+  const [subDoman, setSubDomain] = React.useState([]);
+  const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
+  const subDomainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
 
-  const fetchData = async () => {
+  const fetchDomainData = async () => {
     try {
-      const response = await axiosGet(userApi);
-      setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
+      const response = await axiosGet(domainApi);
+      setDomain(response.data.data);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const fetchOtherData = async () => {
+  const fetchSudDomainData = async () => {
     try {
-      const response = await axiosGet(otherApi);
-      setOtherData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
+      const response = await axiosGet(subDomainApi);
+      setSubDomain(response.data.data);
     } catch (err) {
       console.log(err);
     }
   };
 
   React.useEffect(() => {
-    fetchData();
-    fetchOtherData();
+    if(!domain){
+      fetchDomainData();
+    }
+  }, []);
+  React.useEffect(() => {
+    if(!subDoman){
+      fetchSudDomainData();
+    }
   }, []);
 
   const contextValue = {
     ...state,
-    data,
-    otherData,
-    refetchData: fetchData,
-    refetchOtherData: fetchOtherData,
+    domain,
+    subDoman,
+    refetchDomainData: fetchDomainData,
+    refetchSudDomainData: fetchSudDomainData,
   };
 
   return (

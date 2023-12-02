@@ -33,16 +33,11 @@ const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREAT
 console.log(userApi)
 const SubDomain = ({onClose}) => {
   const [data , setData] = useState([]);
-  const {otherData , refetchOtherData} = useDataContext();
+  const {subDoman , refetchSudDomainData} = useDataContext();
 
   const fetchSubDomain = () => {
-    refetchOtherData()
+    refetchSudDomainData()
   }
-  // useEffect(() => {
-  //   fetchSubDomain();
-  //   }, []); 
-  
-  console.log(data)
     const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const [filter, setFilter] = useState(initialFilter);
@@ -120,7 +115,7 @@ const SubDomain = ({onClose}) => {
                 </Tr>
               </Thead>
               <Tbody>
-                {otherData?.map((row, index, arr) => {
+                {subDoman?.map((row, index, arr) => {
                   return (
                     <SubDomainRow
                       key={index}

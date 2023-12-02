@@ -29,7 +29,7 @@ function SubDomainRow(props) {
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const xToken = localStorage.getItem('xToken');
-    const {otherData , refetchOtherData} = useDataContext();
+    const {subDoman , refetchSudDomainData} = useDataContext();
 
     console.log(domain)
       
@@ -44,7 +44,7 @@ function SubDomainRow(props) {
           deleteId
         )
         console.log("Data before refetch:", data);
-        refetchOtherData()
+        refetchSudDomainData()
         console.log("Data after refetch:", data);
       }
       catch (err) {
@@ -112,15 +112,7 @@ function SubDomainRow(props) {
             {date}
           </Text>
         </Td>
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <IconButton
-            p={2}
-            bg="transparent"
-            onClick={props.onClick}
-          >
-            <EditIcon />
-          </IconButton>
-        </Td>
+        
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <IconButton
             p={2}

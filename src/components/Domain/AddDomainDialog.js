@@ -39,7 +39,7 @@ const AddDomainDialog = (props) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isMounted, setIsMounted] = useState(true);
-  const { data, refetchData } = useDataContext();
+  const { domain, refetchDomainData } = useDataContext();
 
 
   const [value, setValue] = useState();
@@ -56,7 +56,7 @@ const AddDomainDialog = (props) => {
         createDomainApi,
         requestBody
       )
-      refetchData();
+      refetchDomainData();
     }
     catch (err){
       console.log(err)

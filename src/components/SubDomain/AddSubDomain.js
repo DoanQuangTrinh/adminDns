@@ -36,7 +36,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
   const [success, setSuccess] = useState(null);
   const [isMounted, setIsMounted] = useState(true);
   const xToken = getToken();
-  const {otherData , refetchOtherData} = useDataContext();
+  const {subDoman , refetchSudDomainData} = useDataContext();
 
   useEffect(() => {
     return () => {
@@ -56,7 +56,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
         CreateSubDomain,
         subData
       );
-      refetchOtherData();
+      refetchSudDomainData();
     } catch (error) {
     }
   };

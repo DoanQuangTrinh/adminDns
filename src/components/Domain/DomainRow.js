@@ -25,7 +25,7 @@ console.log(deleteDomain)
     const bgStatus = useColorModeValue("gray.400", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { data, refetchData } = useDataContext();
+    const { domain, refetchDomainData } = useDataContext();
     const xToken = localStorage.getItem('xToken');
       
     const [loading, setLoading] = useState(false);
@@ -38,9 +38,9 @@ console.log(deleteDomain)
           deleteDomain,
           deleteId
         )
-        console.log("Data before refetch:", data);
-        refetchData();
-        console.log("Data after refetch:", data);
+        console.log("Data before refetch:", domain);
+        refetchDomainData();
+        console.log("Data after refetch:", domain);
       }
       catch (err){
         console.log(err)

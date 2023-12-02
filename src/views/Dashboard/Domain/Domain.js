@@ -34,17 +34,17 @@ import {
   ];
 const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
 const xToken = localStorage.getItem('xToken');
-// const { data, refetchData } = useDataContext();
+// const { data, refetchDomainData } = useDataContext();
 
 console.log(userApi)
 const Domain = (refetch) => {
-  const { data, refetchData } = useDataContext();
+  const { domain, refetchDomainData } = useDataContext();
 
   // Do something with the data
 
   const fetchDomainData = () => {
     // Trigger a refetch of data
-    refetchData();
+    refetchDomainData();
   };
   // const [data , setData] = useState([]);
   // const fetchDomainData = async () => {
@@ -62,7 +62,7 @@ const Domain = (refetch) => {
   //   fetchDomainData();
   // }, []); 
   // console.log(data._id)
-    // refetchData();
+    // refetchDomainData();
   // useEffect(() => {
   //   fetchDomainData();
   // }, []);
@@ -79,7 +79,7 @@ const Domain = (refetch) => {
     onClose: onRegisterClose,
   } = useDisclosure();
 
-  const [domain, setDomain] = useState([]);
+  // const [domain, setDomain] = useState([]);
 
   const isLoggedIn = checkLogin();
 
@@ -99,10 +99,10 @@ const Domain = (refetch) => {
     setSelectedRow(row);
     setIsEditModalOpen(true);
   };
-  const handleUpdate = (updatedData) => {
-    console.log("Updated data:", updatedData);
-    setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
-  };
+  // const handleUpdate = (updatedData) => {
+  //   console.log("Updated data:", updatedData);
+  //   setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
+  // };
   
     return (
         <>
@@ -142,10 +142,10 @@ const Domain = (refetch) => {
                 </Tr>
               </Thead>
               <Tbody>
-                  {data?.map((row, index, arr) => (
+                  {domain?.map((row, index, arr) => (
                     <DomainRow
                       key={row._id} // Đặt key để đảm bảo tính duy nhất trong mảng
-                      data={data}
+                      data={domain}
                       _id={row._id}
                       ApiKey={row.api_key}
                       name={row.name}
@@ -155,9 +155,9 @@ const Domain = (refetch) => {
                       refetch={fetchDomainData}
                     />
                     ))}
-                    {data?.map((row, index, arr) => (
+                    {domain?.map((row, index, arr) => (
                     <AddDomainDialog 
-                    data={data}
+                    data={domain}
                     refetch={fetchDomainData} 
                   />
                   ))}
@@ -177,9 +177,9 @@ const Domain = (refetch) => {
             <Flex justifyContent={"flex-end"}>
               <TablePagination
                 type="full"
-                page={data?.pagination?.page}
-                pageLength={data?.pagination?.pageSize}
-                totalRecords={data?.pagination?.count}
+                page={domain?.pagination?.page}
+                pageLength={domain?.pagination?.pageSize}
+                totalRecords={domain?.pagination?.count}
                 onPageChange={({ page, pageLength }) => {
                   console.log(page);
                   setFilter({
