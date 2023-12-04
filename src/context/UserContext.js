@@ -32,6 +32,8 @@ function UserProvider({ children }) {
 
   const [domain, setDomain] = React.useState([]);
   const [subDoman, setSubDomain] = React.useState([]);
+  const [pagina , setPagina] = React.useState([]);
+  const [paginaDomain , setPaginaDomain] = React.useState([]);
   const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
   const subDomainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
 
@@ -39,6 +41,21 @@ function UserProvider({ children }) {
     try {
       const response = await axiosGet(domainApi);
       setDomain(response.data.data);
+      setPaginaDomain(response.data)
+      if (response.status === 200) {
+        toast({
+          title: response.data.msg,
+          status: "success",
+          duration: 9000,
+        })
+        onClose();
+      } else {
+        toast({
+          title:response.data.msg,
+          status: "error",
+          duration: 9000,
+        })
+      }
     } catch (err) {
       console.log(err);
     }
@@ -48,13 +65,28 @@ function UserProvider({ children }) {
     try {
       const response = await axiosGet(subDomainApi);
       setSubDomain(response.data.data);
+      setPagina(response.data.pagination)
+      if (response.status === 200) {
+        toast({
+          title: response.data.msg,
+          status: "success",
+          duration: 9000,
+        })
+        onClose();
+      } else {
+        toast({
+          title:response.data.msg,
+          status: "error",
+          duration: 9000,
+        })
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
   React.useEffect(() => {
-    if(!domain){
+    if( !domain){
       fetchDomainData();
     }
   }, []);
@@ -68,6 +100,8 @@ function UserProvider({ children }) {
     ...state,
     domain,
     subDoman,
+    pagina,
+    paginaDomain,
     refetchDomainData: fetchDomainData,
     refetchSudDomainData: fetchSudDomainData,
   };

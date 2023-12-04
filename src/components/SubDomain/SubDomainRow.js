@@ -21,7 +21,6 @@ import {
 import axios from "axios";
 // import EditDomainDialog from "./EditDomainDialog";
 const DeleteSubDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_SUBDOMAIN
-console.log(DeleteSubDomain)
 function SubDomainRow(props) {
     const {data,refetch,_id, ip, name, isLast,domain, link ,id , type,date, handelUpdateUser,onDeleted } = props;
     const textColor = useColorModeValue("gray.500", "white");
@@ -33,7 +32,6 @@ function SubDomainRow(props) {
     const {subDoman , refetchSudDomainData} = useDataContext();
     const toast = useToast();
 
-    console.log(domain)
       
     const [loading, setLoading] = useState(false);
     const handleDelete = async () => {
@@ -54,7 +52,6 @@ function SubDomainRow(props) {
         if (response.data.code === 0) {
           toast({
             title: response.data.msg,
-            // status: "success",
             duration: 9000,
           })
           refetchSudDomainData();

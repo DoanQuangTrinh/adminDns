@@ -68,7 +68,7 @@ var dashRoutes = [
         icon: <PersonIcon color="inherit" />,
       },
       {
-        path: "/subdoma",
+        path: "/subdomain",
         name: "SubDomain",
         component: SubDomain,
         layout: "/admin",

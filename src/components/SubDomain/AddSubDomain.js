@@ -45,7 +45,6 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
   }, []);
   const [subDomains, setSubDomains] = useState([]);
   useEffect(() => {}, []);
-  console.log(id)
   const [value, setValue] = useState();
   const clickCreateButton = async () => {
     const subData = {
@@ -58,14 +57,13 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
       );
       if (response.data.code === 0) {
         toast({
-          title: "Create SubDomain Successfully",
+          title: response.data.msg,
           status: "success",
           duration: 9000,
         })
-        refetchSudDomainData();
       } else {
         toast({
-          title: "Update SubDomain Error ",
+          title: response.data.msg,
           status: "error",
           duration: 9000,
         })
