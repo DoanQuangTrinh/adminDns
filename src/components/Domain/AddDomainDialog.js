@@ -41,7 +41,6 @@ const AddDomainDialog = (props) => {
   const [isMounted, setIsMounted] = useState(true);
   const { domain, refetchDomainData } = useDataContext();
 
-
   const [value, setValue] = useState();
   const clickAddButton = async () => {
     
@@ -56,13 +55,26 @@ const AddDomainDialog = (props) => {
         createDomainApi,
         requestBody
       )
-      refetchDomainData();
+      if (response.data.code === 0) {
+        toast({
+          title: "Create Domain Successfully",
+          status: "success",
+          duration: 9000,
+        })
+        refetchDomainData();
+      } else {
+        toast({
+          title: "Create Domain Error ",
+          status: "error",
+          duration: 9000,
+        })
+      }
     }
     catch (err){
       console.log(err)
     }
-    // window.location.reload();
   }
+  
 
   return (
     <>

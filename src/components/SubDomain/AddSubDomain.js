@@ -56,7 +56,20 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
         CreateSubDomain,
         subData
       );
-      refetchSudDomainData();
+      if (response.data.code === 0) {
+        toast({
+          title: "Create SubDomain Successfully",
+          status: "success",
+          duration: 9000,
+        })
+        refetchSudDomainData();
+      } else {
+        toast({
+          title: "Update SubDomain Error ",
+          status: "error",
+          duration: 9000,
+        })
+      }
     } catch (error) {
     }
   };

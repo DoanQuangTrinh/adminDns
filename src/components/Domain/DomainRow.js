@@ -43,9 +43,20 @@ console.log(deleteDomain)
           deleteDomain,
           deleteId
         )
-        console.log("Data before refetch:", domain);
-        refetchDomainData();
-        console.log("Data after refetch:", domain);
+        if (response.data.code === 0) {
+          toast({
+            title: "Delete Domain Successfully",
+            status: "success",
+            duration: 9000,
+          })
+          refetchDomainData();
+        } else {
+          toast({
+            title: "Delete Domain Error ",
+            status: "error",
+            duration: 9000,
+          })
+        }
       }
       catch (err){
         console.log(err)
@@ -67,20 +78,6 @@ console.log(deleteDomain)
           borderColor={borderColor}
           borderBottom={isLast ? "none" : null}
         >
-          {/* <UserDetailDialog
-            isOpen={isDetailOpen}
-            onOpen={onDetailOpen}
-            onClose={onDetailClose}
-            // tool={name}
-            data={props}
-          /> */}
-          {/* <UserResetPasswordDialog
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onClose={onClose}
-            fetchData={refetch}
-            id={id}
-          /> */}
           <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
             <Flex direction="column">
               <Text
@@ -152,15 +149,6 @@ console.log(deleteDomain)
           </IconButton>
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          {/* <IconButton
-            p={2}
-            bg="transparent"
-            onClick={() => {
-              handleRowClickResetPassword();
-            }}
-          >
-            <UnlockIcon /> */}
-          {/* </IconButton> */}
         </Td>
       </Tr>
     );

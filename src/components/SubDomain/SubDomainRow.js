@@ -8,7 +8,8 @@ import {
     Text,
     Tr,
     useColorModeValue,
-    useDisclosure
+    useDisclosure,
+    useToast,
   } from "@chakra-ui/react";
   import React,{useState} from "react";
   import { axiosPost } from "utils/api";
@@ -30,6 +31,7 @@ function SubDomainRow(props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const xToken = localStorage.getItem('xToken');
     const {subDoman , refetchSudDomainData} = useDataContext();
+    const toast = useToast();
 
     console.log(domain)
       
@@ -49,9 +51,14 @@ function SubDomainRow(props) {
           DeleteSubDomain,
           deleteId
         )
-        console.log("Data before refetch:", data);
-        refetchSudDomainData()
-        console.log("Data after refetch:", data);
+        if (response.data.code === 0) {
+          toast({
+            title: response.data.msg,
+            // status: "success",
+            duration: 9000,
+          })
+          refetchSudDomainData();
+        }
       }
       catch (err) {
         console.log(err)

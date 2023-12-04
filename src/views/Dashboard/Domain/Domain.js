@@ -10,7 +10,6 @@ import {
     useColorModeValue,
     useDisclosure,
   } from "@chakra-ui/react";
-  // Custom components
   import useAxios from "axios-hooks";
   import Card from "components/Card/Card.js";
   import CardBody from "components/Card/CardBody.js";
@@ -34,39 +33,20 @@ import {
   ];
 const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
 const xToken = localStorage.getItem('xToken');
-// const { data, refetchDomainData } = useDataContext();
 
 console.log(userApi)
 const Domain = (refetch) => {
   const { domain, refetchDomainData } = useDataContext();
 
-  // Do something with the data
 
   const fetchDomainData = () => {
-    // Trigger a refetch of data
     refetchDomainData();
   };
-  // const [data , setData] = useState([]);
-  // const fetchDomainData = async () => {
-  //   try {
-  //     const response = await axiosGet(
-  //       userApi
-  //     )
-  //     setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
-  //   }
-  //   catch(err){
-  //     console.log(err)
-  //   }
-  // }
-  // useEffect(() => {
-  //   fetchDomainData();
-  // }, []); 
-  // console.log(data._id)
-    // refetchDomainData();
-  // useEffect(() => {
-  //   fetchDomainData();
-  // }, []);
-    const textColor = useColorModeValue("gray.700", "white");
+  useEffect(() => {
+    refetchDomainData();
+  })
+
+  const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const [filter, setFilter] = useState(initialFilter);
   const [userDetail, setUserDetail] = useState();
@@ -79,7 +59,6 @@ const Domain = (refetch) => {
     onClose: onRegisterClose,
   } = useDisclosure();
 
-  // const [domain, setDomain] = useState([]);
 
   const isLoggedIn = checkLogin();
 
@@ -99,11 +78,18 @@ const Domain = (refetch) => {
     setSelectedRow(row);
     setIsEditModalOpen(true);
   };
-  // const handleUpdate = (updatedData) => {
-  //   console.log("Updated data:", updatedData);
-  //   setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
-  // };
+  const handleUpdate = (updatedData) => {
+    console.log("Updated data:", updatedData);
+    setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
+  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage1, setCurrentPage1] = useState([10, 25, 50, 100]);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   
+  const totalPages = Math.ceil(domain.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = domain.slice(startIndex, endIndex);
     return (
         <>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -161,6 +147,18 @@ const Domain = (refetch) => {
                     refetch={fetchDomainData} 
                   />
                   ))}
+                  {domain?.map((row, index, arr) => (
+                    <EditDomainDialog 
+                    key={row._id}
+                      data={domain}
+                      id={row._id}
+                      ApiKey={row.api_key}
+                      name={row.name}
+                      ip={row.ip}
+                      zone_id={row.zone_id}
+                    refetch={fetchDomainData} 
+                  />
+                  ))}
                 </Tbody>
                   
 
@@ -168,7 +166,7 @@ const Domain = (refetch) => {
             {isEditModalOpen && (
               <EditDomainDialog
                 refetch={fetchDomainData} 
-
+                 
                 isOpen={isEditModalOpen}
                 initialData={selectedRow}
                 onUpdate={handleUpdate}
@@ -177,16 +175,14 @@ const Domain = (refetch) => {
             <Flex justifyContent={"flex-end"}>
               <TablePagination
                 type="full"
-                page={domain?.pagination?.page}
-                pageLength={domain?.pagination?.pageSize}
-                totalRecords={domain?.pagination?.count}
+                page={currentPage}
+                pageLength={itemsPerPage}
+                pageLengthMenu={currentPage1}
+                totalRecords={domain.length}
                 onPageChange={({ page, pageLength }) => {
                   console.log(page);
-                  setFilter({
-                    ...filter,
-                    pageSize: pageLength,
-                    pageIndex: page - 1,
-                  });
+                  setCurrentPage(page);
+                  setItemsPerPage(pageLength);
                 }}
                 prevPageRenderer={() => <i className="fa fa-angle-left" />}
                 nextPageRenderer={() => <i className="fa fa-angle-right" />}

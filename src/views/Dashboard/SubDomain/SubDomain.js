@@ -38,6 +38,9 @@ const SubDomain = ({onClose}) => {
   const fetchSubDomain = () => {
     refetchSudDomainData()
   }
+  useEffect(() => {
+    refetchSudDomainData();
+  });
     const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const [filter, setFilter] = useState(initialFilter);
@@ -76,9 +79,17 @@ const SubDomain = ({onClose}) => {
     console.log("Updated data:", updatedData);
     setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
   };
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage1, setCurrentPage1] = useState([10, 25, 50, 100]);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   
-    return (
-        <>
+  const totalPages = Math.ceil(subDoman.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = subDoman.slice(startIndex, endIndex);
+  
+  return (
+    <>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
@@ -95,27 +106,26 @@ const SubDomain = ({onClose}) => {
             </Button>
           </CardHeader>
           <CardBody>
-
             <Table variant="simple" color={textColor}>
               <Thead>
                 <Tr my=".8rem" pl="0px" color="gray.400">
                   <Th pl="0px" borderColor={borderColor} color="gray.400">
-                  domain id
+                    domain id
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  link
+                    link
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  id
+                    id
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  type
+                    type
                   </Th>
                   <Th borderColor={borderColor}></Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {subDoman?.map((row, index, arr) => {
+                {currentItems.map((row, index, arr) => {
                   return (
                     <SubDomainRow
                       key={index}
@@ -124,8 +134,8 @@ const SubDomain = ({onClose}) => {
                       id={row._id}
                       type={row.type}
                       zone_id={row.zone_id}
-                      onClose = {onClose}
-                      refetch = {fetchSubDomain}
+                      onClose={onClose}
+                      refetch={fetchSubDomain}
                       onClick={() => handleEditClick(row)}
                     />
                   );
@@ -138,21 +148,20 @@ const SubDomain = ({onClose}) => {
                 initialData={selectedRow}
                 onUpdate={handleUpdate}
                 onClose={() => setIsEditModalOpen(false)}
-              />)}
-            <AddSubDomain refetch = {fetchSubDomain} />
+              />
+            )}
+            <AddSubDomain refetch={fetchSubDomain} />
             <Flex justifyContent={"flex-end"}>
               <TablePagination
                 type="full"
-                page={data?.pagination?.page}
-                pageLength={data?.pagination?.pageSize}
-                totalRecords={data?.pagination?.count}
+                page={currentPage}
+                pageLength={itemsPerPage}
+                pageLengthMenu={currentPage1}
+                totalRecords={subDoman.length}
                 onPageChange={({ page, pageLength }) => {
                   console.log(page);
-                  setFilter({
-                    ...filter,
-                    pageSize: pageLength,
-                    pageIndex: page - 1,
-                  });
+                  setCurrentPage(page);
+                  setItemsPerPage(pageLength);
                 }}
                 prevPageRenderer={() => <i className="fa fa-angle-left" />}
                 nextPageRenderer={() => <i className="fa fa-angle-right" />}
