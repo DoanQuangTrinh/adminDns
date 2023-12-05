@@ -19,12 +19,13 @@ import CardHeader from "components/Card/CardHeader.js";
 import UserRow from "components/User/UserRow";
 import React, { useState, useEffect } from "react";
 import { checkLogin, logout, getToken } from "../../../utils/authentication";
+import { API_ROUTES , ROOT_API } from "utils/constant";
 
-const userApi = 'http://localhost:8080/api/v1/user/users';
+
+const userApi = ROOT_API + API_ROUTES.USER_API;
 import UserRegisterDialog from "components/User/UserRegisterDialog";
 import { TablePagination } from "@trendmicro/react-paginations";
 import { initialFilter } from "utils/constant";
-
 
 function User() {
   const textColor = useColorModeValue("gray.700", "white");
@@ -33,7 +34,7 @@ function User() {
   const [userDetail, setUserDetail] = useState();
 
   const xToken = getToken();
-  console.log(xToken);
+
   const {
     isOpen: isRegisterOpen,
     onOpen: onRegisterOpen,
@@ -41,8 +42,7 @@ function User() {
   } = useDisclosure();
 
   const [users, setUsers] = useState([]);
-  console.log(users)
-  
+
   const isLoggedIn = checkLogin();
 
   const [{ data, loading, error }, refetch] = useAxios({
@@ -70,7 +70,7 @@ function User() {
     setUserDetail()
     onRegisterClose()
   }
-  
+
 
   return (
     <>
@@ -95,25 +95,25 @@ function User() {
               <Thead>
                 <Tr my=".8rem" pl="0px" color="gray.400">
                   <Th pl="0px" borderColor={borderColor} color="gray.400">
-                  fullname
+                    Name
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
                     Phone
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  email
+                    Level
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  username
+                    Status
                   </Th>
                   <Th borderColor={borderColor}></Th>
                 </Tr>
-                
               </Thead>
               <Tbody>
                 {users?.map((row, index, arr) => {
-                  return (  
+                  return (
                     <UserRow
+
                       name={row.username}
                       id={row._id}
                       email={row.email}

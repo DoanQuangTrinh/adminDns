@@ -12,7 +12,6 @@ import { UserProvider } from "context/UserContext";
 import "./styles/globals.css";
 import "@trendmicro/react-paginations/dist/react-paginations.css";
 
-
 ReactDOM.render(
   <ChakraProvider theme={theme} resetCss={false} position="relative">
     <UserProvider>

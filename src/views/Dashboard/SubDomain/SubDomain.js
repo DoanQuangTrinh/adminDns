@@ -14,38 +14,35 @@ import useAxios from "axios-hooks";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
-import DomainTableRow from "components/Domain/DomainTableRow";
-import DomainRow from "components/Domain/DomainRow";
 import React, { useState, useEffect } from "react";
 import { checkLogin, logout, getToken } from "../../../utils/authentication";
-import { API_ROUTES , ROOT_API } from "utils/constant";
 import axios from "axios";
-import { useDataContext } from "context/UserContext";
-
 import { axiosGet } from "utils/api";
-
-import AddDomainDialog from "components/Domain/AddDomainDialog";
+import AddSubDomain from "components/SubDomain/AddSubDomain";
 import { TablePagination } from "@trendmicro/react-paginations";
 import { initialFilter } from "utils/constant";
-import EditDomainDialog from "components/Domain/EditDomainDialog"; 
+import EditSubDomain from "components/SubDomain/EditSubDomain";
+import SubDomainRow from "components/SubDomain/SubDomainRow";
+import { useDataContext } from "context/UserContext";
+import { API_ROUTES , ROOT_API } from "utils/constant";
+
 const vendorDomain = [
   { value: "vendor1", color: "blue" },
   { value: "vendor2", color: "green" },
 ];
+const xToken = getToken();
 
-
-const Domain = () => {
+const SubDomain = ({}) => {
   const [filter, setFilter] = useState(initialFilter);
   const xToken = getToken();
  
-  const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
+  const subDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
   
   const [{ data, loading, error }, refetch] = useAxios({
-    url: domainApi,
+    url: subDomainApi,
     params: { ...filter },
   });
-  const domain = data?.data
-
+  const subDomain = data?.data
 
 const textColor = useColorModeValue("gray.700", "white");
 const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -58,8 +55,10 @@ const isRegisterOpen = isOpen;
 const onRegisterOpen = onOpen;
 const onRegisterClose = onClose;
 
+const [domain, setDomain] = useState([]);
 
 const isLoggedIn = checkLogin();
+
 
 const handelUpdateUser = userDetail => {
   setUserDetail(userDetail)
@@ -78,16 +77,20 @@ const handleEditClick = (row) => {
   setIsEditModalOpen(true);
 };
 const handleUpdate = (updatedData) => {
+  console.log("Updated data:", updatedData);
   setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
 };
 
-  return (
-      <>
+
+
+
+return (
+  <>
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
         <CardHeader p="6px 0px 22px 0px">
           <Text fontSize="xl" color={textColor} fontWeight="bold">
-            Domain
+            SubDomain
           </Text>
           <Button
             variant="primary"
@@ -99,82 +102,81 @@ const handleUpdate = (updatedData) => {
           </Button>
         </CardHeader>
         <CardBody>
-
           <Table variant="simple" color={textColor}>
             <Thead>
               <Tr my=".8rem" pl="0px" color="gray.400">
                 <Th pl="0px" borderColor={borderColor} color="gray.400">
-                ApiKey
+                  domain id
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
-                Name
+                  link
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
-                IP
+                  id
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
-                Zone_Id
+                  type
                 </Th>
                 <Th borderColor={borderColor}></Th>
               </Tr>
             </Thead>
             <Tbody>
-                {domain?.map((row, index, arr) => (
-                  <DomainRow
-                    key={row._id}
-                    data={domain}
-                    _id={row._id}
-                    ApiKey={row.api_key}
-                    name={row.name}
-                    ip={row.ip}
+              {subDomain?.map((row, index, arr) => {
+                return (
+                  <SubDomainRow
+                    key={index}
+                    domain={row.domain}
+                    link={row.link}
+                    id={row._id}
+                    type={row.type}
                     zone_id={row.zone_id}
-                    refetch = {refetch}
+                    onClose={onClose}
+                    refetch={refetch}
                     onClick={() => handleEditClick(row)}
                   />
-                  ))}
-              </Tbody>
-            
-
+                );
+              })}
+            </Tbody>
           </Table>
           {isEditModalOpen && (
-            <EditDomainDialog
-              refetch={refetch}
+            <EditSubDomain
               isOpen={isEditModalOpen}
               initialData={selectedRow}
               onUpdate={handleUpdate}
               onClose={() => setIsEditModalOpen(false)}
-            />)}
+            />
+          )}
+          <Table/>
           <Flex justifyContent={"flex-end"}>
             <TablePagination
-                type="full"
-                page={data?.pagination?.page}
-                pageLength={data?.pagination?.pageSize}
-                totalRecords={data?.pagination?.count}
-                onPageChange={({ page, pageLength }) => {
-                  console.log(page);
-                  setFilter({
-                    ...filter,
-                    pageSize: pageLength,
-                    pageIndex: page - 1,
-                  });
-                }}
-                prevPageRenderer={() => <i className="fa fa-angle-left" />}
-                nextPageRenderer={() => <i className="fa fa-angle-right" />}
-              />
+               type="full"
+               page={data?.pagination?.page}
+               pageLength={data?.pagination?.pageSize}
+               totalRecords={data?.pagination?.count}
+               onPageChange={({ page, pageLength }) => {
+                 console.log(page);
+                 setFilter({
+                   ...filter,
+                   pageSize: pageLength,
+                   pageIndex: page - 1,
+                 });
+               }}
+               prevPageRenderer={() => <i className="fa fa-angle-left" />}
+               nextPageRenderer={() => <i className="fa fa-angle-right" />}
+             />
           </Flex>
         </CardBody>
       </Card>
     </Flex>
-    {isRegisterOpen && <AddDomainDialog
+    {isRegisterOpen && <AddSubDomain
       refetch={refetch}
       isOpen={isRegisterOpen}
       userDetail={userDetail}
       onOpen={onRegisterOpen}
       onClose={handelCloseModal}
-    />
-    }
+    />}
   </>
   )
 }
 
-export default Domain;
+export default SubDomain;

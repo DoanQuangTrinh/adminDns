@@ -20,11 +20,12 @@ import { checkLogin, login } from "../../utils/authentication";
 
 import { useHistory } from "react-router-dom";
 import { useUserDispatch, loginUser } from "context/UserContext";
+import { ROOT_API,API_ROUTES } from "utils/constant";
 
-const loginUrl = 'http://localhost:8080/api/v1/user/loginUser'
-// console.log(loginUrl);
+
+const loginUrl =
+ROOT_API + API_ROUTES.LOGIN_API;
 function SignIn() {
-  // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
   const bgForm = useColorModeValue("white", "navy.800");
   const titleColor = useColorModeValue("gray.700", "blue.500");
@@ -55,7 +56,6 @@ function SignIn() {
     { manual: true }
   );
 
-  // manual excute api
   const handleLogin = () => {
     if (!username || !password) {
       return;
@@ -110,7 +110,6 @@ function SignIn() {
     } else if (data) {
       setErrors("");
       login(data.token, data.data);
-      // navigate("/");
       return history.push('/admin/dashboard')
     }
   }, [error, response, data]);
