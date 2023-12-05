@@ -41,14 +41,14 @@ const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,
         editDomain,
         dataEdit
         );
-        refetch();
-      if (response.status === 200) {
-        onClose();
-        toast({
-          title: "Update Domain Successfully",
-          status: "success",
-          duration: 9000,
-        })
+        if (response.status === 200) {
+          toast({
+            title: "Update Domain Successfully",
+            status: "success",
+            duration: 9000,
+          })
+          refetch();
+          onClose();
       } else {
         toast({
           title: "Update Domain Error ",

@@ -36,7 +36,6 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
   const [success, setSuccess] = useState(null);
   const [isMounted, setIsMounted] = useState(true);
   const xToken = getToken();
-  const {subDoman , refetchSudDomainData} = useDataContext();
 
   useEffect(() => {
     return () => {
@@ -55,13 +54,14 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
         CreateSubDomain,
         subData
       );
-      refetchSudDomainData();
       if (response.data.code === 0) {
         toast({
           title: response.data.msg,
           status: "success",
           duration: 9000,
         })
+        refetch();
+        onClose();
       } else {
         toast({
           title: response.data.msg,
@@ -70,6 +70,14 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
         })
       }
     } catch (error) {
+      toast({
+        title:
+          error?.response?.data?.errors?.errors[0]?.msg ||
+          error?.response?.data?.msg || "Delete Group Fail",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
   

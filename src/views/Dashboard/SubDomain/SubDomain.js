@@ -10,6 +10,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import useAxios from "axios-hooks";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -28,22 +29,21 @@ const vendorDomain = [
   { value: "vendor2", color: "green" },
 ];
 const xToken = getToken();
-const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
-// const xToken = localStorage.getItem('xToken');
-console.log(userApi)
-const SubDomain = ({onClose}) => {
-const [data , setData] = useState([]);
-const {subDoman , pagina , refetchSudDomainData} = useDataContext();
 
-const fetchSubDomain = () => {
-  refetchSudDomainData()
-}
-useEffect(() => {
-  refetchSudDomainData();
-},[]);
-  const textColor = useColorModeValue("gray.700", "white");
+const SubDomain = ({onClose}) => {
+  const [filter, setFilter] = useState(initialFilter);
+  const xToken = getToken();
+ 
+  const subDomainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN ;
+  
+  const [{ data, loading, error }, refetch] = useAxios({
+    url: subDomainApi,
+    params: { ...filter },
+  });
+  const subDomain = data?.data
+
+const textColor = useColorModeValue("gray.700", "white");
 const borderColor = useColorModeValue("gray.200", "gray.600");
-const [filter, setFilter] = useState(initialFilter);
 const [userDetail, setUserDetail] = useState();
 
 
@@ -79,14 +79,7 @@ const handleUpdate = (updatedData) => {
   console.log("Updated data:", updatedData);
   setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
 };
-const [currentPage, setCurrentPage] = useState(1);
-const [currentPage1, setCurrentPage1] = useState([10, 25, 50, 100]);
-const [itemsPerPage, setItemsPerPage] = useState(10);
 
-const totalPages = Math.ceil(pagina.count / itemsPerPage);
-const startIndex = (currentPage - 1) * itemsPerPage;
-const endIndex = startIndex + itemsPerPage;
-const currentItems = subDoman.slice(startIndex, endIndex);
 
 
 
@@ -127,7 +120,7 @@ return (
               </Tr>
             </Thead>
             <Tbody>
-              {currentItems.map((row, index, arr) => {
+              {subDomain?.map((row, index, arr) => {
                 return (
                   <SubDomainRow
                     key={index}
@@ -137,7 +130,7 @@ return (
                     type={row.type}
                     zone_id={row.zone_id}
                     onClose={onClose}
-                    refetch={fetchSubDomain}
+                    refetch={refetch}
                     onClick={() => handleEditClick(row)}
                   />
                 );
@@ -152,18 +145,20 @@ return (
               onClose={() => setIsEditModalOpen(false)}
             />
           )}
-          <AddSubDomain refetch={fetchSubDomain} />
+          <Table/>
           <Flex justifyContent={"flex-end"}>
             <TablePagination
                type="full"
-               page={currentPage}
-               pageLength={itemsPerPage}
-               pageLengthMenu={currentPage1}
-               totalRecords={pagina.count}
+               page={data?.pagination?.page}
+               pageLength={data?.pagination?.pageSize}
+               totalRecords={data?.pagination?.count}
                onPageChange={({ page, pageLength }) => {
                  console.log(page);
-                 setCurrentPage(page);
-                 setItemsPerPage(pageLength);
+                 setFilter({
+                   ...filter,
+                   pageSize: pageLength,
+                   pageIndex: page - 1,
+                 });
                }}
                prevPageRenderer={() => <i className="fa fa-angle-left" />}
                nextPageRenderer={() => <i className="fa fa-angle-right" />}
@@ -173,6 +168,7 @@ return (
       </Card>
     </Flex>
     {isRegisterOpen && <AddSubDomain
+      refetch={refetch}
       isOpen={isRegisterOpen}
       userDetail={userDetail}
       onOpen={onRegisterOpen}

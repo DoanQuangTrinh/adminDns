@@ -36,16 +36,14 @@ const vendorDomain = [
 const Domain = () => {
   const [filter, setFilter] = useState(initialFilter);
   const xToken = getToken();
-  const [pageSize, setPageSize] = useState(10);
-  const [pageIndex, setPageIndex] = useState(0); 
-  const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS + `?pageSize=${pageSize}&pageIndex=${pageIndex}`;
+ 
+  const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS ;
   
   const [{ data, loading, error }, refetch] = useAxios({
     url: domainApi,
     params: { ...filter },
   });
   const domain = data?.data
-  
 
 
 const textColor = useColorModeValue("gray.700", "white");
@@ -153,13 +151,12 @@ const handleUpdate = (updatedData) => {
                 pageLength={data?.pagination?.pageSize}
                 totalRecords={data?.pagination?.count}
                 onPageChange={({ page, pageLength }) => {
+                  console.log(page);
                   setFilter({
                     ...filter,
                     pageSize: pageLength,
                     pageIndex: page - 1,
                   });
-                  setPageSize(pageLength);
-                  setPageIndex(page - 1); 
                 }}
                 prevPageRenderer={() => <i className="fa fa-angle-left" />}
                 nextPageRenderer={() => <i className="fa fa-angle-right" />}

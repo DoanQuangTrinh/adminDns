@@ -15,11 +15,8 @@ import {
   import { axiosPost } from "utils/api";
   import { useEffect } from "react";
   import { useDataContext } from "context/UserContext";
-//   import { useState } from "react";
-//   import UserDetailDialog from "./UserDetailDialog";
   import { DeleteIcon, EditIcon, UnlockIcon } from "@chakra-ui/icons";
 import axios from "axios";
-// import EditDomainDialog from "./EditDomainDialog";
 const DeleteSubDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_SUBDOMAIN
 function SubDomainRow(props) {
     const {data,refetch,_id, ip, name, isLast,domain, link ,id , type,date, handelUpdateUser,onDeleted } = props;
@@ -29,7 +26,6 @@ function SubDomainRow(props) {
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const xToken = localStorage.getItem('xToken');
-    const {subDoman , refetchSudDomainData} = useDataContext();
     const toast = useToast();
 
       
@@ -54,11 +50,19 @@ function SubDomainRow(props) {
             title: response.data.msg,
             duration: 9000,
           })
-          refetchSudDomainData();
+          refetch();
         }
       }
-      catch (err) {
-        console.log(err)
+      catch (error) {
+        console.log(error)
+        toast({
+          title:
+            error?.response?.data?.errors?.errors[0]?.msg ||
+            error?.response?.data?.msg || "Delete Group Fail",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
       }
     }
         const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -135,15 +139,6 @@ function SubDomainRow(props) {
           </IconButton>
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          {/* <IconButton
-            p={2}
-            bg="transparent"
-            onClick={() => {
-              handleRowClickResetPassword();
-            }}
-          >
-            <UnlockIcon /> */}
-          {/* </IconButton> */}
         </Td>
       </Tr>
     );

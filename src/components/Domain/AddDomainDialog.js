@@ -50,14 +50,14 @@
               };
       try{
         const response = await axiosPost(createDomainApi, requestBody);
-        refetch();
         if (response.data.code === 0) {
           toast({
             title: "Create Domain Successfully",
             status: "success",
             duration: 9000,
           })
-          
+          refetch();
+          onClose();
         } else {
           toast({
             title: "Create Domain Error ",
@@ -66,8 +66,16 @@
           })
         }
       }
-      catch (err){
-        console.log(err)
+      catch (error){
+        console.log(error)
+        toast({
+          title:
+            error?.response?.data?.errors?.errors[0]?.msg ||
+            error?.response?.data?.msg || "Delete Group Fail",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
       }
     }
     

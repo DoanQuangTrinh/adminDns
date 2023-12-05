@@ -43,13 +43,13 @@ function DomainRow(props) {
         deleteDomain,
         deleteId
       )
-      refetch();
       if (response.data.code === 0) {
         toast({
           title: "Delete Domain Successfully",
           status: "success",
           duration: 9000,
         })
+        refetch();
       } else {
         toast({
           title: "Delete Domain Error ",
@@ -58,8 +58,16 @@ function DomainRow(props) {
         })
       }
     }
-    catch (err){
-      console.log(err)
+    catch (error){
+      console.log(error)
+      toast({
+        title:
+          error?.response?.data?.errors?.errors[0]?.msg ||
+          error?.response?.data?.msg || "Delete Group Fail",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   }
       
