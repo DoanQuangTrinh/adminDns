@@ -83,13 +83,13 @@ const handleUpdate = (updatedData) => {
   setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
 };
 const [currentPage, setCurrentPage] = useState(1);
-const [currentPage1, setCurrentPage1] = useState([10, 25, 50, 100]);
-const [itemsPerPage, setItemsPerPage] = useState(10);
-
-const totalPages = Math.ceil(paginaDomain.pageSize / itemsPerPage);
-const startIndex = (paginaDomain.page - 1) * itemsPerPage;
-const endIndex = startIndex + itemsPerPage;
-const currentItems = paginaDomain.pageSize
+  const [currentPage1, setCurrentPage1] = useState([10, 25, 50, 100]);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  
+  const totalPages = Math.ceil(paginaDomain.count / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = domain.slice(startIndex, endIndex);
   return (
       <>
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -128,10 +128,10 @@ const currentItems = paginaDomain.pageSize
               </Tr>
             </Thead>
             <Tbody>
-                {domain?.map((row, index, arr) => (
+                {currentItems?.map((row, index, arr) => (
                   <DomainRow
-                    key={row._id} // Đặt key để đảm bảo tính duy nhất trong mảng
-                    data={domain}
+                    key={row._id}
+                    data={currentItems}
                     _id={row._id}
                     ApiKey={row.api_key}
                     name={row.name}
@@ -141,16 +141,16 @@ const currentItems = paginaDomain.pageSize
                     refetch={fetchDomainData}
                   />
                   ))}
-                  {domain?.map((row, index, arr) => (
+                  {currentItems?.map((row, index, arr) => (
                   <AddDomainDialog 
-                  data={domain}
+                  data={currentItems}
                   refetch={fetchDomainData} 
                 />
                 ))}
-                {domain?.map((row, index, arr) => (
+                {currentItems?.map((row, index, arr) => (
                   <EditDomainDialog 
                   key={row._id}
-                    data={domain}
+                    data={currentItems}
                     id={row._id}
                     ApiKey={row.api_key}
                     name={row.name}
@@ -174,19 +174,19 @@ const currentItems = paginaDomain.pageSize
             />)}
           <Flex justifyContent={"flex-end"}>
             <TablePagination
-              type="full"
-              page={pagina.page}
-              pageLength={itemsPerPage}
-              pageLengthMenu={currentPage1}
-              totalRecords={paginaDomain.pageSize}
-              onPageChange={({ page, pageLength }) => {
-                console.log(page);
-                setCurrentPage(page);
-                setItemsPerPage(pageLength);
-              }}
-              prevPageRenderer={() => <i className="fa fa-angle-left" />}
-              nextPageRenderer={() => <i className="fa fa-angle-right" />}
-            />
+               type="full"
+               page={currentPage}
+               pageLength={itemsPerPage}
+               pageLengthMenu={currentPage1}
+               totalRecords={paginaDomain.count}
+               onPageChange={({ page, pageLength }) => {
+                 console.log(page);
+                 setCurrentPage(page);
+                 setItemsPerPage(pageLength);
+               }}
+               prevPageRenderer={() => <i className="fa fa-angle-left" />}
+               nextPageRenderer={() => <i className="fa fa-angle-right" />}
+             />
           </Flex>
         </CardBody>
       </Card>
@@ -196,9 +196,8 @@ const currentItems = paginaDomain.pageSize
       userDetail={userDetail}
       onOpen={onRegisterOpen}
       onClose={handelCloseModal}
-      // fetchData={refetch}
-    // data={rowDomain}
-    />}
+    />
+    }
   </>
   )
 }

@@ -82,10 +82,13 @@ const handleUpdate = (updatedData) => {
 const [currentPage, setCurrentPage] = useState(1);
 const [currentPage1, setCurrentPage1] = useState([10, 25, 50, 100]);
 const [itemsPerPage, setItemsPerPage] = useState(10);
-const totalPages = pagina.totalPage;
-const startIndex = (pagina.page - 1) * itemsPerPage;
+
+const totalPages = Math.ceil(pagina.count / itemsPerPage);
+const startIndex = (currentPage - 1) * itemsPerPage;
 const endIndex = startIndex + itemsPerPage;
 const currentItems = subDoman.slice(startIndex, endIndex);
+
+
 
 return (
   <>
@@ -152,19 +155,19 @@ return (
           <AddSubDomain refetch={fetchSubDomain} />
           <Flex justifyContent={"flex-end"}>
             <TablePagination
-              type="full"
-              page={pagina.page}
-              pageLength={pagina.pageSize}
-              pageLengthMenu={currentPage1}
-              totalRecords={pagina.count}
-              onPageChange={({ page, pageLength }) => {
-                console.log(page);
-                setCurrentPage(page);
-                setItemsPerPage(pageLength);
-              }}
-              prevPageRenderer={() => <i className="fa fa-angle-left" />}
-              nextPageRenderer={() => <i className="fa fa-angle-right" />}
-            />
+               type="full"
+               page={currentPage}
+               pageLength={itemsPerPage}
+               pageLengthMenu={currentPage1}
+               totalRecords={pagina.count}
+               onPageChange={({ page, pageLength }) => {
+                 console.log(page);
+                 setCurrentPage(page);
+                 setItemsPerPage(pageLength);
+               }}
+               prevPageRenderer={() => <i className="fa fa-angle-left" />}
+               nextPageRenderer={() => <i className="fa fa-angle-right" />}
+             />
           </Flex>
         </CardBody>
       </Card>

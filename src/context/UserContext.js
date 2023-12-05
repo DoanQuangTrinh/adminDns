@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { axiosGet } from '../utils/api';
 import { isJsonString } from "utils/helpers";
-
+import { useToast } from '@chakra-ui/react';
 const UserStateContext = React.createContext();
 const UserDispatchContext = React.createContext();
 const DataContext = React.createContext();
+
 
 function userReducer(state, action) {
   switch (action.type) {
@@ -29,7 +30,7 @@ function UserProvider({ children }) {
       !!localStorage.getItem("xToken") || !!localStorage.getItem("mToken"),
     userInfo: userInfo,
   });
-
+  const toast = useToast();
   const [domain, setDomain] = React.useState([]);
   const [subDoman, setSubDomain] = React.useState([]);
   const [pagina , setPagina] = React.useState([]);
@@ -41,21 +42,7 @@ function UserProvider({ children }) {
     try {
       const response = await axiosGet(domainApi);
       setDomain(response.data.data);
-      setPaginaDomain(response.data)
-      if (response.status === 200) {
-        toast({
-          title: response.data.msg,
-          status: "success",
-          duration: 9000,
-        })
-        onClose();
-      } else {
-        toast({
-          title:response.data.msg,
-          status: "error",
-          duration: 9000,
-        })
-      }
+      setPaginaDomain(response.data.pagination);
     } catch (err) {
       console.log(err);
     }
@@ -66,20 +53,6 @@ function UserProvider({ children }) {
       const response = await axiosGet(subDomainApi);
       setSubDomain(response.data.data);
       setPagina(response.data.pagination)
-      if (response.status === 200) {
-        toast({
-          title: response.data.msg,
-          status: "success",
-          duration: 9000,
-        })
-        onClose();
-      } else {
-        toast({
-          title:response.data.msg,
-          status: "error",
-          duration: 9000,
-        })
-      }
     } catch (err) {
       console.log(err);
     }

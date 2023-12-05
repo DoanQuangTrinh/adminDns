@@ -8,7 +8,8 @@ import {
   Text,
   Tr,
   useColorModeValue,
-  useDisclosure
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import React,{useState} from "react";
 import { DeleteIcon, EditIcon, UnlockIcon } from "@chakra-ui/icons";
@@ -27,7 +28,7 @@ function DomainRow(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { domain, refetchDomainData } = useDataContext();
   const xToken = localStorage.getItem('xToken');
-    
+  const toast = useToast();
   const [loading, setLoading] = useState(false);
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -43,13 +44,13 @@ function DomainRow(props) {
         deleteDomain,
         deleteId
       )
+      refetchDomainData();
       if (response.data.code === 0) {
         toast({
           title: "Delete Domain Successfully",
           status: "success",
           duration: 9000,
         })
-        refetchDomainData();
       } else {
         toast({
           title: "Delete Domain Error ",

@@ -55,6 +55,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
         CreateSubDomain,
         subData
       );
+      refetchSudDomainData();
       if (response.data.code === 0) {
         toast({
           title: response.data.msg,
