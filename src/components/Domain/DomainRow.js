@@ -18,7 +18,6 @@ import { axiosPost } from "utils/api";
 import EditDomainDialog from "./EditDomainDialog";
 import { useDataContext } from "context/UserContext";
 const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
-console.log(deleteDomain)
 function DomainRow(props) {
   const { zone_id,_id,userDetail, logo, ip, name, email, phone, role, status, date, isLast, refetch,ApiKey } = props;
   const textColor = useColorModeValue("gray.500", "white");
@@ -30,9 +29,9 @@ function DomainRow(props) {
   const xToken = localStorage.getItem('xToken');
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+  
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
-
     if (!confirmDelete) {
       return;
     }
@@ -44,7 +43,7 @@ function DomainRow(props) {
         deleteDomain,
         deleteId
       )
-      refetchDomainData();
+      refetch();
       if (response.data.code === 0) {
         toast({
           title: "Delete Domain Successfully",

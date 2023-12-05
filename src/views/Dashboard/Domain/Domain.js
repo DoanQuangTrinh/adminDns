@@ -35,39 +35,16 @@ const vendorDomain = [
 
 const Domain = () => {
   const [filter, setFilter] = useState(initialFilter);
-  const [domain, setDomain] = useState([]);
   const xToken = getToken();
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0); 
   const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS + `?pageSize=${pageSize}&pageIndex=${pageIndex}`;
   
-  console.log(domainApi);
   const [{ data, loading, error }, refetch] = useAxios({
     url: domainApi,
-    headers: {
-      xToken,
-    },
-    params: { ...filter, pageSize: pageSize, pageIndex: pageIndex },
+    params: { ...filter },
   });
-  
-  const fetchData = async () => {
-    await refetch();
-  };
-  
-  useEffect(() => {
-    fetchData();
-  }, [pageSize, filter, pageIndex]);
-  
-  useEffect(() => {
-    const updateDomainData = async () => {
-      if (!data) {
-        await fetchData();
-      }
-      setDomain(data?.data);
-    };
-  
-    updateDomainData();
-  }, [data, setDomain]);
+  const domain = data?.data
   
 
 
@@ -103,7 +80,6 @@ const handleEditClick = (row) => {
   setIsEditModalOpen(true);
 };
 const handleUpdate = (updatedData) => {
-  console.log("Updated data:", updatedData);
   setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
 };
 
@@ -154,36 +130,17 @@ const handleUpdate = (updatedData) => {
                     name={row.name}
                     ip={row.ip}
                     zone_id={row.zone_id}
+                    refetch = {refetch}
                     onClick={() => handleEditClick(row)}
-              
                   />
                   ))}
-                  {domain?.map((row, index, arr) => (
-                  <AddDomainDialog 
-                  data={domain}
-             
-                />
-                ))}
-                {domain?.map((row, index, arr) => (
-                  <EditDomainDialog 
-                  key={row._id}
-                    data={domain}
-                    id={row._id}
-                    ApiKey={row.api_key}
-                    name={row.name}
-                    ip={row.ip}
-                    zone_id={row.zone_id}
-             
-                />
-                ))}
               </Tbody>
-                
+            
 
           </Table>
           {isEditModalOpen && (
             <EditDomainDialog
-         
-               
+              refetch={refetch}
               isOpen={isEditModalOpen}
               initialData={selectedRow}
               onUpdate={handleUpdate}
@@ -196,7 +153,6 @@ const handleUpdate = (updatedData) => {
                 pageLength={data?.pagination?.pageSize}
                 totalRecords={data?.pagination?.count}
                 onPageChange={({ page, pageLength }) => {
-                  console.log(page);
                   setFilter({
                     ...filter,
                     pageSize: pageLength,
@@ -213,6 +169,7 @@ const handleUpdate = (updatedData) => {
       </Card>
     </Flex>
     {isRegisterOpen && <AddDomainDialog
+      refetch={refetch}
       isOpen={isRegisterOpen}
       userDetail={userDetail}
       onOpen={onRegisterOpen}

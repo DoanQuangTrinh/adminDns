@@ -29,9 +29,6 @@ const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,
   };
 
   const handleUpdate = async () => {
-    console.log(editDomain)
-      console.log(editedData)
-      console.log(editedData?._id)
       const dataEdit = {
         id: editedData?._id,
         api_key: editedData?.api_key,
@@ -43,16 +40,15 @@ const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,
       const response = await axiosPost(
         editDomain,
         dataEdit
-        
-      );
+        );
+        refetch();
       if (response.status === 200) {
+        onClose();
         toast({
           title: "Update Domain Successfully",
           status: "success",
           duration: 9000,
         })
-        refetchDomainData();
-        onClose();
       } else {
         toast({
           title: "Update Domain Error ",

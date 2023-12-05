@@ -43,6 +43,7 @@ function UserProvider({ children }) {
       const response = await axiosGet(domainApi);
       setDomain(response.data.data);
       setPaginaDomain(response.data.pagination);
+      console.log('ok')
     } catch (err) {
       console.log(err);
     }
@@ -59,7 +60,7 @@ function UserProvider({ children }) {
   };
 
   React.useEffect(() => {
-    if( !domain){
+    if(!domain){
       fetchDomainData();
     }
   }, []);
