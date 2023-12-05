@@ -16,6 +16,7 @@ import { DeleteIcon, EditIcon, UnlockIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { axiosPost } from "utils/api";
 import EditDomainDialog from "./EditDomainDialog";
+import { useDataContext } from "context/UserContext";
 import { API_ROUTES,ROOT_API } from "utils/constant";
 
 const deleteDomain = ROOT_API + API_ROUTES.DELETE_DOMAIN
