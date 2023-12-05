@@ -31,27 +31,51 @@ const vendorDomain = [
   { value: "vendor1", color: "blue" },
   { value: "vendor2", color: "green" },
 ];
-const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
-const xToken = localStorage.getItem('xToken');
-
-console.log(userApi)
-const Domain = (refetch) => {
-const { domain, paginaDomain ,  refetchDomainData } = useDataContext();
 
 
-const fetchDomainData = () => {
-  refetchDomainData();
-};
-useEffect(() => {
-  refetchDomainData();
-} ,[])
+const Domain = () => {
+  const [filter, setFilter] = useState(initialFilter);
+  const [domain, setDomain] = useState([]);
+  const xToken = getToken();
+  const [pageSize, setPageSize] = useState(10);
+  const [pageIndex, setPageIndex] = useState(0); 
+  const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS + `?pageSize=${pageSize}&pageIndex=${pageIndex}`;
+  
+  console.log(domainApi);
+  const [{ data, loading, error }, refetch] = useAxios({
+    url: domainApi,
+    headers: {
+      xToken,
+    },
+    params: { ...filter, pageSize: pageSize, pageIndex: pageIndex },
+  });
+  
+  const fetchData = async () => {
+    await refetch();
+  };
+  
+  useEffect(() => {
+    fetchData();
+  }, [pageSize, filter, pageIndex]);
+  
+  useEffect(() => {
+    const updateDomainData = async () => {
+      if (!data) {
+        await fetchData();
+      }
+      setDomain(data?.data);
+    };
+  
+    updateDomainData();
+  }, [data, setDomain]);
+  
+
 
 const textColor = useColorModeValue("gray.700", "white");
 const borderColor = useColorModeValue("gray.200", "gray.600");
-const [filter, setFilter] = useState(initialFilter);
 const [userDetail, setUserDetail] = useState();
 
-const xToken = getToken();
+
 
 const {
   isOpen: isRegisterOpen,
@@ -82,14 +106,7 @@ const handleUpdate = (updatedData) => {
   console.log("Updated data:", updatedData);
   setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
 };
-const [currentPage, setCurrentPage] = useState(1);
-  const [currentPage1, setCurrentPage1] = useState([10, 25, 50, 100]);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  
-  const totalPages = Math.ceil(paginaDomain.count / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = domain.slice(startIndex, endIndex);
+
   return (
       <>
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -128,35 +145,35 @@ const [currentPage, setCurrentPage] = useState(1);
               </Tr>
             </Thead>
             <Tbody>
-                {currentItems?.map((row, index, arr) => (
+                {domain?.map((row, index, arr) => (
                   <DomainRow
                     key={row._id}
-                    data={currentItems}
+                    data={domain}
                     _id={row._id}
                     ApiKey={row.api_key}
                     name={row.name}
                     ip={row.ip}
                     zone_id={row.zone_id}
                     onClick={() => handleEditClick(row)}
-                    refetch={fetchDomainData}
+              
                   />
                   ))}
-                  {currentItems?.map((row, index, arr) => (
+                  {domain?.map((row, index, arr) => (
                   <AddDomainDialog 
-                  data={currentItems}
-                  refetch={fetchDomainData} 
+                  data={domain}
+             
                 />
                 ))}
-                {currentItems?.map((row, index, arr) => (
+                {domain?.map((row, index, arr) => (
                   <EditDomainDialog 
                   key={row._id}
-                    data={currentItems}
+                    data={domain}
                     id={row._id}
                     ApiKey={row.api_key}
                     name={row.name}
                     ip={row.ip}
                     zone_id={row.zone_id}
-                  refetch={fetchDomainData} 
+             
                 />
                 ))}
               </Tbody>
@@ -165,7 +182,7 @@ const [currentPage, setCurrentPage] = useState(1);
           </Table>
           {isEditModalOpen && (
             <EditDomainDialog
-              refetch={fetchDomainData} 
+         
                
               isOpen={isEditModalOpen}
               initialData={selectedRow}
@@ -174,19 +191,23 @@ const [currentPage, setCurrentPage] = useState(1);
             />)}
           <Flex justifyContent={"flex-end"}>
             <TablePagination
-               type="full"
-               page={currentPage}
-               pageLength={itemsPerPage}
-               pageLengthMenu={currentPage1}
-               totalRecords={paginaDomain.count}
-               onPageChange={({ page, pageLength }) => {
-                 console.log(page);
-                 setCurrentPage(page);
-                 setItemsPerPage(pageLength);
-               }}
-               prevPageRenderer={() => <i className="fa fa-angle-left" />}
-               nextPageRenderer={() => <i className="fa fa-angle-right" />}
-             />
+                type="full"
+                page={data?.pagination?.page}
+                pageLength={data?.pagination?.pageSize}
+                totalRecords={data?.pagination?.count}
+                onPageChange={({ page, pageLength }) => {
+                  console.log(page);
+                  setFilter({
+                    ...filter,
+                    pageSize: pageLength,
+                    pageIndex: page - 1,
+                  });
+                  setPageSize(pageLength);
+                  setPageIndex(page - 1); 
+                }}
+                prevPageRenderer={() => <i className="fa fa-angle-left" />}
+                nextPageRenderer={() => <i className="fa fa-angle-right" />}
+              />
           </Flex>
         </CardBody>
       </Card>
