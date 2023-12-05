@@ -16,8 +16,10 @@ import {
   import { useEffect } from "react";
   import { useDataContext } from "context/UserContext";
   import { DeleteIcon, EditIcon, UnlockIcon } from "@chakra-ui/icons";
+  import { API_ROUTES , ROOT_API } from "utils/constant";
+
 import axios from "axios";
-const DeleteSubDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_SUBDOMAIN
+const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
 function SubDomainRow(props) {
     const {data,refetch,_id, ip, name, isLast,domain, link ,id , type,date, handelUpdateUser,onDeleted } = props;
     const textColor = useColorModeValue("gray.500", "white");

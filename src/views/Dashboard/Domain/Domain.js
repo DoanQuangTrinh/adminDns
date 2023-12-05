@@ -18,6 +18,7 @@ import DomainTableRow from "components/Domain/DomainTableRow";
 import DomainRow from "components/Domain/DomainRow";
 import React, { useState, useEffect } from "react";
 import { checkLogin, logout, getToken } from "../../../utils/authentication";
+import { API_ROUTES , ROOT_API } from "utils/constant";
 import axios from "axios";
 import { useDataContext } from "context/UserContext";
 
@@ -37,7 +38,7 @@ const Domain = () => {
   const [filter, setFilter] = useState(initialFilter);
   const xToken = getToken();
  
-  const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS ;
+  const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
   
   const [{ data, loading, error }, refetch] = useAxios({
     url: domainApi,
@@ -52,11 +53,10 @@ const [userDetail, setUserDetail] = useState();
 
 
 
-const {
-  isOpen: isRegisterOpen,
-  onOpen: onRegisterOpen,
-  onClose: onRegisterClose,
-} = useDisclosure();
+const { isOpen, onOpen, onClose } = useDisclosure();
+const isRegisterOpen = isOpen;
+const onRegisterOpen = onOpen;
+const onRegisterClose = onClose;
 
 
 const isLoggedIn = checkLogin();

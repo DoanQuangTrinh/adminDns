@@ -24,9 +24,10 @@ import { typeDomain } from "config/config";
 import { getToken } from "utils/authentication";
 import { useDataContext } from "context/UserContext"; 
 import useAxios from "axios-hooks";
+import { API_ROUTES , ROOT_API } from "utils/constant";
+
 const source = axios.CancelToken.source();
-const CreateSubDomain =
-  process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
+const CreateSubDomain = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
 console.log(CreateSubDomain);
 const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
   const cancelRef = React.useRef();

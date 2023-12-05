@@ -17,8 +17,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { axiosPost } from "utils/api";
 import { useDataContext } from "context/UserContext";
+import { API_ROUTES,ROOT_API } from "utils/constant";
+
 const editDomain =
-  process.env.REACT_APP_API_HOST + process.env.REACT_APP_EDIT_DOMAIN;
+ROOT_API + API_ROUTES.EDIT_DOMAIN;
 const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,ApiKey,name,ip,zone_id }) => {
   const [editedData, setEditedData] = useState(initialData);
   const { domain, refetchDomainData } = useDataContext();

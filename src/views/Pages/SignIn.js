@@ -20,11 +20,11 @@ import { checkLogin, login } from "../../utils/authentication";
 
 import { useHistory } from "react-router-dom";
 import { useUserDispatch, loginUser } from "context/UserContext";
+import { ROOT_API,API_ROUTES } from "utils/constant";
 
 
 const loginUrl =
-  process.env.REACT_APP_API_HOST + process.env.REACT_APP_LOGIN_PATH;
-console.log(loginUrl);
+ROOT_API + API_ROUTES.LOGIN_API;
 function SignIn() {
   const textColor = useColorModeValue("gray.700", "white");
   const bgForm = useColorModeValue("white", "navy.800");

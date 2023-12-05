@@ -17,7 +17,9 @@ import axios from "axios";
 import { axiosPost } from "utils/api";
 import EditDomainDialog from "./EditDomainDialog";
 import { useDataContext } from "context/UserContext";
-const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
+import { API_ROUTES,ROOT_API } from "utils/constant";
+
+const deleteDomain = ROOT_API + API_ROUTES.DELETE_DOMAIN
 function DomainRow(props) {
   const { zone_id,_id,userDetail, logo, ip, name, email, phone, role, status, date, isLast, refetch,ApiKey } = props;
   const textColor = useColorModeValue("gray.500", "white");

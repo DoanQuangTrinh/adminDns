@@ -24,9 +24,9 @@
   import Domain from "views/Dashboard/Domain/Domain";
   import { axiosPost } from "../../utils/api";
   import { useDataContext } from "context/UserContext";
-
+  import { API_ROUTES,ROOT_API } from "utils/constant";
   const createDomainApi =
-    process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN;
+  ROOT_API + API_ROUTES.DOMAIN_API ;
   const AddDomainDialog = (props) => {
     const {onClose, isOpen,zone_id,_id,userDetail, logo, email, phone, role, status, date, isLast,ApiKey,data, loading, refetch } = props;
     const cancelRef = React.useRef();

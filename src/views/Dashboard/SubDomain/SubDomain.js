@@ -24,17 +24,19 @@ import { initialFilter } from "utils/constant";
 import EditSubDomain from "components/SubDomain/EditSubDomain";
 import SubDomainRow from "components/SubDomain/SubDomainRow";
 import { useDataContext } from "context/UserContext";
+import { API_ROUTES , ROOT_API } from "utils/constant";
+
 const vendorDomain = [
   { value: "vendor1", color: "blue" },
   { value: "vendor2", color: "green" },
 ];
 const xToken = getToken();
 
-const SubDomain = ({onClose}) => {
+const SubDomain = ({}) => {
   const [filter, setFilter] = useState(initialFilter);
   const xToken = getToken();
  
-  const subDomainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN ;
+  const subDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
   
   const [{ data, loading, error }, refetch] = useAxios({
     url: subDomainApi,
@@ -48,11 +50,10 @@ const [userDetail, setUserDetail] = useState();
 
 
 
-const {
-  isOpen: isRegisterOpen,
-  onOpen: onRegisterOpen,
-  onClose: onRegisterClose,
-} = useDisclosure();
+const { isOpen, onOpen, onClose } = useDisclosure();
+const isRegisterOpen = isOpen;
+const onRegisterOpen = onOpen;
+const onRegisterClose = onClose;
 
 const [domain, setDomain] = useState([]);
 

@@ -30,6 +30,13 @@ export const MAX_VIDEO_UPLOAD = 1024 * 1024 * 200;
 export const TINY_API_KEY = "d58i95js5t0cfdehsggyi1tx1ojb0akpuiblhzscw8g2akgl";
 export const ROOT_API = process.env.REACT_APP_API_HOST;
 export const API_ROUTES = {
+  DOMAIN_API: '/api/v1/domain',
+  DELETE_DOMAIN: '/api/v1/domain/delete',
+  EDIT_DOMAIN: '/api/v1/domain/update',
+  SUBDOMAIN_API: '/api/v1/subdomain',
+  DELETE_SUBDOMAIN:'/api/v1/subDomain/delete',
+  USER_API:'/api/v1/user/users',
+  LOGIN_API:'/api/v1/user/loginUser',
   LIVE_MATCHES: "/api/v1/match/live-matches-bo",
   CALENDAR_MATCHES: "/api/v1/match/calendar-matches",
   LEAGUES: "/api/v1/league/leagues-bo",
