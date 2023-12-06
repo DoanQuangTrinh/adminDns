@@ -106,7 +106,7 @@ function useUserDispatch() {
   return context;
 }
 
-async function loginUser(dispatch, token, user, isMember) {
+async function loginUser(dispatch, token, user, isMember, history) {
   if (isMember) {
     localStorage.setItem("mToken", token);
   } else {
@@ -114,6 +114,7 @@ async function loginUser(dispatch, token, user, isMember) {
   }
   localStorage.setItem("isUserShow", JSON.stringify(user));
   dispatch({ type: "LOGIN_SUCCESS" });
+  history.push("/admin");
 }
 
 function signOut(dispatch, history) {

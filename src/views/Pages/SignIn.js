@@ -73,13 +73,9 @@ function SignIn() {
               userDispatch,
               res.data.token,
               res.data.data,
-              res.data.isMember
+              res.data.isMember,
+              history
             );
-            // if (res.data.isMember) {
-            //   history.push("/admin/profile");
-            // } else {
-              history.push("/admin/");
-            // }
           }
         })
         .catch((error) => {
