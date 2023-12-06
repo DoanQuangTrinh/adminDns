@@ -73,7 +73,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
       toast({
         title:
           error?.response?.data?.errors?.errors[0]?.msg ||
-          error?.response?.data?.msg || "Delete Group Fail",
+          error?.response?.data?.msg || "Create Sub Domain Fail",
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -99,10 +99,10 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
           <AlertDialogCloseButton />
           <AlertDialogBody>
             <FormControl>
-              <FormLabel>SubDomain ID</FormLabel>
+              <FormLabel>Domain ID</FormLabel>
               <Input
                 type="text"
-                placeholder="Enter SubDomain ID"
+                placeholder="Enter Domain ID"
                 value={id}
                 onChange={(e) => setId(e.target.value)}
               />
