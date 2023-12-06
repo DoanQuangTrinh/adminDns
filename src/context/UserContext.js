@@ -4,7 +4,6 @@ import { isJsonString } from "utils/helpers";
 import { useToast } from '@chakra-ui/react';
 const UserStateContext = React.createContext();
 const UserDispatchContext = React.createContext();
-const DataContext = React.createContext();
 
 
 function userReducer(state, action) {
@@ -30,62 +29,62 @@ function UserProvider({ children }) {
       !!localStorage.getItem("xToken") || !!localStorage.getItem("mToken"),
     userInfo: userInfo,
   });
-  const toast = useToast();
-  const [domain, setDomain] = React.useState([]);
-  const [subDoman, setSubDomain] = React.useState([]);
-  const [pagina , setPagina] = React.useState([]);
-  const [paginaDomain , setPaginaDomain] = React.useState([]);
-  const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
-  const subDomainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
+  // const toast = useToast();
+  // const [domain, setDomain] = React.useState([]);
+  // const [subDoman, setSubDomain] = React.useState([]);
+  // const [pagina , setPagina] = React.useState([]);
+  // const [paginaDomain , setPaginaDomain] = React.useState([]);
+  // const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
+  // const subDomainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
 
-  const fetchDomainData = async () => {
-    try {
-      const response = await axiosGet(domainApi);
-      setDomain(response.data.data);
-      setPaginaDomain(response.data.pagination);
-      console.log('ok')
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const fetchDomainData = async () => {
+  //   try {
+  //     const response = await axiosGet(domainApi);
+  //     setDomain(response.data.data);
+  //     setPaginaDomain(response.data.pagination);
+  //     console.log('ok')
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
-  const fetchSudDomainData = async () => {
-    try {
-      const response = await axiosGet(subDomainApi);
-      setSubDomain(response.data.data);
-      setPagina(response.data.pagination)
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const fetchSudDomainData = async () => {
+  //   try {
+  //     const response = await axiosGet(subDomainApi);
+  //     setSubDomain(response.data.data);
+  //     setPagina(response.data.pagination)
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
-  React.useEffect(() => {
-    if(!domain){
-      fetchDomainData();
-    }
-  }, []);
-  React.useEffect(() => {
-    if(!subDoman){
-      fetchSudDomainData();
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if(!domain){
+  //     fetchDomainData();
+  //   }
+  // }, []);
+  // React.useEffect(() => {
+  //   if(!subDoman){
+  //     fetchSudDomainData();
+  //   }
+  // }, []);
 
-  const contextValue = {
-    ...state,
-    domain,
-    subDoman,
-    pagina,
-    paginaDomain,
-    refetchDomainData: fetchDomainData,
-    refetchSudDomainData: fetchSudDomainData,
-  };
+  // const contextValue = {
+  //   ...state,
+  //   domain,
+  //   subDoman,
+  //   pagina,
+  //   paginaDomain,
+  //   refetchDomainData: fetchDomainData,
+  //   refetchSudDomainData: fetchSudDomainData,
+  // };
 
   return (
     <UserStateContext.Provider value={state}>
       <UserDispatchContext.Provider value={dispatch}>
-        <DataContext.Provider value={contextValue}>
+        {/* <DataContext.Provider value={contextValue}> */}
           {children}
-        </DataContext.Provider>
+        {/* </DataContext.Provider> */}
       </UserDispatchContext.Provider>
     </UserStateContext.Provider>
   );
@@ -107,14 +106,6 @@ function useUserDispatch() {
   return context;
 }
 
-function useDataContext() {
-  const context = React.useContext(DataContext);
-  if (context === undefined) {
-    throw new Error("useDataContext must be used within a DataProvider");
-  }
-  return context;
-}
-
 async function loginUser(dispatch, token, user, isMember) {
   if (isMember) {
     localStorage.setItem("mToken", token);
@@ -132,4 +123,4 @@ function signOut(dispatch, history) {
   history.push("/auth/signin");
 }
 
-export { UserProvider, useUserState, useUserDispatch, loginUser, signOut, useDataContext };
+export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };

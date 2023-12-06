@@ -16,14 +16,12 @@ import {
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { axiosPost } from "utils/api";
-import { useDataContext } from "context/UserContext";
 import { API_ROUTES,ROOT_API } from "utils/constant";
 
 const editDomain =
 ROOT_API + API_ROUTES.EDIT_DOMAIN;
 const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,ApiKey,name,ip,zone_id }) => {
   const [editedData, setEditedData] = useState(initialData);
-  const { domain, refetchDomainData } = useDataContext();
   const toast = useToast();
   const handleInputChange = (e) => {
     const { name, value } = e.target;

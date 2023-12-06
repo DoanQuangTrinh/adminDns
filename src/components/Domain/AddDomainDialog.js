@@ -23,7 +23,6 @@ import { teamControl } from "config/config";
 import { typeDomain } from "config/config";
 import Domain from "views/Dashboard/Domain/Domain";
 import { axiosPost } from "../../utils/api";
-import { useDataContext } from "context/UserContext";
 import { API_ROUTES, ROOT_API } from "utils/constant";
 const createDomainApi = ROOT_API + API_ROUTES.DOMAIN_API;
 const AddDomainDialog = (props) => {
@@ -54,8 +53,6 @@ const AddDomainDialog = (props) => {
   const toast = useToast();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [isMounted, setIsMounted] = useState(true);
-  const { domain, refetchDomainData } = useDataContext();
 
   const [value, setValue] = useState();
   const clickAddButton = async () => {
@@ -169,7 +166,7 @@ const AddDomainDialog = (props) => {
               ml={3}
               onClick={() => {
                 clickAddButton();
-                onClose();
+                // onClose();
               }}
             >
               Thêm

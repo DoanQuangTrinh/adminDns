@@ -16,7 +16,6 @@ import { DeleteIcon, EditIcon, UnlockIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { axiosPost } from "utils/api";
 import EditDomainDialog from "./EditDomainDialog";
-import { useDataContext } from "context/UserContext";
 import { API_ROUTES,ROOT_API } from "utils/constant";
 
 const deleteDomain = ROOT_API + API_ROUTES.DELETE_DOMAIN
@@ -27,7 +26,6 @@ function DomainRow(props) {
   const bgStatus = useColorModeValue("gray.400", "navy.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { domain, refetchDomainData } = useDataContext();
   const xToken = localStorage.getItem('xToken');
   const toast = useToast();
   const [loading, setLoading] = useState(false);

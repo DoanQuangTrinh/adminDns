@@ -78,7 +78,7 @@ export default function HeaderLinks(props) {
                 <MenuItem borderRadius="8px" mb="10px">
                   <ItemContent
                     info={userInfo?.username}
-                    boldInfo="Username"
+                    boldInfo="Admin"
                     aSrc={avatar1}
                     additionalComponent={
                       <div onClick={() => signOut(userDispatch, history)}>

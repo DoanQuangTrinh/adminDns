@@ -59,7 +59,7 @@ var dashRoutes = [
         layout: "/admin",
         role: [Roles.ADMIN, Roles.USER, Roles.GUEST],
       },
-      
+
       {
         path: "/domain",
         name: "Domain",
@@ -80,8 +80,8 @@ var dashRoutes = [
         component: SignIn,
         layout: "/auth",
         icon: <PersonIcon color="inherit" />,
+        hidden: true
       },
-      
     ],
   },
 ];

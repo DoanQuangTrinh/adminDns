@@ -20,11 +20,9 @@ import { checkLogin, login } from "../../utils/authentication";
 
 import { useHistory } from "react-router-dom";
 import { useUserDispatch, loginUser } from "context/UserContext";
-import { ROOT_API,API_ROUTES } from "utils/constant";
+import { ROOT_API, API_ROUTES } from "utils/constant";
 
-
-const loginUrl =
-ROOT_API + API_ROUTES.LOGIN_API;
+const loginUrl = ROOT_API + API_ROUTES.LOGIN_API;
 function SignIn() {
   const textColor = useColorModeValue("gray.700", "white");
   const bgForm = useColorModeValue("white", "navy.800");
@@ -38,12 +36,12 @@ function SignIn() {
   const isLoggedIn = checkLogin();
   const history = useHistory();
   const [show, setShow] = useState({
-    password: false
+    password: false,
   });
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log('connecting to')
+      // console.log('connecting to')
       return history.push("/admin");
     }
   }, [isLoggedIn]);
@@ -68,16 +66,17 @@ function SignIn() {
         data: loginData,
       })
         .then((res) => {
-          if (res?.data?.data) {
+          // console.log(res?.data)
+          if (res?.data) {
             setErrors("");
             loginUser(
-              userDispatch, 
+              userDispatch,
               res.data.token,
               res.data.data,
               res.data.isMember
             );
             if (res.data.isMember) {
-               history.push("/admin/profile");
+              history.push("/admin/profile");
             } else {
               history.push("/admin/");
             }
@@ -87,7 +86,9 @@ function SignIn() {
           const status = error.response?.status;
           switch (status) {
             case 400:
-              setErrors(error?.response?.data?.error || "Wrong username or password");
+              setErrors(
+                error?.response?.data?.error || "Wrong username or password"
+              );
               break;
             default:
               setErrors("Error Unknown");
@@ -95,24 +96,6 @@ function SignIn() {
         });
     }
   };
-
-  // handler
-  useEffect(() => {
-    if (error) {
-      const status = error.response?.status;
-      switch (status) {
-        case 400:
-          setErrors("Sai thông tin đăng nhập");
-          break;
-        default:
-          setErrors("Lỗi không xác định");
-      }
-    } else if (data) {
-      setErrors("");
-      login(data.token, data.data);
-      return history.push('/admin/dashboard')
-    }
-  }, [error, response, data]);
 
   return (
     <Flex position="relative">

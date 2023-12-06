@@ -22,7 +22,6 @@ import { vendorDomain } from "config/config";
 import { teamControl } from "config/config";
 import { typeDomain } from "config/config";
 import { getToken } from "utils/authentication";
-import { useDataContext } from "context/UserContext"; 
 import useAxios from "axios-hooks";
 import { API_ROUTES , ROOT_API } from "utils/constant";
 
@@ -120,7 +119,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
               ml={3}
               onClick={() => {
                 clickCreateButton();
-                onClose();
+                // onClose();
               }}
             >
               Thêm

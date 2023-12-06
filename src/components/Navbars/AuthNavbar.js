@@ -112,7 +112,7 @@ export default function AuthNavbar(props) {
           <Text>Sign Up</Text>
         </Button>
       </NavLink> */}
-      {isAuthenticated ? <>TODO</> : <NavLink to="/auth/signin">
+      {isAuthenticated ? <></> : <NavLink to="/auth/signin">
         <Button
           fontSize="sm"
           ms="0px"

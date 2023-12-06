@@ -20,7 +20,6 @@ import React, { useState, useEffect } from "react";
 import { checkLogin, logout, getToken } from "../../../utils/authentication";
 import { API_ROUTES , ROOT_API } from "utils/constant";
 import axios from "axios";
-import { useDataContext } from "context/UserContext";
 
 import { axiosGet } from "utils/api";
 

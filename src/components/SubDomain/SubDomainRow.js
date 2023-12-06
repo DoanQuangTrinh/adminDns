@@ -14,7 +14,6 @@ import {
   import React,{useState} from "react";
   import { axiosPost } from "utils/api";
   import { useEffect } from "react";
-  import { useDataContext } from "context/UserContext";
   import { DeleteIcon, EditIcon, UnlockIcon } from "@chakra-ui/icons";
   import { API_ROUTES , ROOT_API } from "utils/constant";
 
