@@ -37,7 +37,8 @@ const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,
         name: editedData?.name,
         ip: editedData?.ip,
         zone_id: editedData?.zone_id,
-      }
+        link_redirect: editedData?.link_redirect,
+      };
     try {
       const response = await axiosPost(
         editDomain,
@@ -80,7 +81,7 @@ const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,
               name="ApiKey"
               value={editedData?.api_key}
               onChange={handleInputChange}
-              />
+            />
           </FormControl>
           <FormControl mt={4}>
             <FormLabel>Name</FormLabel>
@@ -103,6 +104,14 @@ const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,
             <Input
               name="zone_id"
               value={editedData?.zone_id}
+              onChange={handleInputChange}
+            />
+          </FormControl>
+          <FormControl mt={4}>
+            <FormLabel>Link Redirect</FormLabel>
+            <Input
+              name="link_redirect"
+              value={editedData?.link_redirect}
               onChange={handleInputChange}
             />
           </FormControl>
