@@ -75,11 +75,11 @@ function SignIn() {
               res.data.data,
               res.data.isMember
             );
-            if (res.data.isMember) {
-              history.push("/admin/profile");
-            } else {
+            // if (res.data.isMember) {
+            //   history.push("/admin/profile");
+            // } else {
               history.push("/admin/");
-            }
+            // }
           }
         })
         .catch((error) => {
