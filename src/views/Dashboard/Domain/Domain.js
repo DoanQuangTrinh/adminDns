@@ -16,6 +16,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import DomainTableRow from "components/Domain/DomainTableRow";
 import DomainRow from "components/Domain/DomainRow";
+import SubDomain from "../SubDomain/SubDomain";
 import React, { useState, useEffect } from "react";
 import { checkLogin, logout, getToken } from "../../../utils/authentication";
 import { API_ROUTES , ROOT_API } from "utils/constant";
@@ -37,8 +38,9 @@ const Domain = () => {
   const [filter, setFilter] = useState(initialFilter);
   const xToken = getToken();
  
-  const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
-  
+  // const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
+  const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN
+  console.log(domainApi)
   const [{ data, loading, error }, refetch] = useAxios({
     url: domainApi,
     params: { ...filter },
@@ -103,16 +105,16 @@ const handleUpdate = (updatedData) => {
             <Thead>
               <Tr my=".8rem" pl="0px" color="gray.400">
                 <Th pl="0px" borderColor={borderColor} color="gray.400">
-                ApiKey
+                Benedict
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
                 Name
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
-                IP
+                Journey
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
-                Zone_Id
+                Status
                 </Th>
                 <Th borderColor={borderColor}></Th>
               </Tr>
@@ -123,10 +125,10 @@ const handleUpdate = (updatedData) => {
                     key={row._id}
                     data={domain}
                     _id={row._id}
-                    ApiKey={row.api_key}
+                    benedict={row.benedict}
                     name={row.name}
-                    ip={row.ip}
-                    zone_id={row.zone_id}
+                    journey={row.journey}
+                    status={row.status}
                     refetch = {refetch}
                     onClick={() => handleEditClick(row)}
                   />

@@ -29,7 +29,6 @@ function SubDomainRow(props) {
     const xToken = localStorage.getItem('xToken');
     const toast = useToast();
 
-      
     const [loading, setLoading] = useState(false);
     const handleDelete = async () => {
       const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");

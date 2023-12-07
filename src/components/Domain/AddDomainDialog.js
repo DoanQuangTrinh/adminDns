@@ -22,9 +22,13 @@ import { vendorDomain } from "config/config";
 import { teamControl } from "config/config";
 import { typeDomain } from "config/config";
 import Domain from "views/Dashboard/Domain/Domain";
-import { axiosPost } from "../../utils/api";
+import { axiosGet, axiosPost } from "../../utils/api";
 import { API_ROUTES, ROOT_API } from "utils/constant";
-const createDomainApi = ROOT_API + API_ROUTES.DOMAIN_API;
+// const createDomainApi = ROOT_API + API_ROUTES.DOMAIN_API;
+const createDomainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN
+const updateStatusDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_UPADTE_STATUS
+console.log(updateStatusDomain);
+
 const AddDomainDialog = (props) => {
   const {
     onClose,
@@ -45,23 +49,15 @@ const AddDomainDialog = (props) => {
     refetch,
   } = props;
   const cancelRef = React.useRef();
-  const [name, setName] = useState("");
-  const [ip, setIp] = useState("");
-  const [apiKey, setApiKey] = useState("");
-  const [zoneId, setZoneId] = useState("");
-  const [linkRedirect, setLinkRedirect] = useState("");
+  const [domainName, setDomainName] = useState("");
   const toast = useToast();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
   const [value, setValue] = useState();
+  
   const clickAddButton = async () => {
     const requestBody = {
-      api_key: apiKey,
-      name: name,
-      ip: ip,
-      zone_id: zoneId,
-      link_redirect: linkRedirect,
+      domainName: domainName,
     };
     try {
       const response = await axiosPost(createDomainApi, requestBody);
@@ -71,6 +67,12 @@ const AddDomainDialog = (props) => {
           status: "success",
           duration: 9000,
         });
+        try {
+          const response2 = await axiosGet(updateStatusDomain);
+          console.log(response2);
+        } catch (error2) {
+          console.error("Error in the second API request:", error2);
+        }
         refetch();
         onClose();
       } else {
@@ -93,7 +95,6 @@ const AddDomainDialog = (props) => {
       });
     }
   };
-
   return (
     <>
       <AlertDialog
@@ -110,48 +111,12 @@ const AddDomainDialog = (props) => {
           <AlertDialogCloseButton />
           <AlertDialogBody>
             <FormControl>
-              <FormLabel>Api Key</FormLabel>
+              <FormLabel>Domain Name</FormLabel>
               <Input
                 type="text"
                 placeholder="Enter API key"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Name</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter domain name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>IP</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter IP address"
-                value={ip}
-                onChange={(e) => setIp(e.target.value)}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Zone ID</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter Zone ID"
-                value={zoneId}
-                onChange={(e) => setZoneId(e.target.value)}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Link Redirect</FormLabel>
-              <Input
-                type="text"
-                placeholder="Enter Link Redirect"
-                value={linkRedirect}
-                onChange={(e) => setLinkRedirect(e.target.value)}
+                value={domainName}
+                onChange={(e) => setDomainName(e.target.value)}
               />
             </FormControl>
             {error && <p style={{ color: "red" }}>{error}</p>}
@@ -166,7 +131,6 @@ const AddDomainDialog = (props) => {
               ml={3}
               onClick={() => {
                 clickAddButton();
-                // onClose();
               }}
             >
               Thêm
