@@ -19,8 +19,7 @@ import {
   import { API_ROUTES,ROOT_API } from "utils/constant";
   import useAxios from "axios-hooks";
   
-  // const deleteDomain = ROOT_API + API_ROUTES.DELETE_DOMAIN
-  const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
+  const getIpApi = ROOT_API + API_ROUTES.GET_IP_TRACKING
   
   function ListTracking(props) {
     const { status,id,subdomain,ip,nation, logo, journey, name, email, phone, role, date, isLast,benedict } = props;
@@ -33,10 +32,9 @@ import {
     const toast = useToast();
     const [idForSubDomain, setIdForSubDomain] = useState(null);
     const [{ data, loading, error }, refetch] = useAxios({
-      url:'https://api.linkshort.online/api/v1/tracking',
+      url:getIpApi,
     });
     const tracking = data?.data
-    console.log(tracking)
     const handleDelete = async () => {
       
       const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -152,11 +150,6 @@ import {
           >
             <DeleteIcon />
           </IconButton>
-        </Td>
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-            <IconButton p={2} bg="transparent" onClick={handleSubDomainClick}>
-              <ExternalLinkIcon />
-            </IconButton>
         </Td>
   
       </Tr>
