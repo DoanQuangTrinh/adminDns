@@ -18,35 +18,7 @@ import axios from "axios";
 import { axiosPost } from "utils/api";
 import EditDomainDialog from "./EditDomainDialog";
 import { useDataContext } from "context/UserContext";
-<<<<<<< HEAD
-const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
-console.log(deleteDomain)
-  function DomainRow(props) {
-    const { zone_id,_id,userDetail, logo, ip, name, email, phone, role, status, date, isLast, refetch,ApiKey } = props;
-    const textColor = useColorModeValue("gray.500", "white");
-    const titleColor = useColorModeValue("gray.700", "white");
-    const bgStatus = useColorModeValue("gray.400", "navy.900");
-    const borderColor = useColorModeValue("gray.200", "gray.600");
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const { data, refetchData } = useDataContext();
-      
-    const [loading, setLoading] = useState(false);
-    const handleDelete = async () => {
-      const deleteId = {
-        id : _id
-      }
-      try{
-        const response = await axiosPost(
-          deleteDomain,
-          deleteId
-        )
-        console.log("Data before refetch:", data);
-        refetchData();
-        console.log("Data after refetch:", data);
-      }
-      catch (err){
-        console.log(err)
-=======
+
 import { API_ROUTES,ROOT_API } from "utils/constant";
 import AddSubDomain from "components/SubDomain/AddSubDomain";
 import { Link } from "react-router-dom"; 
@@ -95,7 +67,6 @@ function DomainRow(props) {
           status: "error",
           duration: 9000,
         })
->>>>>>> newbranch
       }
     }
     catch (error){

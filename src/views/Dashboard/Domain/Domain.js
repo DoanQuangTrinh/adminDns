@@ -23,80 +23,10 @@ import { TablePagination } from "@trendmicro/react-paginations";
 import { initialFilter } from "utils/constant";
 import EditDomainDialog from "components/Domain/EditDomainDialog"; 
 
-<<<<<<< HEAD
-  import { axiosGet } from "utils/api";
-  
-  import AddDomainDialog from "components/Domain/AddDomainDialog";
-  import { TablePagination } from "@trendmicro/react-paginations";
-  import { initialFilter } from "utils/constant";
-  import EditDomainDialog from "components/Domain/EditDomainDialog"; 
-  const vendorDomain = [
-    { value: "vendor1", color: "blue" },
-    { value: "vendor2", color: "green" },
-  ];
-const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DOMAINS;
-const xToken = localStorage.getItem('xToken');
-// const { data, refetchData } = useDataContext();
-
-console.log(userApi)
 const Domain = () => {
-  // const { data, refetchData } = useDataContext();
 
-  // Do something with the data
-
-    // const [{data , loading , error} , refetch] = useAxios({
-    //   url : userApi,
-    //   method: 'GET'
-    // })
-    // console.log(data)
-    // Trigger a refetch of data
-    // refetchData();
-  // const [data , setData] = useState([]);
-  // const fetchDomainData = async () => {
-  //   try {
-  //     const response = await axiosGet(
-  //       userApi
-  //     )
-  //     setData(Array.isArray(response.data.data) ? response.data.data : [response.data.data]);
-  //   }
-  //   catch(err){
-  //     console.log(err)
-  //   }
-  // }
-  // useEffect(() => {
-  //   fetchDomainData();
-  // }, []); 
-  // console.log(data._id)
-    // refetchData();
-  // useEffect(() => {
-  //   fetchDomainData();
-  // }, []);
-    const textColor = useColorModeValue("gray.700", "white");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
-=======
-const Domain = () => {
->>>>>>> newbranch
   const [filter, setFilter] = useState(initialFilter);
   const xToken = getToken();
-<<<<<<< HEAD
-
-  const {
-    isOpen: isRegisterOpen,
-    onOpen: onRegisterOpen,
-    onClose: onRegisterClose,
-  } = useDisclosure();
-
-  // const [domain, setDomain] = useState([]);
-
-  const isLoggedIn = checkLogin();
-
-  const handelUpdateUser = userDetail => {
-    setUserDetail(userDetail)
-    onRegisterOpen()
-  }
-
-  
-=======
   const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
   const [{ data, loading, error }, refetch] = useAxios({
     url: domainApi,
@@ -110,7 +40,6 @@ const Domain = () => {
   const isRegisterOpen = isOpen;
   const onRegisterOpen = onOpen;
   const onRegisterClose = onClose;
->>>>>>> newbranch
   const handelCloseModal = () => {
     setUserDetail()
     onRegisterClose()
@@ -125,48 +54,6 @@ const Domain = () => {
     setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
   };
 
-<<<<<<< HEAD
-            <Table variant="simple" color={textColor}>
-              <Thead>
-                <Tr my=".8rem" pl="0px" color="gray.400">
-                  <Th pl="0px" borderColor={borderColor} color="gray.400">
-                  ApiKey
-                  </Th>
-                  <Th borderColor={borderColor} color="gray.400">
-                  Name
-                  </Th>
-                  <Th borderColor={borderColor} color="gray.400">
-                  IP
-                  </Th>
-                  <Th borderColor={borderColor} color="gray.400">
-                  Zone_Id
-                  </Th>
-                  <Th borderColor={borderColor}></Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                  {data?.map((row, index, arr) => (
-                    <DomainRow
-                      key={row._id} // Đặt key để đảm bảo tính duy nhất trong mảng
-                      data={data}
-                      _id={row._id}
-                      ApiKey={row.api_key}
-                      name={row.name}
-                      ip={row.ip}
-                      zone_id={row.zone_id}
-                      onClick={() => handleEditClick(row)}
-                      refetch={fetchDomainData}
-                    />
-                    ))}
-                    {/* {data?.map((row, index, arr) => (
-                    <AddDomainDialog 
-                    data={data}
-                    refetch={fetchDomainData} 
-                  /> */}
-                  {/* ))} */}
-                </Tbody>
-                  
-=======
   return (
       <>
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -220,7 +107,6 @@ const Domain = () => {
                   ))}
               </Tbody>
             
->>>>>>> newbranch
 
           </Table>
           {isEditModalOpen && (

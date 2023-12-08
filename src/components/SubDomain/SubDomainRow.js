@@ -28,10 +28,6 @@ function SubDomainRow(props) {
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const xToken = localStorage.getItem('xToken');
-<<<<<<< HEAD
-    const {otherData , refetchOtherData} = useDataContext();
-      
-=======
     const toast = useToast();
     const history = useHistory();
     const [idSubDomain , setIdSubDomain] = useState("")
@@ -40,7 +36,6 @@ function SubDomainRow(props) {
       setIdSubDomain(id);
       onRegisterOpen();
     };
->>>>>>> newbranch
     const [loading, setLoading] = useState(false);
     const handleDelete = async () => {
       const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");

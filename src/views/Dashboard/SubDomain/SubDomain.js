@@ -1,49 +1,4 @@
 import {
-<<<<<<< HEAD
-    Button,
-    Flex,
-    Table,
-    Tbody,
-    Text,
-    Th,
-    Thead,
-    Tr,
-    useColorModeValue,
-    useDisclosure,
-  } from "@chakra-ui/react";
-  import Card from "components/Card/Card.js";
-  import CardBody from "components/Card/CardBody.js";
-  import CardHeader from "components/Card/CardHeader.js";
-  import React, { useState, useEffect } from "react";
-  import { checkLogin, logout, getToken } from "../../../utils/authentication";
-  import axios from "axios";
-  import { axiosGet } from "utils/api";
-  import AddSubDomain from "components/SubDomain/AddSubDomain";
-  import { TablePagination } from "@trendmicro/react-paginations";
-  import { initialFilter } from "utils/constant";
-  import EditSubDomain from "components/SubDomain/EditSubDomain";
-  import SubDomainRow from "components/SubDomain/SubDomainRow";
-  import { useDataContext } from "context/UserContext";
-  const vendorDomain = [
-    { value: "vendor1", color: "blue" },
-    { value: "vendor2", color: "green" },
-  ];
-  const xToken = getToken();
-const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
-// const xToken = localStorage.getItem('xToken');
-console.log(userApi)
-const SubDomain = ({onClose}) => {
-  const [data , setData] = useState([]);
-  const {otherData , refetchOtherData} = useDataContext();
-
-    const fetchSubDomain = () => {
-      refetchOtherData()
-    }
-  
-  console.log(data)
-    const textColor = useColorModeValue("gray.700", "white");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
-=======
   Button,
   Flex,
   Table,
@@ -75,7 +30,6 @@ const SubDomain = ({id}) => {
   const location = useLocation();
   const spliceDomain = location.pathname.match(/\/domain\/([^/]+)\//);
   const domainId = spliceDomain[1]
->>>>>>> newbranch
   const [filter, setFilter] = useState(initialFilter);
   const subDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
   const [{ data, loading, error }, refetch] = useAxios({

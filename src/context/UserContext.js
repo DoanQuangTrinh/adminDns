@@ -69,7 +69,6 @@ function UserProvider({ children }) {
   //   }
   // }, []);
 
-<<<<<<< HEAD
   // React.useEffect(() => {
   //   fetchData();
   // }, [data]);  // Chỉ gọi lại khi someDependency thay đổi
@@ -86,17 +85,6 @@ function UserProvider({ children }) {
     refetchData: fetchData,
     refetchOtherData: fetchOtherData,
   };
-=======
-  // const contextValue = {
-  //   ...state,
-  //   domain,
-  //   subDoman,
-  //   pagina,
-  //   paginaDomain,
-  //   refetchDomainData: fetchDomainData,
-  //   refetchSudDomainData: fetchSudDomainData,
-  // };
->>>>>>> newbranch
 
   return (
     <UserStateContext.Provider value={state}>
