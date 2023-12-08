@@ -28,6 +28,9 @@ import {
     const bgStatus = useColorModeValue("gray.400", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const isRegisterOpen = isOpen;
+    const onRegisterOpen = onOpen;
+    const onRegisterClose = onClose;
     const history = useHistory();
     const toast = useToast();
     const [idForSubDomain, setIdForSubDomain] = useState(null);
@@ -76,9 +79,6 @@ import {
         });
       }
     }
-        const isRegisterOpen = isOpen;
-        const onRegisterOpen = onOpen;
-        const onRegisterClose = onClose;
     
         const [isEditModalOpen, setIsEditModalOpen] = useState(false);
         const [selectedRow, setSelectedRow] = useState(null);
@@ -88,34 +88,6 @@ import {
         };
     return (
       <Tr>
-        {/* <Td
-          minWidth={{ sm: "250px" }}
-          pl="0px"
-          borderColor={borderColor}
-          borderBottom={isLast ? "none" : null}
-        >
-          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-            <Flex direction="column">
-              <Text
-                fontSize="md"
-                color={titleColor}
-                fontWeight="bold"
-                minWidth="100%"
-              >
-                {id}
-              </Text>
-            </Flex>
-          </Flex>
-        </Td> */}
-  
-        {/* <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Flex direction="column">
-            <Text fontSize="md" color={textColor} fontWeight="bold">
-              {subdomain}
-            </Text>
-          </Flex>
-        </Td> */}
-  
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
@@ -140,19 +112,6 @@ import {
             {nation}
           </Badge>
         </Td>
-
-        {/* <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <IconButton
-            p={2}
-            bg="transparent"
-            onClick={() => {
-                handleDelete();
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Td> */}
-  
       </Tr>
     );
   }

@@ -22,7 +22,7 @@ import EditSubDomain from "components/SubDomain/EditSubDomain";
 import SubDomainRow from "components/SubDomain/SubDomainRow";
 import { API_ROUTES , ROOT_API } from "utils/constant";
 import { useLocation } from "react-router-dom";
-const SubDomain = ({id}) => {
+const SubDomain = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isRegisterOpen = isOpen;
   const onRegisterOpen = onOpen;
@@ -40,10 +40,6 @@ const SubDomain = ({id}) => {
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const [userDetail, setUserDetail] = useState();
-  const handelUpdateUser = userDetail => {
-    setUserDetail(userDetail)
-    onRegisterOpen()
-  }
   const handelCloseModal = () => {
     setUserDetail()
     onRegisterClose()
@@ -53,10 +49,6 @@ const SubDomain = ({id}) => {
   const handleEditClick = (row) => {
     setSelectedRow(row);
     setIsEditModalOpen(true);
-  };
-  const handleUpdate = (updatedData) => {
-    console.log("Updated data:", updatedData);
-    setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
   };
 
 return (
@@ -80,15 +72,9 @@ return (
           <Table variant="simple" color={textColor}>
             <Thead>
               <Tr my=".8rem" pl="0px" color="gray.400">
-                {/* <Th pl="0px" borderColor={borderColor} color="gray.400">
-                  domain id
-                </Th> */}
                 <Th borderColor={borderColor} color="gray.400">
                   link
                 </Th>
-                {/* <Th borderColor={borderColor} color="gray.400">
-                  id
-                </Th> */}
                 <Th borderColor={borderColor} color="gray.400">
                   LinkRedirect
                 </Th>
@@ -113,14 +99,6 @@ return (
               })}
             </Tbody>
           </Table>
-          {isEditModalOpen && (
-            <EditSubDomain
-              isOpen={isEditModalOpen}
-              initialData={selectedRow}
-              onUpdate={handleUpdate}
-              onClose={() => setIsEditModalOpen(false)}
-            />
-          )}
           <Table/>
           <Flex justifyContent={"flex-end"}>
             <TablePagination

@@ -11,17 +11,12 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React,{useState} from "react";
+import React from "react";
 import { DeleteIcon, EditIcon, UnlockIcon ,InfoIcon} from "@chakra-ui/icons";
 import { useHistory } from 'react-router-dom';
-import axios from "axios";
 import { axiosPost } from "utils/api";
-import EditDomainDialog from "./EditDomainDialog";
-import { useDataContext } from "context/UserContext";
-
 import { API_ROUTES,ROOT_API } from "utils/constant";
 import AddSubDomain from "components/SubDomain/AddSubDomain";
-import { Link } from "react-router-dom"; 
 
 const deleteDomain = ROOT_API + API_ROUTES.DELETE_DOMAIN
 
@@ -126,22 +121,20 @@ function DomainRow(props) {
           </Text>
         </Flex>
       </Td>
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        <Flex direction="column">
+        {status ? (
+          <Text fontSize="md" color={textColor} fontWeight="bold">
+            {status}
+          </Text>
+            ) : (
+          <Text fontSize="md" color={textColor} fontWeight="bold">
+            Unknown
+          </Text>
+          )}
+        </Flex>
+      </Td>
 
-      {/* <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-        <Badge
-          bg={status === "Online" ? "green.400" : bgStatus}
-          color="white"
-          fontSize="16px"
-          p="3px 10px"
-          borderRadius="8px"
-          overflow="hidden"
-          whiteSpace="nowrap"
-          textOverflow="ellipsis"
-          width="100px"
-        >
-          {status}
-        </Badge>
-      </Td> */}
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
           {date}

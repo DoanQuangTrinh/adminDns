@@ -16,10 +16,6 @@ import {
   AlertDialogCloseButton,
   useToast,
 } from "@chakra-ui/react";
-import { vendorDomain } from "config/config";
-import { teamControl } from "config/config";
-import { typeDomain } from "config/config";
-import Domain from "views/Dashboard/Domain/Domain";
 import { axiosGet, axiosPost } from "../../utils/api";
 import { API_ROUTES, ROOT_API } from "utils/constant";
 
@@ -31,19 +27,6 @@ const AddDomainDialog = (props) => {
   const {
     onClose,
     isOpen,
-    zone_id,
-    _id,
-    userDetail,
-    logo,
-    email,
-    phone,
-    role,
-    status,
-    date,
-    isLast,
-    ApiKey,
-    data,
-    loading,
     refetch,
   } = props;
   const cancelRef = React.useRef();
@@ -102,7 +85,6 @@ const AddDomainDialog = (props) => {
         isCentered
       >
         <AlertDialogOverlay />
-
         <AlertDialogContent>
           <AlertDialogHeader>Thông Tin Domain</AlertDialogHeader>
           <AlertDialogCloseButton />

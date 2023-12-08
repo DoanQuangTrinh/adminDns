@@ -11,14 +11,12 @@ import {
     useDisclosure,
     useToast,
   } from "@chakra-ui/react";
-  import React,{useState} from "react";
-  import { axiosPost } from "utils/api";
-  import { useEffect } from "react";
-  import { DeleteIcon, EditIcon, UnlockIcon,InfoIcon } from "@chakra-ui/icons";
-  import { API_ROUTES , ROOT_API } from "utils/constant";
-  import { useHistory } from "react-router-dom";
+import React,{useState} from "react";
+import { axiosPost } from "utils/api";
+import { DeleteIcon, EditIcon, UnlockIcon,InfoIcon } from "@chakra-ui/icons";
+import { API_ROUTES , ROOT_API } from "utils/constant";
+import { useHistory } from "react-router-dom";
 
-import axios from "axios";
 const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
 function SubDomainRow(props) {
     const {data,refetch,_id, ip, name, isLast,domain, link ,id , linkRedirect,date, handelUpdateUser,onDeleted } = props;
@@ -27,7 +25,6 @@ function SubDomainRow(props) {
     const bgStatus = useColorModeValue("gray.400", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const xToken = localStorage.getItem('xToken');
     const toast = useToast();
     const history = useHistory();
     const [idSubDomain , setIdSubDomain] = useState("")
@@ -85,26 +82,6 @@ function SubDomainRow(props) {
         
     return (
       <Tr>
-        {/* <Td
-          minWidth={{ sm: "250px" }}
-          pl="0px"
-          borderColor={borderColor}
-          borderBottom={isLast ? "none" : null}
-        >
-          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-            <Flex direction="column">
-              <Text
-                fontSize="md"
-                color={titleColor}
-                fontWeight="bold"
-                minWidth="100%"
-              >
-                {domain}
-              </Text>
-            </Flex>
-          </Flex>
-        </Td> */}
-  
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
@@ -119,14 +96,6 @@ function SubDomainRow(props) {
             </Text>
           </Flex>
         </Td>
-  
-        {/* <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Flex direction="column">
-            <Text fontSize="md" color={textColor} fontWeight="bold">
-              {id}
-            </Text>
-          </Flex>
-        </Td> */}
   
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">

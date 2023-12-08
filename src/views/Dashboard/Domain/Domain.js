@@ -15,8 +15,7 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import DomainRow from "components/Domain/DomainRow";
-import React, { useState, useEffect } from "react";
-import { checkLogin, logout, getToken } from "../../../utils/authentication";
+import React, { useState } from "react";
 import { API_ROUTES , ROOT_API } from "utils/constant";
 import AddDomainDialog from "components/Domain/AddDomainDialog";
 import { TablePagination } from "@trendmicro/react-paginations";
@@ -24,9 +23,7 @@ import { initialFilter } from "utils/constant";
 import EditDomainDialog from "components/Domain/EditDomainDialog"; 
 
 const Domain = () => {
-
   const [filter, setFilter] = useState(initialFilter);
-  const xToken = getToken();
   const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
   const [{ data, loading, error }, refetch] = useAxios({
     url: domainApi,
@@ -85,9 +82,9 @@ const Domain = () => {
                 <Th borderColor={borderColor} color="gray.400">
                 Journey
                 </Th>
-                {/* <Th borderColor={borderColor} color="gray.400">
+                <Th borderColor={borderColor} color="gray.400">
                 Status
-                </Th> */}
+                </Th>
                 <Th borderColor={borderColor}></Th>
               </Tr>
             </Thead>
@@ -145,18 +142,6 @@ const Domain = () => {
       onClose={handelCloseModal}
     />
     }
-    {/* {isRegisterOpen && 
-    domain?.map((row, index, arr) => (
-       <AddSubDomain
-      refetch={refetch}
-      _id={row._id}
-      isOpen={isRegisterOpen}
-      userDetail={userDetail}
-      onOpen={onRegisterOpen}
-      onClose={handelCloseModal}
-    />
-    ))
-    } */}
   </>
   )
 }

@@ -18,12 +18,8 @@ import {
 } from "@chakra-ui/react";
 
 import { axiosPost } from "../../utils/api";
-import { vendorDomain } from "config/config";
-import { teamControl } from "config/config";
-import { typeDomain } from "config/config";
 import { getToken } from "utils/authentication";
 import SubDomain from "views/Dashboard/SubDomain/SubDomain";
-import useAxios from "axios-hooks";
 import { API_ROUTES , ROOT_API } from "utils/constant";
 import { useLocation } from "react-router-dom";
 
@@ -125,7 +121,6 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
             {isEditModalOpen && (
                 <SubDomain
                   isOpen={isEditModalOpen}
-                  // selectedId={id}
                 />
               )}
           </AlertDialogBody>
@@ -138,7 +133,6 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
               ml={3}
               onClick={() => {
                 clickCreateButton();
-                // onClose();
               }}
             >
               Thêm
@@ -146,7 +140,6 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      {/* <SubDomain id={id} /> */}
     </>
   );
 };
