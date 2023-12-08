@@ -29,12 +29,10 @@ import { useLocation } from "react-router-dom";
 
 
 const source = axios.CancelToken.source();
-// const CreateSubDomain = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
-const CreateSubDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
+const CreateSubDomain = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
 const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
   const cancelRef = React.useRef();
   const toast = useToast();
-  // const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isMounted, setIsMounted] = useState(true);
   const xToken = getToken();
@@ -52,7 +50,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
   const clickCreateButton = async () => {
     const subData = {
       domain_id: domainId,
-      linkRedirect: "facebook.com",
+      linkRedirect: "weabox.com",
       quantity: quantity
     };
     try {
@@ -66,7 +64,6 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
           status: "success",
           duration: 9000,
         })
-        // setSelectedId(id);
         refetch();
         onClose();
       } else {

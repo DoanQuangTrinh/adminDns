@@ -21,7 +21,7 @@ import {
 import axios from "axios";
 const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
 function SubDomainRow(props) {
-    const {data,refetch,_id, ip, name, isLast,domain, link ,id , type,date, handelUpdateUser,onDeleted } = props;
+    const {data,refetch,_id, ip, name, isLast,domain, link ,id , linkRedirect,date, handelUpdateUser,onDeleted } = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -129,7 +129,7 @@ function SubDomainRow(props) {
             p="3px 10px"
             borderRadius="8px"
           >
-            {type}
+            {linkRedirect}
           </Badge>
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>

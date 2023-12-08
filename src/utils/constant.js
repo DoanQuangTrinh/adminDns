@@ -30,6 +30,8 @@ export const MAX_VIDEO_UPLOAD = 1024 * 1024 * 200;
 export const TINY_API_KEY = "d58i95js5t0cfdehsggyi1tx1ojb0akpuiblhzscw8g2akgl";
 export const ROOT_API = process.env.REACT_APP_API_HOST;
 export const API_ROUTES = {
+  LIST_TRACKING: '/api/v1/list-tracking',
+  UPADTE_STATUS: '/api/v1/domain/update-status',
   DOMAIN_API: '/api/v1/domain',
   DELETE_DOMAIN: '/api/v1/domain/delete',
   EDIT_DOMAIN: '/api/v1/domain/update',

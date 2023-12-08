@@ -26,15 +26,15 @@ import {
   const Tracking = () => {
     const [filter, setFilter] = useState(initialFilter);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    // const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
+    const trackingApi = ROOT_API + API_ROUTES.LIST_TRACKING ;
     const location = useLocation();
     const spliceSubDomain = location.pathname.match(/\/subDomain\/([^/]+)\//);
     const subDomainId = spliceSubDomain[1]
-    const subDomainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_FL_TRACKING
     const [{ data, loading, error }, refetch] = useAxios({
-      url: `${subDomainApi}/${subDomainId}`,
+      url: `${trackingApi}/${subDomainId}`,
     });
-    const domain = data?.data
+    const tracking = data?.data
+    console.log(`${trackingApi}/${subDomainId}`)
     const textColor = useColorModeValue("gray.700", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const isRegisterOpen = isOpen;
@@ -71,30 +71,28 @@ import {
               <Thead>
                 <Tr my=".8rem" pl="0px" color="gray.400">
                   <Th pl="0px" borderColor={borderColor} color="gray.400">
-                  Benedict
+                  ID
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  Name
+                  Subdomain
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  Journey
+                  IP
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                  Status
+                  Nation
                   </Th>
                   <Th borderColor={borderColor}></Th>
                 </Tr>
               </Thead>
               <Tbody>
-                  {domain?.map((row, index, arr) => (
+                  {tracking?.map((row, index, arr) => (
                     <ListTracking
                       key={row._id}
-                      data={domain}
-                      _id={row._id}
-                      benedict={row.benedict}
-                      name={row.name}
-                      journey={row.journey}
-                      status={row.status}
+                      id={row._id}
+                      subdomain={row.subdomain}
+                      ip={row.ip}
+                      nation={row.nation}
                       refetch = {refetch}
                       onClick={() => handleEditClick(row)}
                     />

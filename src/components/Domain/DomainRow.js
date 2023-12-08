@@ -22,8 +22,7 @@ import { API_ROUTES,ROOT_API } from "utils/constant";
 import AddSubDomain from "components/SubDomain/AddSubDomain";
 import { Link } from "react-router-dom"; 
 
-// const deleteDomain = ROOT_API + API_ROUTES.DELETE_DOMAIN
-const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
+const deleteDomain = ROOT_API + API_ROUTES.DELETE_DOMAIN
 
 function DomainRow(props) {
   const { status,_id,userDetail, logo, journey, name, email, phone, role, date, isLast, refetch,benedict } = props;

@@ -31,8 +31,7 @@ const SubDomain = ({id}) => {
   const spliceDomain = location.pathname.match(/\/domain\/([^/]+)\//);
   const domainId = spliceDomain[1]
   const [filter, setFilter] = useState(initialFilter);
-  // const subDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
-  const subDomainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
+  const subDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
   const [{ data, loading, error }, refetch] = useAxios({
     url: `${subDomainApi}/${domainId}`,
     params: filter,
@@ -91,7 +90,7 @@ return (
                   id
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
-                  type
+                  LinkRedirect
                 </Th>
                 <Th borderColor={borderColor}></Th>
               </Tr>
@@ -104,7 +103,7 @@ return (
                     domain={row.domain}
                     link={row.link}
                     id={row._id}
-                    type={row.type}
+                    linkRedirect={row.linkRedirect}
                     zone_id={row.zone_id}
                     onClose={onClose}
                     refetch={refetch}

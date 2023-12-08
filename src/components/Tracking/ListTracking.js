@@ -17,15 +17,13 @@ import {
   import axios from "axios";
   import { axiosPost } from "utils/api";
   import { API_ROUTES,ROOT_API } from "utils/constant";
-  import AddSubDomain from "components/SubDomain/AddSubDomain";
-  import { Link } from "react-router-dom"; 
   import useAxios from "axios-hooks";
   
   // const deleteDomain = ROOT_API + API_ROUTES.DELETE_DOMAIN
   const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
   
   function ListTracking(props) {
-    const { status,_id,userDetail, logo, journey, name, email, phone, role, date, isLast,benedict } = props;
+    const { status,id,subdomain,ip,nation, logo, journey, name, email, phone, role, date, isLast,benedict } = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -37,8 +35,8 @@ import {
     const [{ data, loading, error }, refetch] = useAxios({
       url:'https://api.linkshort.online/api/v1/tracking',
     });
-    const domain = data?.data
-    console.log(domain)
+    const tracking = data?.data
+    console.log(tracking)
     const handleDelete = async () => {
       
       const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -106,7 +104,7 @@ import {
                 fontWeight="bold"
                 minWidth="100%"
               >
-                {benedict}
+                {id}
               </Text>
             </Flex>
           </Flex>
@@ -115,7 +113,7 @@ import {
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
-              {name}
+              {subdomain}
             </Text>
           </Flex>
         </Td>
@@ -123,7 +121,7 @@ import {
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
-              {journey}
+              {ip}
             </Text>
           </Flex>
         </Td>
@@ -140,14 +138,10 @@ import {
             textOverflow="ellipsis"
             width="100px"
           >
-            {status}
+            {nation}
           </Badge>
         </Td>
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-            {date}
-          </Text>
-        </Td>
+
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <IconButton
             p={2}
