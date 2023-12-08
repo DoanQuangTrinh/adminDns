@@ -37,6 +37,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
   const [isMounted, setIsMounted] = useState(true);
   const xToken = getToken();
   const [quantity, setQuantity] = useState("");
+  const [linkRedirect, setLinkRedirect] = useState("");
   const location = useLocation();
   const spliceDomain = location.pathname.match(/\/domain\/([^/]+)\//);
   const domainId = spliceDomain[1]
@@ -50,7 +51,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
   const clickCreateButton = async () => {
     const subData = {
       domain_id: domainId,
-      linkRedirect: "weabox.com",
+      linkRedirect: linkRedirect,
       quantity: quantity
     };
     try {
@@ -109,6 +110,15 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
                 placeholder="Enter Quantity"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>LinkRedirect</FormLabel>
+              <Input
+                type="text"
+                placeholder="Enter Link Redirect"
+                value={linkRedirect}
+                onChange={(e) => setLinkRedirect(e.target.value)}
               />
             </FormControl>
             {success && <p style={{ color: 'green' }}>{success}</p>}

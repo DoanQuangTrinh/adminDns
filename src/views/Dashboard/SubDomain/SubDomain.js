@@ -80,15 +80,15 @@ return (
           <Table variant="simple" color={textColor}>
             <Thead>
               <Tr my=".8rem" pl="0px" color="gray.400">
-                <Th pl="0px" borderColor={borderColor} color="gray.400">
+                {/* <Th pl="0px" borderColor={borderColor} color="gray.400">
                   domain id
-                </Th>
+                </Th> */}
                 <Th borderColor={borderColor} color="gray.400">
                   link
                 </Th>
-                <Th borderColor={borderColor} color="gray.400">
+                {/* <Th borderColor={borderColor} color="gray.400">
                   id
-                </Th>
+                </Th> */}
                 <Th borderColor={borderColor} color="gray.400">
                   LinkRedirect
                 </Th>

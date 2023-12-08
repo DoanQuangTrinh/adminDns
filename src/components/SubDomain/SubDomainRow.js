@@ -14,7 +14,7 @@ import {
   import React,{useState} from "react";
   import { axiosPost } from "utils/api";
   import { useEffect } from "react";
-  import { DeleteIcon, EditIcon, UnlockIcon,ExternalLinkIcon } from "@chakra-ui/icons";
+  import { DeleteIcon, EditIcon, UnlockIcon,InfoIcon } from "@chakra-ui/icons";
   import { API_ROUTES , ROOT_API } from "utils/constant";
   import { useHistory } from "react-router-dom";
 
@@ -85,7 +85,7 @@ function SubDomainRow(props) {
         
     return (
       <Tr>
-        <Td
+        {/* <Td
           minWidth={{ sm: "250px" }}
           pl="0px"
           borderColor={borderColor}
@@ -103,7 +103,7 @@ function SubDomainRow(props) {
               </Text>
             </Flex>
           </Flex>
-        </Td>
+        </Td> */}
   
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
@@ -113,13 +113,13 @@ function SubDomainRow(props) {
           </Flex>
         </Td>
   
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        {/* <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
               {id}
             </Text>
           </Flex>
-        </Td>
+        </Td> */}
   
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Badge
@@ -152,7 +152,7 @@ function SubDomainRow(props) {
         
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <IconButton p={2} bg="transparent" onClick={handleSubDomainClick}>
-            <ExternalLinkIcon />
+            <InfoIcon />
           </IconButton>
       </Td>
       </Tr>

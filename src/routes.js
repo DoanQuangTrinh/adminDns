@@ -30,7 +30,7 @@ var dashRoutes = [
   },
   {
     path: "/subdomain/:subdomain_id/tracKing",
-    name: "SubDomain",
+    name: "Tracking",
     icon: <StatsIcon color="inherit" />,
     component: Tracking,
     layout: "/admin",

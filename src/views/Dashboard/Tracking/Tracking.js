@@ -34,7 +34,6 @@ import {
       url: `${trackingApi}/${subDomainId}`,
     });
     const tracking = data?.data
-    console.log(`${trackingApi}/${subDomainId}`)
     const textColor = useColorModeValue("gray.700", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const isRegisterOpen = isOpen;
@@ -52,7 +51,7 @@ import {
         <>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
-          <CardHeader p="6px 0px 22px 0px">
+          {/* <CardHeader p="6px 0px 22px 0px">
             <Text fontSize="xl" color={textColor} fontWeight="bold">
               Tracking
             </Text>
@@ -64,18 +63,18 @@ import {
             >
               Add
             </Button>
-          </CardHeader>
+          </CardHeader> */}
           <CardBody>
   
             <Table variant="simple" color={textColor}>
               <Thead>
                 <Tr my=".8rem" pl="0px" color="gray.400">
-                  <Th pl="0px" borderColor={borderColor} color="gray.400">
+                  {/* <Th pl="0px" borderColor={borderColor} color="gray.400">
                   ID
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
                   Subdomain
-                  </Th>
+                  </Th> */}
                   <Th borderColor={borderColor} color="gray.400">
                   IP
                   </Th>

@@ -88,7 +88,7 @@ import {
         };
     return (
       <Tr>
-        <Td
+        {/* <Td
           minWidth={{ sm: "250px" }}
           pl="0px"
           borderColor={borderColor}
@@ -106,15 +106,15 @@ import {
               </Text>
             </Flex>
           </Flex>
-        </Td>
+        </Td> */}
   
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        {/* <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
               {subdomain}
             </Text>
           </Flex>
-        </Td>
+        </Td> */}
   
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
@@ -134,13 +134,14 @@ import {
             overflow="hidden"
             whiteSpace="nowrap"
             textOverflow="ellipsis"
-            width="100px"
+            width="56px"
+            textAlign="center"
           >
             {nation}
           </Badge>
         </Td>
 
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        {/* <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <IconButton
             p={2}
             bg="transparent"
@@ -150,7 +151,7 @@ import {
           >
             <DeleteIcon />
           </IconButton>
-        </Td>
+        </Td> */}
   
       </Tr>
     );

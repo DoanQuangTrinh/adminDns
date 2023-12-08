@@ -77,17 +77,17 @@ const Domain = () => {
             <Thead>
               <Tr my=".8rem" pl="0px" color="gray.400">
                 <Th pl="0px" borderColor={borderColor} color="gray.400">
-                Benedict
+                Name
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
-                Name
+                Benedict
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
                 Journey
                 </Th>
-                <Th borderColor={borderColor} color="gray.400">
+                {/* <Th borderColor={borderColor} color="gray.400">
                 Status
-                </Th>
+                </Th> */}
                 <Th borderColor={borderColor}></Th>
               </Tr>
             </Thead>

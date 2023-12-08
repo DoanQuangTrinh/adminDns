@@ -12,7 +12,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React,{useState} from "react";
-import { DeleteIcon, EditIcon, UnlockIcon ,ExternalLinkIcon} from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, UnlockIcon ,InfoIcon} from "@chakra-ui/icons";
 import { useHistory } from 'react-router-dom';
 import axios from "axios";
 import { axiosPost } from "utils/api";
@@ -105,7 +105,7 @@ function DomainRow(props) {
               fontWeight="bold"
               minWidth="100%"
             >
-              {benedict}
+              {name}
             </Text>
           </Flex>
         </Flex>
@@ -114,7 +114,7 @@ function DomainRow(props) {
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
         <Flex direction="column">
           <Text fontSize="md" color={textColor} fontWeight="bold">
-            {name}
+            {benedict}
           </Text>
         </Flex>
       </Td>
@@ -127,7 +127,7 @@ function DomainRow(props) {
         </Flex>
       </Td>
 
-      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+      {/* <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
         <Badge
           bg={status === "Online" ? "green.400" : bgStatus}
           color="white"
@@ -141,7 +141,7 @@ function DomainRow(props) {
         >
           {status}
         </Badge>
-      </Td>
+      </Td> */}
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
           {date}
@@ -160,7 +160,7 @@ function DomainRow(props) {
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <IconButton p={2} bg="transparent" onClick={handleSubDomainClick}>
-            <ExternalLinkIcon />
+            <InfoIcon />
           </IconButton>
       </Td>
 
