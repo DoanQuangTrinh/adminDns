@@ -14,75 +14,44 @@ import useAxios from "axios-hooks";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
-import DomainTableRow from "components/Domain/DomainTableRow";
 import DomainRow from "components/Domain/DomainRow";
-import SubDomain from "../SubDomain/SubDomain";
 import React, { useState, useEffect } from "react";
-import AddSubDomain from "components/SubDomain/AddSubDomain";
 import { checkLogin, logout, getToken } from "../../../utils/authentication";
 import { API_ROUTES , ROOT_API } from "utils/constant";
-import axios from "axios";
-
-import { axiosGet } from "utils/api";
-
 import AddDomainDialog from "components/Domain/AddDomainDialog";
 import { TablePagination } from "@trendmicro/react-paginations";
 import { initialFilter } from "utils/constant";
 import EditDomainDialog from "components/Domain/EditDomainDialog"; 
-const vendorDomain = [
-  { value: "vendor1", color: "blue" },
-  { value: "vendor2", color: "green" },
-];
-
 
 const Domain = () => {
   const [filter, setFilter] = useState(initialFilter);
   const xToken = getToken();
- 
   const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
-  console.log(domainApi)
-  // const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN
-  console.log(domainApi)
   const [{ data, loading, error }, refetch] = useAxios({
     url: domainApi,
     params: { ...filter },
   });
   const domain = data?.data
-
-
-const textColor = useColorModeValue("gray.700", "white");
-const borderColor = useColorModeValue("gray.200", "gray.600");
-const [userDetail, setUserDetail] = useState();
-
-
-
-const { isOpen, onOpen, onClose } = useDisclosure();
-const isRegisterOpen = isOpen;
-const onRegisterOpen = onOpen;
-const onRegisterClose = onClose;
-
-
-const isLoggedIn = checkLogin();
-
-const handelUpdateUser = userDetail => {
-  setUserDetail(userDetail)
-  onRegisterOpen()
-}
-
-
-const handelCloseModal = () => {
-  setUserDetail()
-  onRegisterClose()
-}
-const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-const [selectedRow, setSelectedRow] = useState(null);
-const handleEditClick = (row) => {
-  setSelectedRow(row);
-  setIsEditModalOpen(true);
-};
-const handleUpdate = (updatedData) => {
-  setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
-};
+  const textColor = useColorModeValue("gray.700", "white");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const [userDetail, setUserDetail] = useState();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const isRegisterOpen = isOpen;
+  const onRegisterOpen = onOpen;
+  const onRegisterClose = onClose;
+  const handelCloseModal = () => {
+    setUserDetail()
+    onRegisterClose()
+  }
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const handleEditClick = (row) => {
+    setSelectedRow(row);
+    setIsEditModalOpen(true);
+  };
+  const handleUpdate = (updatedData) => {
+    setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
+  };
 
   return (
       <>
@@ -154,7 +123,6 @@ const handleUpdate = (updatedData) => {
                 pageLength={data?.pagination?.pageSize}
                 totalRecords={data?.pagination?.count}
                 onPageChange={({ page, pageLength }) => {
-                  console.log(page);
                   setFilter({
                     ...filter,
                     pageSize: pageLength,

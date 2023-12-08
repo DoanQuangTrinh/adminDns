@@ -19,13 +19,13 @@ import {
   import { API_ROUTES,ROOT_API } from "utils/constant";
   import AddSubDomain from "components/SubDomain/AddSubDomain";
   import { Link } from "react-router-dom"; 
+  import useAxios from "axios-hooks";
   
   // const deleteDomain = ROOT_API + API_ROUTES.DELETE_DOMAIN
   const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
-  console.log(deleteDomain);
   
   function ListTracking(props) {
-    const { status,_id,userDetail, logo, journey, name, email, phone, role, date, isLast, refetch,benedict } = props;
+    const { status,_id,userDetail, logo, journey, name, email, phone, role, date, isLast,benedict } = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -34,7 +34,13 @@ import {
     const history = useHistory();
     const toast = useToast();
     const [idForSubDomain, setIdForSubDomain] = useState(null);
+    const [{ data, loading, error }, refetch] = useAxios({
+      url:'https://api.linkshort.online/api/v1/tracking',
+    });
+    const domain = data?.data
+    console.log(domain)
     const handleDelete = async () => {
+      
       const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
       if (!confirmDelete) {
         return;

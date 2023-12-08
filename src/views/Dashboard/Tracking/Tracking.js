@@ -26,7 +26,6 @@ import {
   const Tracking = () => {
     const [filter, setFilter] = useState(initialFilter);
     const { isOpen, onOpen, onClose } = useDisclosure();
-   
     // const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
     const location = useLocation();
     const spliceSubDomain = location.pathname.match(/\/subDomain\/([^/]+)\//);
@@ -36,39 +35,17 @@ import {
       url: `${subDomainApi}/${subDomainId}`,
     });
     const domain = data?.data
-    console.log(data)
-    
-  
     const textColor = useColorModeValue("gray.700", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
-  
-  
-  
     const isRegisterOpen = isOpen;
     const onRegisterOpen = onOpen;
     const onRegisterClose = onClose;
-  
-  
     const isLoggedIn = checkLogin();
-  
-    const handelUpdateUser = userDetail => {
-        setUserDetail(userDetail)
-        onRegisterOpen()
-    }
-    
-    
-    const handelCloseModal = () => {
-        setUserDetail()
-        onRegisterClose()
-    }
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
     const handleEditClick = (row) => {
         setSelectedRow(row);
         setIsEditModalOpen(true);
-    };
-    const handleUpdate = (updatedData) => {
-        setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
     };
     
     return (
@@ -109,8 +86,8 @@ import {
                 </Tr>
               </Thead>
               <Tbody>
-                  {/* {domain?.map((row, index, arr) => (
-                    <DomainRow
+                  {domain?.map((row, index, arr) => (
+                    <ListTracking
                       key={row._id}
                       data={domain}
                       _id={row._id}
@@ -121,7 +98,7 @@ import {
                       refetch = {refetch}
                       onClick={() => handleEditClick(row)}
                     />
-                    ))} */}
+                    ))}
                 </Tbody>
             </Table>
             <Flex justifyContent={"flex-end"}>
@@ -131,7 +108,6 @@ import {
                   pageLength={data?.pagination?.pageSize}
                   totalRecords={data?.pagination?.count}
                   onPageChange={({ page, pageLength }) => {
-                    console.log(page);
                     setFilter({
                       ...filter,
                       pageSize: pageLength,

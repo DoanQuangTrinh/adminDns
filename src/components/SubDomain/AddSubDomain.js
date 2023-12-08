@@ -31,8 +31,6 @@ import { useLocation } from "react-router-dom";
 const source = axios.CancelToken.source();
 // const CreateSubDomain = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
 const CreateSubDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
-
-console.log(CreateSubDomain);
 const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
   const cancelRef = React.useRef();
   const toast = useToast();

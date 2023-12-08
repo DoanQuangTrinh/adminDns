@@ -22,48 +22,47 @@ import { API_ROUTES,ROOT_API } from "utils/constant";
 // const editDomain = ROOT_API + API_ROUTES.EDIT_DOMAIN;
 const editDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_EDIT_DOMAIN
 const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,ApiKey,name,ip,zone_id }) => {
-  const [editedData, setEditedData] = useState(initialData);
-  const toast = useToast();
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedData((prevData) => ({ ...prevData, [name]: value }));
-  };
-  console.log(editedData)
+const [editedData, setEditedData] = useState(initialData);
+const toast = useToast();
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  setEditedData((prevData) => ({ ...prevData, [name]: value }));
+};
 
-  const handleUpdate = async () => {
-      const dataEdit = {
-        id: editedData?._id,
-        benedict: editedData?.benedict,
-        name: editedData?.name,
-        journey: editedData?.journey,
-        status: editedData?.status,
-      };
-    try {
-      const response = await axiosPost(
-        editDomain,
-        dataEdit
-        );
-        if (response.status === 200) {
-          toast({
-            title: "Update Domain Successfully",
-            status: "success",
-            duration: 9000,
-          })
-          refetch();
-          onClose();
-      } else {
+const handleUpdate = async () => {
+    const dataEdit = {
+      id: editedData?._id,
+      benedict: editedData?.benedict,
+      name: editedData?.name,
+      journey: editedData?.journey,
+      status: editedData?.status,
+    };
+  try {
+    const response = await axiosPost(
+      editDomain,
+      dataEdit
+      );
+      if (response.status === 200) {
         toast({
-          title: "Update Domain Error ",
-          status: "error",
+          title: "Update Domain Successfully",
+          status: "success",
           duration: 9000,
         })
-      }
-    } catch (error) {
+        refetch();
+        onClose();
+    } else {
       toast({
-        title: 'Có lỗi xảy ra khi gọi API:'
+        title: "Update Domain Error ",
+        status: "error",
+        duration: 9000,
       })
-      console.error('Có lỗi xảy ra khi gọi API:', error.message);
     }
+  } catch (error) {
+    toast({
+        title: 'Có lỗi xảy ra khi gọi API:'
+    })
+    console.error('Có lỗi xảy ra khi gọi API:', error.message);
+  }
   };
 
 

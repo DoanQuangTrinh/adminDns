@@ -24,7 +24,6 @@ import { Link } from "react-router-dom";
 
 // const deleteDomain = ROOT_API + API_ROUTES.DELETE_DOMAIN
 const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
-console.log(deleteDomain);
 
 function DomainRow(props) {
   const { status,_id,userDetail, logo, journey, name, email, phone, role, date, isLast, refetch,benedict } = props;
@@ -36,13 +35,11 @@ function DomainRow(props) {
   const xToken = localStorage.getItem('xToken');
   const history = useHistory();
   const toast = useToast();
-  const [loading, setLoading] = useState(false);
-  const [idForSubDomain, setIdForSubDomain] = useState(null);
+  const isRegisterOpen = isOpen;
+  const onRegisterOpen = onOpen;
+  const onRegisterClose = onClose;
   const handleSubDomainClick = () => {
-    console.log(_id)
-      history.push(`/admin/domain/${_id}/subDomain`);
-      setIdForSubDomain(_id);
-      onRegisterOpen();
+    history.push(`/admin/domain/${_id}/subDomain`);
   };
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -84,16 +81,6 @@ function DomainRow(props) {
       });
     }
   }
-      const isRegisterOpen = isOpen;
-      const onRegisterOpen = onOpen;
-      const onRegisterClose = onClose;
-  
-      const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-      const [selectedRow, setSelectedRow] = useState(null);
-      const handleEditClick = (row) => {
-        setSelectedRow(row);
-        setIsEditModalOpen(true);
-      };
   return (
     <Tr>
       {isRegisterOpen && <AddSubDomain

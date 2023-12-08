@@ -149,8 +149,7 @@ function SubDomainRow(props) {
             <DeleteIcon />
           </IconButton>
         </Td>
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-        </Td>
+        
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <IconButton p={2} bg="transparent" onClick={handleSubDomainClick}>
             <ExternalLinkIcon />

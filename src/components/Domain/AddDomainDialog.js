@@ -16,24 +16,14 @@ import {
   AlertDialogCloseButton,
   useToast,
 } from "@chakra-ui/react";
-
-// import { axiosPost } from "../../utils/api";
 import { vendorDomain } from "config/config";
 import { teamControl } from "config/config";
 import { typeDomain } from "config/config";
 import Domain from "views/Dashboard/Domain/Domain";
 import { axiosGet, axiosPost } from "../../utils/api";
 import { API_ROUTES, ROOT_API } from "utils/constant";
-<<<<<<< HEAD
-// const createDomainApi = ROOT_API + API_ROUTES.DOMAIN_API;
-const createDomainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN
-const updateStatusDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_UPADTE_STATUS
-console.log(updateStatusDomain);
 
-=======
 const createDomainApi = ROOT_API + API_ROUTES.DOMAIN_API;
-console.log(createDomainApi)
->>>>>>> db202b7210f37420d5087535b35cc394beb6a7b7
 const AddDomainDialog = (props) => {
   const {
     onClose,
@@ -58,7 +48,6 @@ const AddDomainDialog = (props) => {
   const toast = useToast();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [value, setValue] = useState();
   
   const clickAddButton = async () => {
     const requestBody = {
