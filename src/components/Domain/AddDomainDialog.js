@@ -16,53 +16,81 @@ import {
   AlertDialogCloseButton,
   useToast,
 } from "@chakra-ui/react";
-
-// import { axiosPost } from "../../utils/api";
 import { vendorDomain } from "config/config";
 import { teamControl } from "config/config";
 import { typeDomain } from "config/config";
 import Domain from "views/Dashboard/Domain/Domain";
-import { axiosPost } from "../../utils/api";
-import { useDataContext } from "context/UserContext";
+import { axiosGet, axiosPost } from "../../utils/api";
+import { API_ROUTES, ROOT_API } from "utils/constant";
 
-const createDomainApi =
-  process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN;
-console.log(createDomainApi);
+const createDomainApi = ROOT_API + API_ROUTES.DOMAIN_API;
+const updateStatusDomain = ROOT_API + API_ROUTES.UPADTE_STATUS;
+console.log(updateStatusDomain)
 const AddDomainDialog = (props) => {
-  const {onClose, isOpen,zone_id,_id,userDetail, logo, email, phone, role, status, date, isLast, refetch,ApiKey } = props;
+  const {
+    onClose,
+    isOpen,
+    zone_id,
+    _id,
+    userDetail,
+    logo,
+    email,
+    phone,
+    role,
+    status,
+    date,
+    isLast,
+    ApiKey,
+    data,
+    loading,
+    refetch,
+  } = props;
   const cancelRef = React.useRef();
-  const [name, setName] = useState("");
-  const [ip, setIp] = useState("");
-  const [apiKey, setApiKey] = useState("");
-  const [zoneId, setZoneId] = useState("");
+  const [domainName, setDomainName] = useState("");
   const toast = useToast();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [isMounted, setIsMounted] = useState(true);
-  const { data, refetchData } = useDataContext();
-
-
-  const [value, setValue] = useState();
+  
   const clickAddButton = async () => {
     const requestBody = {
-              api_key: apiKey,
-              name: name,
-              ip: ip,
-              zone_id: zoneId,
-            };
-    try{
-      const response = await axiosPost (
-        createDomainApi,
-        requestBody
-      )
-      refetchData();
+      domainName: domainName,
+    };
+    try {
+      const response = await axiosPost(createDomainApi, requestBody);
+      if (response.data.code === 0) {
+        toast({
+          title: "Create Domain Successfully",
+          status: "success",
+          duration: 9000,
+        });
+        try {
+          const response2 = await axiosGet(updateStatusDomain);
+          console.log(response2);
+        } catch (error2) {
+          console.error("Error in the second API request:", error2);
+        }
+        refetch();
+        onClose();
+      } else {
+        toast({
+          title: "Create Domain Error ",
+          status: "error",
+          duration: 9000,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast({
+        title:
+          error?.response?.data?.errors?.errors[0]?.msg ||
+          error?.response?.data?.msg ||
+          "Delete Group Fail",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
-    catch (err){
-      console.log(err)
-    }
-    // window.location.reload();
-  }
-
+  };
   return (
     <>
       <AlertDialog
@@ -79,43 +107,16 @@ const AddDomainDialog = (props) => {
           <AlertDialogCloseButton />
           <AlertDialogBody>
             <FormControl>
-              <FormLabel>Api Key</FormLabel>
+              <FormLabel>Domain Name</FormLabel>
               <Input
                 type="text"
                 placeholder="Enter API key"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
+                value={domainName}
+                onChange={(e) => setDomainName(e.target.value)}
               />
             </FormControl>
-            <FormControl>
-            <FormLabel>Name</FormLabel>
-            <Input
-          type="text"
-          placeholder="Enter domain name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-            </FormControl>
-            <FormControl>
-            <FormLabel>IP</FormLabel>
-            <Input
-          type="text"
-          placeholder="Enter IP address"
-          value={ip}
-          onChange={(e) => setIp(e.target.value)}
-        />
-            </FormControl>
-            <FormControl>
-            <FormLabel>Zone ID</FormLabel>
-            <Input
-              type="text"
-              placeholder="Enter Zone ID"
-              value={zoneId}
-              onChange={(e) => setZoneId(e.target.value)}
-            />
-            </FormControl>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {success && <p style={{ color: 'green' }}>{success}</p>}
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            {success && <p style={{ color: "green" }}>{success}</p>}
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
@@ -126,8 +127,6 @@ const AddDomainDialog = (props) => {
               ml={3}
               onClick={() => {
                 clickAddButton();
-                onClose();
-                // refetch();
               }}
             >
               Thêm

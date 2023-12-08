@@ -20,14 +20,12 @@ import { checkLogin, login } from "../../utils/authentication";
 
 import { useHistory } from "react-router-dom";
 import { useUserDispatch, loginUser } from "context/UserContext";
+import { ROOT_API,API_ROUTES } from "utils/constant";
 
-// const loginUrl = 'http://localhost:8080/api/v1/user/loginUser'
+
 const loginUrl =
-  process.env.REACT_APP_API_HOST + process.env.REACT_APP_LOGIN_PATH;
-console.log(loginUrl);
-// console.log(loginUrl);
+ROOT_API + API_ROUTES.LOGIN_API;
 function SignIn() {
-  // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
   const bgForm = useColorModeValue("white", "navy.800");
   const titleColor = useColorModeValue("gray.700", "blue.500");
@@ -40,12 +38,12 @@ function SignIn() {
   const isLoggedIn = checkLogin();
   const history = useHistory();
   const [show, setShow] = useState({
-    password: false
+    password: false,
   });
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log('connecting to')
+      // console.log('connecting to')
       return history.push("/admin");
     }
   }, [isLoggedIn]);
@@ -58,7 +56,6 @@ function SignIn() {
     { manual: true }
   );
 
-  // manual excute api
   const handleLogin = () => {
     if (!username || !password) {
       return;
@@ -71,26 +68,25 @@ function SignIn() {
         data: loginData,
       })
         .then((res) => {
-          if (res?.data?.data) {
+          // console.log(res?.data)
+          if (res?.data) {
             setErrors("");
             loginUser(
-              userDispatch, 
+              userDispatch,
               res.data.token,
               res.data.data,
-              res.data.isMember
+              res.data.isMember,
+              history
             );
-            if (res.data.isMember) {
-               history.push("/admin/profile");
-            } else {
-              history.push("/admin/");
-            }
           }
         })
         .catch((error) => {
           const status = error.response?.status;
           switch (status) {
             case 400:
-              setErrors(error?.response?.data?.error || "Wrong username or password");
+              setErrors(
+                error?.response?.data?.error || "Wrong username or password"
+              );
               break;
             default:
               setErrors("Error Unknown");
@@ -98,25 +94,6 @@ function SignIn() {
         });
     }
   };
-
-  // handler
-  useEffect(() => {
-    if (error) {
-      const status = error.response?.status;
-      switch (status) {
-        case 400:
-          setErrors("Sai thông tin đăng nhập");
-          break;
-        default:
-          setErrors("Lỗi không xác định");
-      }
-    } else if (data) {
-      setErrors("");
-      login(data.token, data.data);
-      // navigate("/");
-      return history.push('/admin/dashboard')
-    }
-  }, [error, response, data]);
 
   return (
     <Flex position="relative">

@@ -19,8 +19,10 @@ import CardHeader from "components/Card/CardHeader.js";
 import UserRow from "components/User/UserRow";
 import React, { useState, useEffect } from "react";
 import { checkLogin, logout, getToken } from "../../../utils/authentication";
+import { API_ROUTES , ROOT_API } from "utils/constant";
 
-const userApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_USERS;
+
+const userApi = ROOT_API + API_ROUTES.USER_API;
 import UserRegisterDialog from "components/User/UserRegisterDialog";
 import { TablePagination } from "@trendmicro/react-paginations";
 import { initialFilter } from "utils/constant";

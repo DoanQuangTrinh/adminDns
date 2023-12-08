@@ -31,7 +31,7 @@ import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import React from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { NavLink, useLocation } from "react-router-dom";
-import logoImg from "assets/svg/logo-2q.svg";
+import logoImg from "assets/img/linkshort-logo.png";
 
 
 // FUNCTIONS
@@ -89,7 +89,7 @@ function Sidebar(props) {
       }
       return (
         <AuthorizationWrapper allowedRoles={prop.role} key={key}>
-          <NavLink to={prop.layout + prop.path} key={key}>
+          <NavLink to={prop.layout + prop.path} key={key} style={{ display: prop.hidden ? "none" : ""}}>
             {activeRoute(prop.layout + prop.path) === "active" ? (
               <Button
                 boxSize="initial"
@@ -211,10 +211,11 @@ function Sidebar(props) {
   let sidebarRadius = "20px";
   let sidebarMargins = "0px";
   var brand = (
-    <Box pt={"25px"} mb="12px">
+    <Box pt={"25px"} mb="12px" color="#FFF" justifyContent="center" alignItems="center">
       {/* {logo} */}
+      {/* <Text fontSize={35} textTransform="uppercase" fontWeight="bolder">Short Link</Text> */}
       <img src={logoImg} width={"200px"} />
-      <HSeparator my="26px" />
+      <HSeparator my="16px" />
     </Box>
   );
 
@@ -329,7 +330,9 @@ export function SidebarResponsive(props) {
       }
       return (
         <AuthorizationWrapper allowedRoles={prop.role} key={key}>
-          <NavLink to={prop.layout + prop.path}>
+          <NavLink
+            to={prop.layout + prop.path}
+          >
             {activeRoute(prop.layout + prop.path) === "active" ? (
               <Button
                 boxSize="initial"

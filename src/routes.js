@@ -5,6 +5,7 @@ import SignIn from "views/Pages/SignIn.js";
 import User from "views/Dashboard/User/User";
 import Domain from "views/Dashboard/Domain/Domain";
 import SubDomain from "views/Dashboard/SubDomain/SubDomain";
+import Tracking from "views/Dashboard/Tracking/Tracking";
 
 import { StatsIcon, PersonIcon } from "components/Icons/Icons";
 import { Roles } from "utils/constant";
@@ -16,6 +17,22 @@ var dashRoutes = [
     name: "User",
     icon: <StatsIcon color="inherit" />,
     component: User,
+    layout: "/admin",
+    role: [Roles.ADMIN],
+  },
+  {
+    path: "/domain/:domain_id/subDomain",
+    name: "SubDomain",
+    icon: <StatsIcon color="inherit" />,
+    component: SubDomain,
+    layout: "/admin",
+    role: [Roles.ADMIN],
+  },
+  {
+    path: "/subdomain/:subdomain_id/tracKing",
+    name: "SubDomain",
+    icon: <StatsIcon color="inherit" />,
+    component: Tracking,
     layout: "/admin",
     role: [Roles.ADMIN],
   },
@@ -59,18 +76,11 @@ var dashRoutes = [
         layout: "/admin",
         role: [Roles.ADMIN, Roles.USER, Roles.GUEST],
       },
-      
+
       {
         path: "/domain",
         name: "Domain",
         component: Domain,
-        layout: "/admin",
-        icon: <PersonIcon color="inherit" />,
-      },
-      {
-        path: "/subdoma",
-        name: "SubDomain",
-        component: SubDomain,
         layout: "/admin",
         icon: <PersonIcon color="inherit" />,
       },
@@ -80,9 +90,10 @@ var dashRoutes = [
         component: SignIn,
         layout: "/auth",
         icon: <PersonIcon color="inherit" />,
+        hidden: true
       },
-      
     ],
   },
+
 ];
 export default dashRoutes;

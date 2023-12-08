@@ -22,22 +22,24 @@ import { vendorDomain } from "config/config";
 import { teamControl } from "config/config";
 import { typeDomain } from "config/config";
 import { getToken } from "utils/authentication";
-import { useDataContext } from "context/UserContext"; 
+import SubDomain from "views/Dashboard/SubDomain/SubDomain";
 import useAxios from "axios-hooks";
+import { API_ROUTES , ROOT_API } from "utils/constant";
+import { useLocation } from "react-router-dom";
+
+
 const source = axios.CancelToken.source();
-const CreateSubDomain =
-  process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
-console.log(CreateSubDomain);
-const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
+const CreateSubDomain = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
+const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
   const cancelRef = React.useRef();
-  const [id, setId] = useState("");
   const toast = useToast();
-  // const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isMounted, setIsMounted] = useState(true);
   const xToken = getToken();
-  const {otherData , refetchOtherData} = useDataContext();
-
+  const [quantity, setQuantity] = useState("");
+  const location = useLocation();
+  const spliceDomain = location.pathname.match(/\/domain\/([^/]+)\//);
+  const domainId = spliceDomain[1]
   useEffect(() => {
     return () => {
       setIsMounted(false);
@@ -45,24 +47,46 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
   }, []);
   const [subDomains, setSubDomains] = useState([]);
   useEffect(() => {}, []);
-  console.log(id)
-  const [value, setValue] = useState();
   const clickCreateButton = async () => {
     const subData = {
-      domain_id: id
+      domain_id: domainId,
+      linkRedirect: "weabox.com",
+      quantity: quantity
     };
     try {
       const response = await axiosPost(
         CreateSubDomain,
         subData
       );
-      refetchOtherData();
+      if (response.data.code === 0) {
+        toast({
+          title: response.data.msg,
+          status: "success",
+          duration: 9000,
+        })
+        refetch();
+        onClose();
+      } else {
+        toast({
+          title: response.data.msg,
+          status: "error",
+          duration: 9000,
+        })
+      }
     } catch (error) {
+      toast({
+        title:
+          error?.response?.data?.errors?.errors[0]?.msg ||
+          error?.response?.data?.msg || "Create Sub Domain Fail",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
-  
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
 
-  
   return (
     <>
       <AlertDialog
@@ -79,16 +103,21 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
           <AlertDialogCloseButton />
           <AlertDialogBody>
             <FormControl>
-              <FormLabel>SubDomain ID</FormLabel>
+              <FormLabel>Quantity</FormLabel>
               <Input
                 type="text"
-                placeholder="Enter SubDomain ID"
-                value={id}
-                onChange={(e) => setId(e.target.value)}
+                placeholder="Enter Quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
               />
             </FormControl>
-            
             {success && <p style={{ color: 'green' }}>{success}</p>}
+            {isEditModalOpen && (
+                <SubDomain
+                  isOpen={isEditModalOpen}
+                  // selectedId={id}
+                />
+              )}
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
@@ -99,7 +128,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
               ml={3}
               onClick={() => {
                 clickCreateButton();
-                onClose();
+                // onClose();
               }}
             >
               Thêm
@@ -107,6 +136,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      {/* <SubDomain id={id} /> */}
     </>
   );
 };
