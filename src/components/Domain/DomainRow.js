@@ -39,7 +39,7 @@ function DomainRow(props) {
   const onRegisterOpen = onOpen;
   const onRegisterClose = onClose;
   const handleSubDomainClick = () => {
-    history.push(`/admin/domain/${_id}/subDomain`);
+    history.push(`/admin/domain/${_id}/subdomain`);
   };
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");

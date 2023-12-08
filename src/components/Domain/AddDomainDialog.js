@@ -25,6 +25,8 @@ import { API_ROUTES, ROOT_API } from "utils/constant";
 
 const createDomainApi = ROOT_API + API_ROUTES.DOMAIN_API;
 const updateStatusDomain = ROOT_API + API_ROUTES.UPADTE_STATUS;
+console.log(createDomainApi)
+console.log(updateStatusDomain)
 const AddDomainDialog = (props) => {
   const {
     onClose,

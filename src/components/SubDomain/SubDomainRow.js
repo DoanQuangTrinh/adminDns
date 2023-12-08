@@ -32,7 +32,7 @@ function SubDomainRow(props) {
     const history = useHistory();
     const [idSubDomain , setIdSubDomain] = useState("")
     const handleSubDomainClick = () => {
-      history.push(`/admin/subDomain/${id}/tracKing`);
+      history.push(`/admin/subDomain/${id}/tracking`);
       setIdSubDomain(id);
       onRegisterOpen();
     };
@@ -112,6 +112,13 @@ function SubDomainRow(props) {
             </Text>
           </Flex>
         </Td>
+        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+          <Flex direction="column">
+            <Text fontSize="md" color={textColor} fontWeight="bold">
+              {linkRedirect}
+            </Text>
+          </Flex>
+        </Td>
   
         {/* <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
@@ -121,17 +128,6 @@ function SubDomainRow(props) {
           </Flex>
         </Td> */}
   
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Badge
-            bg={status === "Online" ? "green.400" : bgStatus}
-            color={status === "Online" ? "white" : "white"}
-            fontSize="16px"
-            p="3px 10px"
-            borderRadius="8px"
-          >
-            {linkRedirect}
-          </Badge>
-        </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
             {date}
