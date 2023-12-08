@@ -9,8 +9,6 @@ import {
   Tr,
   useColorModeValue,
   useDisclosure,
-  useToast,
-
 } from "@chakra-ui/react";
 import useAxios from "axios-hooks";
 import Card from "components/Card/Card.js";
@@ -19,13 +17,14 @@ import CardHeader from "components/Card/CardHeader.js";
 import React, { useState, useEffect } from "react";
 import { checkLogin, logout, getToken } from "../../../utils/authentication";
 import axios from "axios";
-import { axiosGet,axiosPost } from "utils/api";
+import { axiosGet } from "utils/api";
 import AddSubDomain from "components/SubDomain/AddSubDomain";
 import { TablePagination } from "@trendmicro/react-paginations";
 import { initialFilter } from "utils/constant";
 import EditSubDomain from "components/SubDomain/EditSubDomain";
 import SubDomainRow from "components/SubDomain/SubDomainRow";
 import { API_ROUTES , ROOT_API } from "utils/constant";
+import { useLocation } from "react-router-dom";
 
 const vendorDomain = [
   { value: "vendor1", color: "blue" },
@@ -34,56 +33,19 @@ const vendorDomain = [
 const xToken = getToken();
 
 const SubDomain = ({id}) => {
-  const toast = useToast();
-
-  const CreateSubDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
-  const clickCreateButton = async () => {
-    const subData = {
-      domain_id: id,
-      linkRedirect: "facebook.com",
-      quantity: 1
-    };
-    try {
-      const response = await axiosPost(
-        CreateSubDomain,
-        subData
-      );
-      if (response.data.code === 0) {
-        toast({
-          title: response.data.msg,
-          status: "success",
-          duration: 9000,
-        })
-        // setSelectedId(id);
-        refetch();
-        onClose();
-      } else {
-        toast({
-          title: response.data.msg,
-          status: "error",
-          duration: 9000,
-        })
-      }
-    } catch (error) {
-      toast({
-        title:
-          error?.response?.data?.errors?.errors[0]?.msg ||
-          error?.response?.data?.msg || "Create Sub Domain Fail",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-  };
-  console.log(id)
+  const location = useLocation();
+  const spliceDomain = location.pathname.match(/\/domain\/([^/]+)\//);
+  const domainId = spliceDomain[1]
+  console.log(domainId)
   const [filter, setFilter] = useState(initialFilter);
   // const subDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
   const subDomainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
   const [{ data, loading, error }, refetch] = useAxios({
-    // url: `${subDomainApi}/${id}`,
+    url: `${subDomainApi}/${domainId}`,
     params: filter,
   });
   const subDomain = data?.data
+  console.log(`${subDomainApi}/${domainId}`)
 
 const textColor = useColorModeValue("gray.700", "white");
 const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -210,7 +172,6 @@ return (
       </Card>
     </Flex>
     {isRegisterOpen && <AddSubDomain
-      clickCreateButton = {clickCreateButton}
       refetch={refetch}
       isOpen={isRegisterOpen}
       userDetail={userDetail}

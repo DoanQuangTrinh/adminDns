@@ -18,6 +18,7 @@ import DomainTableRow from "components/Domain/DomainTableRow";
 import DomainRow from "components/Domain/DomainRow";
 import SubDomain from "../SubDomain/SubDomain";
 import React, { useState, useEffect } from "react";
+import AddSubDomain from "components/SubDomain/AddSubDomain";
 import { checkLogin, logout, getToken } from "../../../utils/authentication";
 import { API_ROUTES , ROOT_API } from "utils/constant";
 import axios from "axios";
@@ -38,8 +39,9 @@ const Domain = () => {
   const [filter, setFilter] = useState(initialFilter);
   const xToken = getToken();
  
-  // const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
-  const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN
+  const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
+  console.log(domainApi)
+  // const domainApi = process.env.REACT_APP_API_HOST + process.env.REACT_APP_CREATE_DOMAIN
   console.log(domainApi)
   const [{ data, loading, error }, refetch] = useAxios({
     url: domainApi,
@@ -174,6 +176,18 @@ const handleUpdate = (updatedData) => {
       onClose={handelCloseModal}
     />
     }
+    {/* {isRegisterOpen && 
+    domain?.map((row, index, arr) => (
+       <AddSubDomain
+      refetch={refetch}
+      _id={row._id}
+      isOpen={isRegisterOpen}
+      userDetail={userDetail}
+      onOpen={onRegisterOpen}
+      onClose={handelCloseModal}
+    />
+    ))
+    } */}
   </>
   )
 }

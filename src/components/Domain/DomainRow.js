@@ -13,11 +13,13 @@ import {
 } from "@chakra-ui/react";
 import React,{useState} from "react";
 import { DeleteIcon, EditIcon, UnlockIcon ,ExternalLinkIcon} from "@chakra-ui/icons";
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import axios from "axios";
 import { axiosPost } from "utils/api";
 import EditDomainDialog from "./EditDomainDialog";
 import { API_ROUTES,ROOT_API } from "utils/constant";
+import AddSubDomain from "components/SubDomain/AddSubDomain";
+import { Link } from "react-router-dom"; 
 
 // const deleteDomain = ROOT_API + API_ROUTES.DELETE_DOMAIN
 const deleteDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_DELETE_DOMAIN
@@ -34,10 +36,13 @@ function DomainRow(props) {
   const history = useHistory();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
-  const nextSubdoman = () => {
-    console.log("Next Subdomain clicked");
-    history.push('admin/subdomain');
-  }
+  const [idForSubDomain, setIdForSubDomain] = useState(null);
+  const handleSubDomainClick = () => {
+    console.log(_id)
+      history.push(`/admin/domain/${_id}/subDomain`);
+      setIdForSubDomain(_id);
+      onRegisterOpen();
+  };
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
     if (!confirmDelete) {
@@ -78,16 +83,26 @@ function DomainRow(props) {
       });
     }
   }
-      
+      const isRegisterOpen = isOpen;
+      const onRegisterOpen = onOpen;
+      const onRegisterClose = onClose;
+  
       const [isEditModalOpen, setIsEditModalOpen] = useState(false);
       const [selectedRow, setSelectedRow] = useState(null);
       const handleEditClick = (row) => {
         setSelectedRow(row);
         setIsEditModalOpen(true);
       };
-      
   return (
     <Tr>
+      {isRegisterOpen && <AddSubDomain
+        ids={_id}
+        isOpen={isRegisterOpen}
+        userDetail={userDetail}
+        onOpen={onRegisterOpen}
+        onClose={handelCloseModal}
+      />
+    }
       <Td
         minWidth={{ sm: "250px" }}
         pl="0px"
@@ -148,15 +163,6 @@ function DomainRow(props) {
         <IconButton
           p={2}
           bg="transparent"
-          onClick={props.onClick}
-        >
-          <EditIcon />
-        </IconButton>
-      </Td>
-      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-        <IconButton
-          p={2}
-          bg="transparent"
           onClick={() => {
               handleDelete();
           }}
@@ -165,18 +171,11 @@ function DomainRow(props) {
         </IconButton>
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-        <IconButton
-          p={2}
-          bg="transparent"
-          onClick={() => {
-              nextSubdoman();
-          }}
-        >
-          <ExternalLinkIcon />
-        </IconButton>
+          <IconButton p={2} bg="transparent" onClick={handleSubDomainClick}>
+            <ExternalLinkIcon />
+          </IconButton>
       </Td>
-      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-      </Td>
+
     </Tr>
   );
 }

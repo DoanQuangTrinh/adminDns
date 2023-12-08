@@ -18,8 +18,8 @@ import axios from "axios";
 import { axiosPost } from "utils/api";
 import { API_ROUTES,ROOT_API } from "utils/constant";
 
-const editDomain =
-ROOT_API + API_ROUTES.EDIT_DOMAIN;
+// const editDomain = ROOT_API + API_ROUTES.EDIT_DOMAIN;
+const editDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_EDIT_DOMAIN
 const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,ApiKey,name,ip,zone_id }) => {
   const [editedData, setEditedData] = useState(initialData);
   const toast = useToast();
@@ -27,15 +27,15 @@ const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,
     const { name, value } = e.target;
     setEditedData((prevData) => ({ ...prevData, [name]: value }));
   };
+  console.log(editedData)
 
   const handleUpdate = async () => {
       const dataEdit = {
         id: editedData?._id,
-        api_key: editedData?.api_key,
+        benedict: editedData?.benedict,
         name: editedData?.name,
-        ip: editedData?.ip,
-        zone_id: editedData?.zone_id,
-        link_redirect: editedData?.link_redirect,
+        journey: editedData?.journey,
+        status: editedData?.status,
       };
     try {
       const response = await axiosPost(
@@ -74,10 +74,10 @@ const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,
         <ModalCloseButton />
         <ModalBody>
           <FormControl mt={4}>
-            <FormLabel>Api Key</FormLabel>
+            <FormLabel>Benedict</FormLabel>
             <Input
-              name="ApiKey"
-              value={editedData?.api_key}
+              name="benedict"
+              value={editedData?.benedict}
               onChange={handleInputChange}
             />
           </FormControl>
@@ -90,26 +90,18 @@ const EditDomainDialog = ({ refetch, isOpen, initialData, onUpdate, onClose, id,
             />
           </FormControl>
           <FormControl mt={4}>
-            <FormLabel>IP</FormLabel>
+            <FormLabel>Journey</FormLabel>
             <Input
-              name="ip"
-              value={editedData?.ip}
+              name="journey"
+              value={editedData?.journey}
               onChange={handleInputChange}
             />
           </FormControl>
           <FormControl mt={4}>
-            <FormLabel>Zone ID</FormLabel>
+            <FormLabel>Status</FormLabel>
             <Input
-              name="zone_id"
-              value={editedData?.zone_id}
-              onChange={handleInputChange}
-            />
-          </FormControl>
-          <FormControl mt={4}>
-            <FormLabel>Link Redirect</FormLabel>
-            <Input
-              name="link_redirect"
-              value={editedData?.link_redirect}
+              name="status"
+              value={editedData?.status}
               onChange={handleInputChange}
             />
           </FormControl>

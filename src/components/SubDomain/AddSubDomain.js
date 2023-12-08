@@ -25,22 +25,25 @@ import { getToken } from "utils/authentication";
 import SubDomain from "views/Dashboard/SubDomain/SubDomain";
 import useAxios from "axios-hooks";
 import { API_ROUTES , ROOT_API } from "utils/constant";
+import { useLocation } from "react-router-dom";
+
 
 const source = axios.CancelToken.source();
 // const CreateSubDomain = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
 const CreateSubDomain = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_CREATE_SUBDOMAIN;
 
 console.log(CreateSubDomain);
-const AddSubDomain = ({ isOpen, onOpen, onClose,refetch,clickCreateButton }) => {
+const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
   const cancelRef = React.useRef();
-  const [id, setId] = useState("");
   const toast = useToast();
   // const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isMounted, setIsMounted] = useState(true);
   const xToken = getToken();
-  const [selectedId, setSelectedId] = useState("");
-
+  const [quantity, setQuantity] = useState("");
+  const location = useLocation();
+  const spliceDomain = location.pathname.match(/\/domain\/([^/]+)\//);
+  const domainId = spliceDomain[1]
   useEffect(() => {
     return () => {
       setIsMounted(false);
@@ -48,44 +51,44 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch,clickCreateButton }) => 
   }, []);
   const [subDomains, setSubDomains] = useState([]);
   useEffect(() => {}, []);
-  // const clickCreateButton = async () => {
-  //   const subData = {
-  //     domain_id: id,
-  //     linkRedirect: "facebook.com",
-  //     quantity: 1
-  //   };
-  //   try {
-  //     const response = await axiosPost(
-  //       CreateSubDomain,
-  //       subData
-  //     );
-  //     if (response.data.code === 0) {
-  //       toast({
-  //         title: response.data.msg,
-  //         status: "success",
-  //         duration: 9000,
-  //       })
-  //       setSelectedId(id);
-  //       refetch();
-  //       onClose();
-  //     } else {
-  //       toast({
-  //         title: response.data.msg,
-  //         status: "error",
-  //         duration: 9000,
-  //       })
-  //     }
-  //   } catch (error) {
-  //     toast({
-  //       title:
-  //         error?.response?.data?.errors?.errors[0]?.msg ||
-  //         error?.response?.data?.msg || "Create Sub Domain Fail",
-  //       status: "error",
-  //       duration: 9000,
-  //       isClosable: true,
-  //     });
-  //   }
-  // };
+  const clickCreateButton = async () => {
+    const subData = {
+      domain_id: domainId,
+      linkRedirect: "facebook.com",
+      quantity: quantity
+    };
+    try {
+      const response = await axiosPost(
+        CreateSubDomain,
+        subData
+      );
+      if (response.data.code === 0) {
+        toast({
+          title: response.data.msg,
+          status: "success",
+          duration: 9000,
+        })
+        // setSelectedId(id);
+        refetch();
+        onClose();
+      } else {
+        toast({
+          title: response.data.msg,
+          status: "error",
+          duration: 9000,
+        })
+      }
+    } catch (error) {
+      toast({
+        title:
+          error?.response?.data?.errors?.errors[0]?.msg ||
+          error?.response?.data?.msg || "Create Sub Domain Fail",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
@@ -105,19 +108,19 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch,clickCreateButton }) => 
           <AlertDialogCloseButton />
           <AlertDialogBody>
             <FormControl>
-              <FormLabel>Domain ID</FormLabel>
+              <FormLabel>Quantity</FormLabel>
               <Input
                 type="text"
-                placeholder="Enter Domain ID"
-                value={id}
-                onChange={(e) => setId(e.target.value)}
+                placeholder="Enter Quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
               />
             </FormControl>
             {success && <p style={{ color: 'green' }}>{success}</p>}
             {isEditModalOpen && (
                 <SubDomain
                   isOpen={isEditModalOpen}
-                  selectedId={id}
+                  // selectedId={id}
                 />
               )}
           </AlertDialogBody>
@@ -138,7 +141,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch,clickCreateButton }) => 
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <SubDomain id={id} />
+      {/* <SubDomain id={id} /> */}
     </>
   );
 };
