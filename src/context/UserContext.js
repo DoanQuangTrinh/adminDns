@@ -78,13 +78,13 @@ function UserProvider({ children }) {
   // }, [otherApi]);  // Chỉ gọi lại khi anotherDependency thay đổi
   
 
-  const contextValue = {
-    ...state,
-    data,
-    otherData,
-    refetchData: fetchData,
-    refetchOtherData: fetchOtherData,
-  };
+  // const contextValue = {
+  //   ...state,
+  //   data,
+  //   otherData,
+  //   refetchData: fetchData,
+  //   refetchOtherData: fetchOtherData,
+  // };
 
   return (
     <UserStateContext.Provider value={state}>
