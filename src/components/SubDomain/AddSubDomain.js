@@ -22,21 +22,24 @@ import { vendorDomain } from "config/config";
 import { teamControl } from "config/config";
 import { typeDomain } from "config/config";
 import { getToken } from "utils/authentication";
+import SubDomain from "views/Dashboard/SubDomain/SubDomain";
 import useAxios from "axios-hooks";
 import { API_ROUTES , ROOT_API } from "utils/constant";
+import { useLocation } from "react-router-dom";
+
 
 const source = axios.CancelToken.source();
 const CreateSubDomain = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
-console.log(CreateSubDomain);
-const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
+const AddSubDomain = ({ isOpen, onOpen, onClose,refetch, }) => {
   const cancelRef = React.useRef();
-  const [id, setId] = useState("");
   const toast = useToast();
-  // const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isMounted, setIsMounted] = useState(true);
   const xToken = getToken();
-
+  const [quantity, setQuantity] = useState("");
+  const location = useLocation();
+  const spliceDomain = location.pathname.match(/\/domain\/([^/]+)\//);
+  const domainId = spliceDomain[1]
   useEffect(() => {
     return () => {
       setIsMounted(false);
@@ -44,10 +47,11 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
   }, []);
   const [subDomains, setSubDomains] = useState([]);
   useEffect(() => {}, []);
-  const [value, setValue] = useState();
   const clickCreateButton = async () => {
     const subData = {
-      domain_id: id
+      domain_id: domainId,
+      linkRedirect: "weabox.com",
+      quantity: quantity
     };
     try {
       const response = await axiosPost(
@@ -80,9 +84,9 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
       });
     }
   };
-  
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
 
-  
   return (
     <>
       <AlertDialog
@@ -99,16 +103,21 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
           <AlertDialogCloseButton />
           <AlertDialogBody>
             <FormControl>
-              <FormLabel>Domain ID</FormLabel>
+              <FormLabel>Quantity</FormLabel>
               <Input
                 type="text"
-                placeholder="Enter Domain ID"
-                value={id}
-                onChange={(e) => setId(e.target.value)}
+                placeholder="Enter Quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
               />
             </FormControl>
-            
             {success && <p style={{ color: 'green' }}>{success}</p>}
+            {isEditModalOpen && (
+                <SubDomain
+                  isOpen={isEditModalOpen}
+                  // selectedId={id}
+                />
+              )}
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
@@ -127,6 +136,7 @@ const AddSubDomain = ({ isOpen, onOpen, onClose,refetch }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      {/* <SubDomain id={id} /> */}
     </>
   );
 };

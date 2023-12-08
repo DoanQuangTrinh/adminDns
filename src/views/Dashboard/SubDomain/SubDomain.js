@@ -15,73 +15,49 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import React, { useState, useEffect } from "react";
-import { checkLogin, logout, getToken } from "../../../utils/authentication";
-import axios from "axios";
-import { axiosGet } from "utils/api";
 import AddSubDomain from "components/SubDomain/AddSubDomain";
 import { TablePagination } from "@trendmicro/react-paginations";
 import { initialFilter } from "utils/constant";
 import EditSubDomain from "components/SubDomain/EditSubDomain";
 import SubDomainRow from "components/SubDomain/SubDomainRow";
 import { API_ROUTES , ROOT_API } from "utils/constant";
-
-const vendorDomain = [
-  { value: "vendor1", color: "blue" },
-  { value: "vendor2", color: "green" },
-];
-const xToken = getToken();
-
-const SubDomain = ({}) => {
+import { useLocation } from "react-router-dom";
+const SubDomain = ({id}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const isRegisterOpen = isOpen;
+  const onRegisterOpen = onOpen;
+  const onRegisterClose = onClose;
+  const location = useLocation();
+  const spliceDomain = location.pathname.match(/\/domain\/([^/]+)\//);
+  const domainId = spliceDomain[1]
   const [filter, setFilter] = useState(initialFilter);
-  const xToken = getToken();
- 
   const subDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
-  
   const [{ data, loading, error }, refetch] = useAxios({
-    url: subDomainApi,
-    params: { ...filter },
+    url: `${subDomainApi}/${domainId}`,
+    params: filter,
   });
   const subDomain = data?.data
-
-const textColor = useColorModeValue("gray.700", "white");
-const borderColor = useColorModeValue("gray.200", "gray.600");
-const [userDetail, setUserDetail] = useState();
-
-
-
-const { isOpen, onOpen, onClose } = useDisclosure();
-const isRegisterOpen = isOpen;
-const onRegisterOpen = onOpen;
-const onRegisterClose = onClose;
-
-const [domain, setDomain] = useState([]);
-
-const isLoggedIn = checkLogin();
-
-
-const handelUpdateUser = userDetail => {
-  setUserDetail(userDetail)
-  onRegisterOpen()
-}
-
-
-const handelCloseModal = () => {
-  setUserDetail()
-  onRegisterClose()
-}
-const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-const [selectedRow, setSelectedRow] = useState(null);
-const handleEditClick = (row) => {
-  setSelectedRow(row);
-  setIsEditModalOpen(true);
-};
-const handleUpdate = (updatedData) => {
-  console.log("Updated data:", updatedData);
-  setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
-};
-
-
-
+  const textColor = useColorModeValue("gray.700", "white");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const [userDetail, setUserDetail] = useState();
+  const handelUpdateUser = userDetail => {
+    setUserDetail(userDetail)
+    onRegisterOpen()
+  }
+  const handelCloseModal = () => {
+    setUserDetail()
+    onRegisterClose()
+  }
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const handleEditClick = (row) => {
+    setSelectedRow(row);
+    setIsEditModalOpen(true);
+  };
+  const handleUpdate = (updatedData) => {
+    console.log("Updated data:", updatedData);
+    setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
+  };
 
 return (
   <>
@@ -114,7 +90,7 @@ return (
                   id
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
-                  type
+                  LinkRedirect
                 </Th>
                 <Th borderColor={borderColor}></Th>
               </Tr>
@@ -127,7 +103,7 @@ return (
                     domain={row.domain}
                     link={row.link}
                     id={row._id}
-                    type={row.type}
+                    linkRedirect={row.linkRedirect}
                     zone_id={row.zone_id}
                     onClose={onClose}
                     refetch={refetch}

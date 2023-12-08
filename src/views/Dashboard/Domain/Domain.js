@@ -14,71 +14,44 @@ import useAxios from "axios-hooks";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
-import DomainTableRow from "components/Domain/DomainTableRow";
 import DomainRow from "components/Domain/DomainRow";
 import React, { useState, useEffect } from "react";
 import { checkLogin, logout, getToken } from "../../../utils/authentication";
 import { API_ROUTES , ROOT_API } from "utils/constant";
-import axios from "axios";
-
-import { axiosGet } from "utils/api";
-
 import AddDomainDialog from "components/Domain/AddDomainDialog";
 import { TablePagination } from "@trendmicro/react-paginations";
 import { initialFilter } from "utils/constant";
 import EditDomainDialog from "components/Domain/EditDomainDialog"; 
-const vendorDomain = [
-  { value: "vendor1", color: "blue" },
-  { value: "vendor2", color: "green" },
-];
-
 
 const Domain = () => {
   const [filter, setFilter] = useState(initialFilter);
   const xToken = getToken();
- 
   const domainApi = ROOT_API + API_ROUTES.DOMAIN_API ;
-  
   const [{ data, loading, error }, refetch] = useAxios({
     url: domainApi,
     params: { ...filter },
   });
   const domain = data?.data
-
-
-const textColor = useColorModeValue("gray.700", "white");
-const borderColor = useColorModeValue("gray.200", "gray.600");
-const [userDetail, setUserDetail] = useState();
-
-
-
-const { isOpen, onOpen, onClose } = useDisclosure();
-const isRegisterOpen = isOpen;
-const onRegisterOpen = onOpen;
-const onRegisterClose = onClose;
-
-
-const isLoggedIn = checkLogin();
-
-const handelUpdateUser = userDetail => {
-  setUserDetail(userDetail)
-  onRegisterOpen()
-}
-
-
-const handelCloseModal = () => {
-  setUserDetail()
-  onRegisterClose()
-}
-const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-const [selectedRow, setSelectedRow] = useState(null);
-const handleEditClick = (row) => {
-  setSelectedRow(row);
-  setIsEditModalOpen(true);
-};
-const handleUpdate = (updatedData) => {
-  setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
-};
+  const textColor = useColorModeValue("gray.700", "white");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const [userDetail, setUserDetail] = useState();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const isRegisterOpen = isOpen;
+  const onRegisterOpen = onOpen;
+  const onRegisterClose = onClose;
+  const handelCloseModal = () => {
+    setUserDetail()
+    onRegisterClose()
+  }
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const handleEditClick = (row) => {
+    setSelectedRow(row);
+    setIsEditModalOpen(true);
+  };
+  const handleUpdate = (updatedData) => {
+    setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
+  };
 
   return (
       <>
@@ -103,16 +76,16 @@ const handleUpdate = (updatedData) => {
             <Thead>
               <Tr my=".8rem" pl="0px" color="gray.400">
                 <Th pl="0px" borderColor={borderColor} color="gray.400">
-                ApiKey
+                Benedict
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
                 Name
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
-                IP
+                Journey
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
-                Zone_Id
+                Status
                 </Th>
                 <Th borderColor={borderColor}></Th>
               </Tr>
@@ -123,10 +96,10 @@ const handleUpdate = (updatedData) => {
                     key={row._id}
                     data={domain}
                     _id={row._id}
-                    ApiKey={row.api_key}
+                    benedict={row.benedict}
                     name={row.name}
-                    ip={row.ip}
-                    zone_id={row.zone_id}
+                    journey={row.journey}
+                    status={row.status}
                     refetch = {refetch}
                     onClick={() => handleEditClick(row)}
                   />
@@ -150,7 +123,6 @@ const handleUpdate = (updatedData) => {
                 pageLength={data?.pagination?.pageSize}
                 totalRecords={data?.pagination?.count}
                 onPageChange={({ page, pageLength }) => {
-                  console.log(page);
                   setFilter({
                     ...filter,
                     pageSize: pageLength,
@@ -172,6 +144,18 @@ const handleUpdate = (updatedData) => {
       onClose={handelCloseModal}
     />
     }
+    {/* {isRegisterOpen && 
+    domain?.map((row, index, arr) => (
+       <AddSubDomain
+      refetch={refetch}
+      _id={row._id}
+      isOpen={isRegisterOpen}
+      userDetail={userDetail}
+      onOpen={onRegisterOpen}
+      onClose={handelCloseModal}
+    />
+    ))
+    } */}
   </>
   )
 }
