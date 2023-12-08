@@ -53,10 +53,14 @@ function UserProvider({ children }) {
     }
   };
 
-  React.useEffect(() => {
-    fetchData();
-    fetchOtherData();
-  }, []);
+  // React.useEffect(() => {
+  //   fetchData();
+  // }, [data]);  // Chỉ gọi lại khi someDependency thay đổi
+  
+  // React.useEffect(() => {
+  //   fetchOtherData();
+  // }, [otherApi]);  // Chỉ gọi lại khi anotherDependency thay đổi
+  
 
   const contextValue = {
     ...state,

@@ -44,7 +44,6 @@ const AddDomainDialog = (props) => {
 
   const [value, setValue] = useState();
   const clickAddButton = async () => {
-    
     const requestBody = {
               api_key: apiKey,
               name: name,

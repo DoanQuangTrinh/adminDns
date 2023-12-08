@@ -37,15 +37,18 @@ const xToken = localStorage.getItem('xToken');
 // const { data, refetchData } = useDataContext();
 
 console.log(userApi)
-const Domain = (refetch) => {
-  const { data, refetchData } = useDataContext();
+const Domain = () => {
+  // const { data, refetchData } = useDataContext();
 
   // Do something with the data
 
-  const fetchDomainData = () => {
+    // const [{data , loading , error} , refetch] = useAxios({
+    //   url : userApi,
+    //   method: 'GET'
+    // })
+    // console.log(data)
     // Trigger a refetch of data
-    refetchData();
-  };
+    // refetchData();
   // const [data , setData] = useState([]);
   // const fetchDomainData = async () => {
   //   try {
@@ -79,7 +82,7 @@ const Domain = (refetch) => {
     onClose: onRegisterClose,
   } = useDisclosure();
 
-  const [domain, setDomain] = useState([]);
+  // const [domain, setDomain] = useState([]);
 
   const isLoggedIn = checkLogin();
 
@@ -155,12 +158,12 @@ const Domain = (refetch) => {
                       refetch={fetchDomainData}
                     />
                     ))}
-                    {data?.map((row, index, arr) => (
+                    {/* {data?.map((row, index, arr) => (
                     <AddDomainDialog 
                     data={data}
                     refetch={fetchDomainData} 
-                  />
-                  ))}
+                  /> */}
+                  {/* ))} */}
                 </Tbody>
                   
 

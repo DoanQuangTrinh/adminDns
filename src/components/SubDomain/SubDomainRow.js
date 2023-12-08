@@ -30,8 +30,6 @@ function SubDomainRow(props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const xToken = localStorage.getItem('xToken');
     const {otherData , refetchOtherData} = useDataContext();
-
-    console.log(domain)
       
     const [loading, setLoading] = useState(false);
     const handleDelete = async () => {

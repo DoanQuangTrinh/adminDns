@@ -26,7 +26,6 @@ console.log(deleteDomain)
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { data, refetchData } = useDataContext();
-    const xToken = localStorage.getItem('xToken');
       
     const [loading, setLoading] = useState(false);
     const handleDelete = async () => {

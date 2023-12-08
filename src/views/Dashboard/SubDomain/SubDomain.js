@@ -35,12 +35,9 @@ const SubDomain = ({onClose}) => {
   const [data , setData] = useState([]);
   const {otherData , refetchOtherData} = useDataContext();
 
-  const fetchSubDomain = () => {
-    refetchOtherData()
-  }
-  // useEffect(() => {
-  //   fetchSubDomain();
-  //   }, []); 
+    const fetchSubDomain = () => {
+      refetchOtherData()
+    }
   
   console.log(data)
     const textColor = useColorModeValue("gray.700", "white");
