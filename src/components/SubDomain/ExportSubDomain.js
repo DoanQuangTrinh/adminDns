@@ -11,11 +11,11 @@ const ExportSubDomain = () => {
   const domainId = spliceDomain[1];
 
   const [filter, setFilter] = useState(initialFilter);
-  const subDomainApi = 'http://localhost:8080' + API_ROUTES.SUBDOMAIN_API;
-  console.log(subDomainApi);
+  const exportDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API;
+  console.log(exportDomainApi);
 
   const [{ data, loading, error }, refetch] = useAxios({
-    url: `${subDomainApi}/${domainId}/export`,
+    url: `${exportDomainApi}/${domainId}/export`,
     params: filter,
     responseType: 'blob',
   });

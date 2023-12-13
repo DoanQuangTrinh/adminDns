@@ -48,9 +48,7 @@ const SubDomain = () => {
   });
   const subDomain = data?.data
   const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
-  const ids = sessionStorage.getItem('selectedIds')
-  const idhss = JSON.parse(ids);
-  console.log( idhss)
+  const ids = JSON.parse(sessionStorage.getItem('selectedIds'));
 
   const handleDeletes = async () => {
     const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -59,12 +57,13 @@ const SubDomain = () => {
       return;
     }
     
-    const ids = 
-    console.log(ids)
+    const ids = JSON.parse(sessionStorage.getItem('selectedIds'))
     try {
       const response = await axiosPost(
         DeleteSubDomain,
-        ids = (["65798aa677d14b8cecacc302","65798aa577d14b8cecacc2ff","65798aa577d14b8cecacc2fc"])
+        {
+          ids:ids
+        }
       )
       if (response.data.code === 0) {
         toast({

@@ -33,8 +33,7 @@ function SubDomainRow(props) {
       setIdSubDomain(id);
       onRegisterOpen();
     };
-      const idsss = ([`${id}`])
-      console.log(typeof idsss)
+    console.log(typeof [id])
     const [loading, setLoading] = useState(false);
     const handleDelete = async () => {
       const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -42,14 +41,11 @@ function SubDomainRow(props) {
       if (!confirmDelete) {
         return;
       }
-
-      const idaa = id
-      const ids = idaa.split(',');
-      console.log(ids)
+      const ids = id
       try {
         const response = await axiosPost(
           DeleteSubDomain,
-          ids
+          {ids : [id]}
         )
         if (response.data.code === 0) {
           toast({
