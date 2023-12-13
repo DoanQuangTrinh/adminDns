@@ -11,6 +11,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import useAxios from "axios-hooks";
+import { useEffect } from "react";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -29,6 +30,9 @@ const Domain = () => {
     url: domainApi,
     params: { ...filter },
   });
+  const removeSession = () => {
+    return sessionStorage.removeItem('selectedIds')
+  }
   const domain = data?.data
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -50,6 +54,9 @@ const Domain = () => {
   const handleUpdate = (updatedData) => {
     setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
   };
+  useEffect(() => {
+    removeSession();
+  }, [refetch]);
 
   return (
       <>
