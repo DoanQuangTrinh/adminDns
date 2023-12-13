@@ -17,9 +17,10 @@ import { axiosPost } from "utils/api";
 import { DeleteIcon, EditIcon, UnlockIcon,InfoIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router-dom";
 import { API_ROUTES , ROOT_API } from "utils/constant";
+import SubDomain from "views/Dashboard/SubDomain/SubDomain";
 const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
 function SubDomainRow(props) {
-    const {data,refetch,_id, ip, name, isLast,domain, link ,id , linkRedirect,date, handelUpdateUser,onDeleted } = props;
+    const {data,refetch,_id, ip, name, isLast,domain, link ,id , linkRedirect,date, handelUpdateUser,onDeleted,onIdTestChange } = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -33,7 +34,6 @@ function SubDomainRow(props) {
       setIdSubDomain(id);
       onRegisterOpen();
     };
-    console.log(typeof [id])
     const [loading, setLoading] = useState(false);
     const handleDelete = async () => {
       const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -78,6 +78,7 @@ function SubDomainRow(props) {
         const onRegisterClose = onClose;
         const [isSelected, setIsSelected] = useState(false);
         const [selectedIds, setSelectedIds] = useState([]); 
+        const [idTest , setIdTest] = useState([])
         window.addEventListener('beforeunload', function (event) {
           sessionStorage.removeItem('selectedIds');
         });
@@ -90,20 +91,24 @@ function SubDomainRow(props) {
           const storedIds = JSON.parse(sessionStorage.getItem('selectedIds')) || [];
           if (!isSelected) {
             storedIds.push(id);
+            setIdTest(storedIds)
           } else {
             const index = storedIds.indexOf(id);
             if (index !== -1) {
               storedIds.splice(index, 1);
+              setIdTest(storedIds)
             }
           }
           sessionStorage.setItem('selectedIds', JSON.stringify(storedIds));
         };
-        
+        useEffect(() => {
+          onIdTestChange(idTest);
+        }, [idTest]);
     return (
       <Tr>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Checkbox 
-            onChange={toggleSelection} 
+          <Checkbox
+        onChange={toggleSelection} 
             isChecked={isSelected}
         />
         </Td>

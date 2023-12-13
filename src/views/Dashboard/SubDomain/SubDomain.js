@@ -36,19 +36,33 @@ const SubDomain = () => {
   const spliceDomain = location.pathname.match(/\/domain\/([^/]+)\//);
   const domainId = spliceDomain[1]
   const toast = useToast();
+  const [newIdTest, setNewIdTest] = useState([]);
+  const removeSession = () => {
+    return sessionStorage.removeItem('selectedIds')
+  }
+  const handleIdTestChange = (newIdTest) => {
+    setNewIdTest(newIdTest);
+  };
+  
+  useEffect(() => {
+  }, [newIdTest]);
   const handleExportSubDomain = () => {
     history.push(`/admin/subDomain/${domainId}/export`);
   };
+  
   const [filter, setFilter] = useState(initialFilter);
   const subDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
-  console.log(subDomainApi)
   const [{ data, loading, error }, refetch] = useAxios({
     url: `${subDomainApi}/${domainId}`,
     params: filter,
   });
+  
   const subDomain = data?.data
   const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
-  const ids = JSON.parse(sessionStorage.getItem('selectedIds'));
+  const [idSession , setIdSession] = useState()
+  useEffect(() => {
+    removeSession();
+  }, [refetch]);
 
   const handleDeletes = async () => {
     const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -56,24 +70,23 @@ const SubDomain = () => {
     if (!confirmDelete) {
       return;
     }
-    
-    const ids = JSON.parse(sessionStorage.getItem('selectedIds'))
-    try {
+try {
       const response = await axiosPost(
         DeleteSubDomain,
         {
-          ids:ids
+          ids:newIdTest
         }
-      )
+      ) 
       if (response.data.code === 0) {
         toast({
           title: response.data.msg,
           duration: 9000,
         })
         refetch();
+        setNewIdTest([])
+        sessionStorage.removeItem('selectedIds')
       }
     }
-    
     catch (error) {
       console.log(error)
       toast({
@@ -154,6 +167,7 @@ return (
               {subDomain?.map((row, index, arr) => {
                 return (
                   <SubDomainRow
+                    onIdTestChange={handleIdTestChange} 
                     key={index}
                     domain={row.domain}
                     link={row.link}
