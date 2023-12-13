@@ -6,6 +6,7 @@ import User from "views/Dashboard/User/User";
 import Domain from "views/Dashboard/Domain/Domain";
 import SubDomain from "views/Dashboard/SubDomain/SubDomain";
 import Tracking from "views/Dashboard/Tracking/Tracking";
+import ExportSubDomain from "components/SubDomain/ExportSubDomain";
 
 import { StatsIcon, PersonIcon } from "components/Icons/Icons";
 import { Roles } from "utils/constant";
@@ -33,6 +34,14 @@ var dashRoutes = [
     name: "Tracking",
     icon: <StatsIcon color="inherit" />,
     component: Tracking,
+    layout: "/admin",
+    role: [Roles.ADMIN],
+  },
+  {
+    path: "/subdomain/:domain_id/export",
+    name: "export",
+    icon: <StatsIcon color="inherit" />,
+    component: ExportSubDomain,
     layout: "/admin",
     role: [Roles.ADMIN],
   },

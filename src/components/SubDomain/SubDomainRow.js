@@ -10,13 +10,13 @@ import {
     useColorModeValue,
     useDisclosure,
     useToast,
+    Checkbox,
   } from "@chakra-ui/react";
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import { axiosPost } from "utils/api";
 import { DeleteIcon, EditIcon, UnlockIcon,InfoIcon } from "@chakra-ui/icons";
-import { API_ROUTES , ROOT_API } from "utils/constant";
 import { useHistory } from "react-router-dom";
-
+import { API_ROUTES , ROOT_API } from "utils/constant";
 const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
 function SubDomainRow(props) {
     const {data,refetch,_id, ip, name, isLast,domain, link ,id , linkRedirect,date, handelUpdateUser,onDeleted } = props;
@@ -33,6 +33,8 @@ function SubDomainRow(props) {
       setIdSubDomain(id);
       onRegisterOpen();
     };
+      const idsss = ([`${id}`])
+      console.log(typeof idsss)
     const [loading, setLoading] = useState(false);
     const handleDelete = async () => {
       const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -41,13 +43,13 @@ function SubDomainRow(props) {
         return;
       }
 
-      const deleteId = {
-        id: id
-      }
+      const idaa = id
+      const ids = idaa.split(',');
+      console.log(ids)
       try {
         const response = await axiosPost(
           DeleteSubDomain,
-          deleteId
+          ids
         )
         if (response.data.code === 0) {
           toast({
@@ -78,10 +80,38 @@ function SubDomainRow(props) {
         const isRegisterOpen = isOpen;
         const onRegisterOpen = onOpen;
         const onRegisterClose = onClose;
-    
+        const [isSelected, setIsSelected] = useState(false);
+        const [selectedIds, setSelectedIds] = useState([]); 
+        window.addEventListener('beforeunload', function (event) {
+          sessionStorage.removeItem('selectedIds');
+        });
+        window.addEventListener('unload', function (event) {
+          sessionStorage.removeItem('selectedIds');
+        });
+        
+        const toggleSelection = () => {
+          setIsSelected(!isSelected);
+          const storedIds = JSON.parse(sessionStorage.getItem('selectedIds')) || [];
+          if (!isSelected) {
+            storedIds.push(id);
+          } else {
+            const index = storedIds.indexOf(id);
+            if (index !== -1) {
+              storedIds.splice(index, 1);
+            }
+          }
+          sessionStorage.setItem('selectedIds', JSON.stringify(storedIds));
+        };
         
     return (
       <Tr>
+        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+          <Checkbox 
+            onChange={toggleSelection} 
+            isChecked={isSelected}
+        />
+        </Td>
+
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
@@ -103,6 +133,7 @@ function SubDomainRow(props) {
           </Text>
         </Td>
         
+
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <IconButton
             p={2}

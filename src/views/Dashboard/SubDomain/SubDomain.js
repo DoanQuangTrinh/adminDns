@@ -9,8 +9,11 @@ import {
   Tr,
   useColorModeValue,
   useDisclosure,
+  useToast
 } from "@chakra-ui/react";
 import useAxios from "axios-hooks";
+import axios from "axios";
+import { axiosPost } from "utils/api";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -22,21 +25,68 @@ import EditSubDomain from "components/SubDomain/EditSubDomain";
 import SubDomainRow from "components/SubDomain/SubDomainRow";
 import { API_ROUTES , ROOT_API } from "utils/constant";
 import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 const SubDomain = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const history = useHistory();
+  const { isOpen, onOpen, onClose} = useDisclosure();
   const isRegisterOpen = isOpen;
   const onRegisterOpen = onOpen;
   const onRegisterClose = onClose;
   const location = useLocation();
   const spliceDomain = location.pathname.match(/\/domain\/([^/]+)\//);
   const domainId = spliceDomain[1]
+  const toast = useToast();
+  const handleExportSubDomain = () => {
+    history.push(`/admin/subDomain/${domainId}/export`);
+  };
   const [filter, setFilter] = useState(initialFilter);
   const subDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
+  console.log(subDomainApi)
   const [{ data, loading, error }, refetch] = useAxios({
     url: `${subDomainApi}/${domainId}`,
     params: filter,
   });
   const subDomain = data?.data
+  const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
+  const ids = sessionStorage.getItem('selectedIds')
+  const idhss = JSON.parse(ids);
+  console.log( idhss)
+
+  const handleDeletes = async () => {
+    const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
+
+    if (!confirmDelete) {
+      return;
+    }
+    
+    const ids = 
+    console.log(ids)
+    try {
+      const response = await axiosPost(
+        DeleteSubDomain,
+        ids = (["65798aa677d14b8cecacc302","65798aa577d14b8cecacc2ff","65798aa577d14b8cecacc2fc"])
+      )
+      if (response.data.code === 0) {
+        toast({
+          title: response.data.msg,
+          duration: 9000,
+        })
+        refetch();
+      }
+    }
+    
+    catch (error) {
+      console.log(error)
+      toast({
+        title:
+          error?.response?.data?.errors?.errors[0]?.msg ||
+          error?.response?.data?.msg || "Delete Group Fail",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  }
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const [userDetail, setUserDetail] = useState();
@@ -50,7 +100,7 @@ const SubDomain = () => {
     setSelectedRow(row);
     setIsEditModalOpen(true);
   };
-
+  
 return (
   <>
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -66,6 +116,26 @@ return (
             onClick={onRegisterOpen}
           >
             Add
+          </Button>
+          <Button
+            variant="primary"
+            maxH="30px"
+            m="10px"
+            onClick={() => {
+              handleDeletes();
+            }}
+          >
+            Delete All
+          </Button>
+          <Button
+            variant="primary"
+            maxH="30px"
+            m="10px"
+            onClick={() => {
+              handleExportSubDomain()
+            }}
+          >
+            Export
           </Button>
         </CardHeader>
         <CardBody>
