@@ -125,6 +125,7 @@ try {
     setSelectedRow(row);
     setIsEditModalOpen(true);
   };
+  
   const handleIdChange = (id, isChecked) => {
     const newIdCopy = [...newId];
   
