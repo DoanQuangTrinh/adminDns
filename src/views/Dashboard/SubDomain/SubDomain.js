@@ -193,7 +193,7 @@ return (
               {subDomain?.map((row, index, arr) => {
                 return (
                   <SubDomainRow
-                    onIdTestChange={handleIdChange} 
+                    onIdChange={handleIdChange} 
                     key={index}
                     domain={row.domain}
                     link={row.link}

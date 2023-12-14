@@ -20,7 +20,7 @@ import { API_ROUTES , ROOT_API } from "utils/constant";
 import SubDomain from "views/Dashboard/SubDomain/SubDomain";
 const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
 function SubDomainRow(props) {
-    const {data,refetch,_id, ip, name, isLast,domain, link ,id , linkRedirect,date, handelUpdateUser,onDeleted,onIdTestChange } = props;
+    const {data,refetch,_id, ip, name, isLast,domain, link ,id , linkRedirect,date, handelUpdateUser,onDeleted,onIdChange } = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -81,7 +81,7 @@ function SubDomainRow(props) {
         const handleCheckboxChange = () => {
           setIsChecked(!isChecked);
 
-          onIdTestChange(id, !isChecked);
+          onIdChange(id, !isChecked);
         };
 
         
