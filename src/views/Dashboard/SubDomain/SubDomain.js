@@ -12,7 +12,6 @@ import {
   useToast
 } from "@chakra-ui/react";
 import useAxios from "axios-hooks";
-import axios from "axios";
 import { axiosPost } from "utils/api";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -21,13 +20,12 @@ import React, { useState, useEffect } from "react";
 import AddSubDomain from "components/SubDomain/AddSubDomain";
 import { TablePagination } from "@trendmicro/react-paginations";
 import { initialFilter } from "utils/constant";
-import EditSubDomain from "components/SubDomain/EditSubDomain";
 import SubDomainRow from "components/SubDomain/SubDomainRow";
 import { API_ROUTES , ROOT_API } from "utils/constant";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import { axiosGet } from "utils/api";
 const SubDomain = () => {
-  const history = useHistory();
   const { isOpen, onOpen, onClose} = useDisclosure();
   const isRegisterOpen = isOpen;
   const onRegisterOpen = onOpen;
@@ -36,10 +34,10 @@ const SubDomain = () => {
   const spliceDomain = location.pathname.match(/\/domain\/([^/]+)\//);
   const domainId = spliceDomain[1]
   const toast = useToast();
-  const [newIdTest, setNewIdTest] = useState([]);
+  const [newId, setNewId] = useState([]);
   
   useEffect(() => {
-  }, [newIdTest]);
+  }, [newId]);
 
  
   const [exporting, setExporting] = useState(false);
@@ -49,8 +47,7 @@ const SubDomain = () => {
   
     try {
       const exportDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API;
-      console.log(exportDomainApi);
-      const { data } = await axios.get(`${exportDomainApi}/${domainId}/export`, {
+      const { data } = await axiosGet(`${exportDomainApi}/${domainId}/export`, {
         params: filter,
         responseType: 'blob',
       });
@@ -91,7 +88,7 @@ try {
       const response = await axiosPost(
         DeleteSubDomain,
         {
-          ids:newIdTest
+          ids:newId
         }
       ) 
       if (response.data.code === 0) {
@@ -100,7 +97,7 @@ try {
           duration: 9000,
         })
         refetch();
-        setNewIdTest([])
+        setNewId([])
       }
     }
     catch (error) {
@@ -128,20 +125,19 @@ try {
     setSelectedRow(row);
     setIsEditModalOpen(true);
   };
-  const handleIdTestChange = (id, isChecked) => {
-    const newIdTestCopy = [...newIdTest];
+  const handleIdChange = (id, isChecked) => {
+    const newIdCopy = [...newId];
   
     if (isChecked) {
-      newIdTestCopy.push(id);
+      newIdCopy.push(id);
     } else {
-      const index = newIdTestCopy.indexOf(id);
+      const index = newIdCopy.indexOf(id);
       if (index !== -1) {
-        newIdTestCopy.splice(index, 1);
+        newIdCopy.splice(index, 1);
       }
     }
-    setNewIdTest(newIdTestCopy);
+    setNewId(newIdCopy);
   };
-  console.log(newIdTest)
 return (
   <>
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -197,7 +193,7 @@ return (
               {subDomain?.map((row, index, arr) => {
                 return (
                   <SubDomainRow
-                    onIdTestChange={handleIdTestChange} 
+                    onIdTestChange={handleIdChange} 
                     key={index}
                     domain={row.domain}
                     link={row.link}

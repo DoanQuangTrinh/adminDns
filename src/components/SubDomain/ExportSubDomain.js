@@ -12,8 +12,6 @@ const ExportSubDomain = () => {
 
   const [filter, setFilter] = useState(initialFilter);
   const exportDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API;
-  console.log(exportDomainApi);
-
   const [{ data, loading, error }, refetch] = useAxios({
     url: `${exportDomainApi}/${domainId}/export`,
     params: filter,
