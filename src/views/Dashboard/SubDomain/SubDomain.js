@@ -83,8 +83,8 @@ try {
           duration: 9000,
         })
         refetch();
-        setNewIdTest([])
         sessionStorage.removeItem('selectedIds')
+        setNewIdTest([])
       }
     }
     catch (error) {

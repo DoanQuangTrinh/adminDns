@@ -53,6 +53,7 @@ function SubDomainRow(props) {
             duration: 9000,
           })
           refetch();
+          sessionStorage.removeItem('selectedIds')
         }
       }
       catch (error) {
@@ -87,23 +88,34 @@ function SubDomainRow(props) {
         });
         
         const toggleSelection = () => {
-          setIsSelected(!isSelected);
           const storedIds = JSON.parse(sessionStorage.getItem('selectedIds')) || [];
-          if (!isSelected) {
-            storedIds.push(id);
-            setIdTest(storedIds)
+          const index = storedIds.indexOf(id);
+        
+          if (index !== -1) {
+            // Nếu id đã có trong danh sách, loại bỏ nó
+            storedIds.splice(index, 1);
           } else {
-            const index = storedIds.indexOf(id);
-            if (index !== -1) {
-              storedIds.splice(index, 1);
-              setIdTest(storedIds)
-            }
+            // Nếu id không có trong danh sách, thêm vào
+            storedIds.push(id);
           }
+        
+          // Lưu trữ danh sách selectedIds đã cập nhật vào sessionStorage
           sessionStorage.setItem('selectedIds', JSON.stringify(storedIds));
+        
+          // Cập nhật state idTest
+          setIdTest(storedIds);
+        
+          // Cập nhật trạng thái isSelected
+          setIsSelected(!isSelected);
         };
         useEffect(() => {
           onIdTestChange(idTest);
+        
+          const storedIds = JSON.parse(sessionStorage.getItem('selectedIds')) || [];
+          const isChecked = storedIds.includes(id);
+          setIsSelected(isChecked);
         }, [idTest]);
+        
     return (
       <Tr>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
