@@ -77,6 +77,7 @@ const SubDomain = () => {
   
   const subDomain = data?.data
   const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
+  const [isCheckedAll, setIsCheckedAll] = useState(true); 
 
   const handleDeletes = async () => {
     const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -98,6 +99,7 @@ try {
         })
         refetch();
         setNewId([])
+        setIsCheckedAll(false); 
       }
     }
     catch (error) {
@@ -193,6 +195,7 @@ return (
               {subDomain?.map((row, index, arr) => {
                 return (
                   <SubDomainRow
+                    isCheckedAll={isCheckedAll} 
                     onIdChange={handleIdChange} 
                     key={index}
                     domain={row.domain}

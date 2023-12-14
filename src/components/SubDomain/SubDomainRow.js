@@ -20,7 +20,7 @@ import { API_ROUTES , ROOT_API } from "utils/constant";
 import SubDomain from "views/Dashboard/SubDomain/SubDomain";
 const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
 function SubDomainRow(props) {
-    const {data,refetch,_id, ip, name, isLast,domain, link ,id , linkRedirect,date, handelUpdateUser,onDeleted,onIdChange } = props;
+    const {isCheckedAll,data,refetch,_id, ip, name, isLast,domain, link ,id , linkRedirect,date, handelUpdateUser,onDeleted,onIdChange } = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -34,6 +34,11 @@ function SubDomainRow(props) {
       setIdSubDomain(id);
       onRegisterOpen();
     };
+    useEffect(()=>{
+      if(!isCheckedAll){
+        setIsChecked(!isChecked);
+      }
+    },[!isCheckedAll])
     const [loading, setLoading] = useState(false);
     const handleDelete = async () => {
       const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -77,13 +82,13 @@ function SubDomainRow(props) {
         const onRegisterOpen = onOpen;
         const onRegisterClose = onClose;
         const [isChecked, setIsChecked] = useState(false);
-
+        
         const handleCheckboxChange = () => {
           setIsChecked(!isChecked);
-
           onIdChange(id, !isChecked);
         };
-
+        
+        
         
         
     return (
