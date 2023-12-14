@@ -13,12 +13,14 @@ import {
   import useAxios from "axios-hooks";
   import Card from "components/Card/Card.js";
   import CardBody from "components/Card/CardBody.js";
+  import CardHeader from "components/Card/CardHeader";
   import ListTracking from "components/Tracking/ListTracking";
   import React, { useState, useEffect } from "react";
   import { API_ROUTES , ROOT_API } from "utils/constant";
   import { TablePagination } from "@trendmicro/react-paginations";
   import { initialFilter } from "utils/constant";
   import { useLocation } from "react-router-dom";
+  import { axiosGet } from "utils/api";
   
   
   const Tracking = () => {
@@ -43,11 +45,62 @@ import {
         setSelectedRow(row);
         setIsEditModalOpen(true);
     };
-    
+    const [exporting, setExporting] = useState(false);
+
+  const handleExportTracking = async () => {
+    setExporting(true);
+  
+    try {
+      const { data } = await axiosGet(`${trackingApi}/${subDomainId}/export`, {
+        params: filter,
+        responseType: 'blob',
+      });
+      console.log(data)
+      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'exportedTracking.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Export failed:', error);
+    } finally {
+      setExporting(false); 
+    }
+  };
+  
     return (
         <>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+          <CardHeader p="6px 0px 22px 0px">
+            <Button
+              variant="primary"
+              maxH="30px"
+              m="10px"
+              onClick={() => {
+                handleExportTracking();
+              }}
+              isLoading={exporting} 
+            >
+              Export
+            </Button>
+            <Button
+              variant="primary"
+              maxH="30px"
+              m="10px"
+            >
+              All
+            </Button>
+            <Button
+              variant="primary"
+              maxH="30px"
+              m="10px"
+            >
+              Unique Find
+            </Button>
+        </CardHeader>
           <CardBody>
             <Table variant="simple" color={textColor}>
               <Thead>
@@ -55,8 +108,16 @@ import {
                   <Th borderColor={borderColor} color="gray.400">
                   IP
                   </Th>
-                  <Th borderColor={borderColor} color="gray.400">
+                  <Th borderColor={borderColor} textAlign="center" color="gray.400">
                   Nation
+                  </Th>
+                  <Th borderColor={borderColor}></Th>
+                  <Th borderColor={borderColor} textAlign="center" color="gray.400">
+                  Quantity
+                  </Th>
+                  <Th borderColor={borderColor}></Th>
+                  <Th borderColor={borderColor} textAlign="center" color="gray.400">
+                  StartDate
                   </Th>
                   <Th borderColor={borderColor}></Th>
                 </Tr>
@@ -64,10 +125,12 @@ import {
               <Tbody>
                   {tracking?.map((row, index, arr) => (
                     <ListTracking
+                      quantity={1}
                       key={row._id}
                       id={row._id}
                       subdomain={row.subdomain}
                       ip={row.ip}
+                      startday={row.createdAt}
                       nation={row.nation}
                       refetch = {refetch}
                       onClick={() => handleEditClick(row)}

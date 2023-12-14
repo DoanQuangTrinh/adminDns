@@ -127,6 +127,7 @@ try {
     setSelectedRow(row);
     setIsEditModalOpen(true);
   };
+  
   const handleIdChange = (id, isChecked) => {
     const newIdCopy = [...newId];
   
@@ -160,11 +161,12 @@ return (
             variant="primary"
             maxH="30px"
             m="10px"
+            display={newId.length === 0 ? "none" : ""}
             onClick={() => {
               handleDeletes();
             }}
           >
-            Delete All
+            Delete
           </Button>
           <Button
             variant="primary"
