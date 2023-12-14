@@ -13,12 +13,14 @@ import {
   import useAxios from "axios-hooks";
   import Card from "components/Card/Card.js";
   import CardBody from "components/Card/CardBody.js";
+  import CardHeader from "components/Card/CardHeader";
   import ListTracking from "components/Tracking/ListTracking";
   import React, { useState, useEffect } from "react";
   import { API_ROUTES , ROOT_API } from "utils/constant";
   import { TablePagination } from "@trendmicro/react-paginations";
   import { initialFilter } from "utils/constant";
   import { useLocation } from "react-router-dom";
+  import { axiosGet } from "utils/api";
   
   
   const Tracking = () => {
@@ -43,11 +45,49 @@ import {
         setSelectedRow(row);
         setIsEditModalOpen(true);
     };
-    
+    const [exporting, setExporting] = useState(false);
+
+  const handleExportTracking = async () => {
+    setExporting(true);
+  
+    try {
+      const exportTracking = ROOT_API + API_ROUTES.LIST_TRACKING;
+      const { data } = await axiosGet(`${exportTracking}/${subDomainId}/export`, {
+        params: filter,
+        responseType: 'blob',
+      });
+  
+      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'exportedTracking.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Export failed:', error);
+    } finally {
+      setExporting(false); 
+    }
+  };
+  
     return (
         <>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+          <CardHeader p="6px 0px 22px 0px">
+            <Button
+              variant="primary"
+              maxH="30px"
+              m="10px"
+              onClick={() => {
+                handleExportTracking();
+              }}
+              isLoading={exporting} 
+            >
+              Export
+            </Button>
+        </CardHeader>
           <CardBody>
             <Table variant="simple" color={textColor}>
               <Thead>
