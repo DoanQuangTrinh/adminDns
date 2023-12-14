@@ -23,7 +23,7 @@ import {
   const getIpApi = ROOT_API + API_ROUTES.GET_IP_TRACKING
   
   function ListTracking(props) {
-    const {quantity, status,id,subdomain,ip,nation, logo, journey, name, email, phone, role, date, isLast,benedict } = props;
+    const {startday,quantity, status,id,subdomain,ip,nation, logo, journey, name, email, phone, role, date, isLast,benedict } = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -80,7 +80,8 @@ import {
         });
       }
     }
-    
+        const timestampObj = new Date(startday);
+        const formattedDate = timestampObj.toLocaleDateString();
         const [isEditModalOpen, setIsEditModalOpen] = useState(false);
         const [selectedRow, setSelectedRow] = useState(null);
         const handleEditClick = (row) => {
@@ -115,6 +116,20 @@ import {
           <Flex direction="column">
             <Text fontSize="md" textAlign="center"  color={textColor} fontWeight="bold">
               {quantity}
+            </Text>
+          </Flex>
+        </Td>
+        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+          <Flex direction="column">
+            <Text fontSize="md" color={textColor} fontWeight="bold">
+              {/* {startday} */}
+            </Text>
+          </Flex>
+        </Td>
+        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+          <Flex direction="column">
+            <Text fontSize="md" textAlign="center"  color={textColor} fontWeight="bold">
+              {formattedDate}
             </Text>
           </Flex>
         </Td>

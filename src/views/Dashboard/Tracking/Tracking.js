@@ -86,6 +86,20 @@ import {
             >
               Export
             </Button>
+            <Button
+              variant="primary"
+              maxH="30px"
+              m="10px"
+            >
+              All
+            </Button>
+            <Button
+              variant="primary"
+              maxH="30px"
+              m="10px"
+            >
+              Unique Find
+            </Button>
         </CardHeader>
           <CardBody>
             <Table variant="simple" color={textColor}>
@@ -102,6 +116,10 @@ import {
                   Quantity
                   </Th>
                   <Th borderColor={borderColor}></Th>
+                  <Th borderColor={borderColor} textAlign="center" color="gray.400">
+                  StartDate
+                  </Th>
+                  <Th borderColor={borderColor}></Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -112,6 +130,7 @@ import {
                       id={row._id}
                       subdomain={row.subdomain}
                       ip={row.ip}
+                      startday={row.createdAt}
                       nation={row.nation}
                       refetch = {refetch}
                       onClick={() => handleEditClick(row)}
