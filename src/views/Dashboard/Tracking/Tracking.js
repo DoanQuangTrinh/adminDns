@@ -51,12 +51,11 @@ import {
     setExporting(true);
   
     try {
-      const exportTracking = ROOT_API + API_ROUTES.LIST_TRACKING;
-      const { data } = await axiosGet(`${exportTracking}/${subDomainId}/export`, {
+      const { data } = await axiosGet(`${trackingApi}/${subDomainId}/export`, {
         params: filter,
         responseType: 'blob',
       });
-  
+      console.log(data)
       const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
@@ -95,8 +94,12 @@ import {
                   <Th borderColor={borderColor} color="gray.400">
                   IP
                   </Th>
-                  <Th borderColor={borderColor} color="gray.400">
+                  <Th borderColor={borderColor} textAlign="center" color="gray.400">
                   Nation
+                  </Th>
+                  <Th borderColor={borderColor}></Th>
+                  <Th borderColor={borderColor} textAlign="center" color="gray.400">
+                  Quantity
                   </Th>
                   <Th borderColor={borderColor}></Th>
                 </Tr>
@@ -104,6 +107,7 @@ import {
               <Tbody>
                   {tracking?.map((row, index, arr) => (
                     <ListTracking
+                      quantity={1}
                       key={row._id}
                       id={row._id}
                       subdomain={row.subdomain}
