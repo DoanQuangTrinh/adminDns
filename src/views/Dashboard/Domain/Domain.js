@@ -30,9 +30,6 @@ const Domain = () => {
     url: domainApi,
     params: { ...filter },
   });
-  const removeSession = () => {
-    return sessionStorage.removeItem('selectedIds')
-  }
   const domain = data?.data
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -54,9 +51,6 @@ const Domain = () => {
   const handleUpdate = (updatedData) => {
     setData(Array.isArray(updatedData) ? updatedData : [updatedData]);
   };
-  useEffect(() => {
-    removeSession();
-  }, [refetch]);
 
   return (
       <>

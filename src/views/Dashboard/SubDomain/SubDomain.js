@@ -37,18 +37,39 @@ const SubDomain = () => {
   const domainId = spliceDomain[1]
   const toast = useToast();
   const [newIdTest, setNewIdTest] = useState([]);
-  const removeSession = () => {
-    return sessionStorage.removeItem('selectedIds')
-  }
-  const handleIdTestChange = (newIdTest) => {
-    setNewIdTest(newIdTest);
-  };
   
   useEffect(() => {
   }, [newIdTest]);
-  const handleExportSubDomain = () => {
-    history.push(`/admin/subDomain/${domainId}/export`);
+
+ 
+  const [exporting, setExporting] = useState(false);
+
+  const handleExportSubDomain = async () => {
+    setExporting(true);
+  
+    try {
+      const exportDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API;
+      console.log(exportDomainApi);
+      const { data } = await axios.get(`${exportDomainApi}/${domainId}/export`, {
+        params: filter,
+        responseType: 'blob',
+      });
+  
+      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'exportedSubDomain.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Export failed:', error);
+    } finally {
+      setExporting(false); 
+    }
   };
+  
+
   
   const [filter, setFilter] = useState(initialFilter);
   const subDomainApi = ROOT_API + API_ROUTES.SUBDOMAIN_API ;
@@ -59,10 +80,6 @@ const SubDomain = () => {
   
   const subDomain = data?.data
   const DeleteSubDomain = ROOT_API + API_ROUTES.DELETE_SUBDOMAIN
-  const [idSession , setIdSession] = useState()
-  useEffect(() => {
-    removeSession();
-  }, [refetch]);
 
   const handleDeletes = async () => {
     const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
@@ -83,7 +100,6 @@ try {
           duration: 9000,
         })
         refetch();
-        sessionStorage.removeItem('selectedIds')
         setNewIdTest([])
       }
     }
@@ -112,7 +128,20 @@ try {
     setSelectedRow(row);
     setIsEditModalOpen(true);
   };
+  const handleIdTestChange = (id, isChecked) => {
+    const newIdTestCopy = [...newIdTest];
   
+    if (isChecked) {
+      newIdTestCopy.push(id);
+    } else {
+      const index = newIdTestCopy.indexOf(id);
+      if (index !== -1) {
+        newIdTestCopy.splice(index, 1);
+      }
+    }
+    setNewIdTest(newIdTestCopy);
+  };
+  console.log(newIdTest)
 return (
   <>
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -144,8 +173,9 @@ return (
             maxH="30px"
             m="10px"
             onClick={() => {
-              handleExportSubDomain()
+              handleExportSubDomain();
             }}
+            isLoading={exporting} 
           >
             Export
           </Button>

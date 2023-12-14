@@ -29,9 +29,6 @@ import {
     const onRegisterClose = onClose;
     const trackingApi = ROOT_API + API_ROUTES.LIST_TRACKING ;
     const location = useLocation();
-    const removeSession = () => {
-      return sessionStorage.removeItem('selectedIds')
-    }
     const spliceSubDomain = location.pathname.match(/\/subDomain\/([^/]+)\//);
     const subDomainId = spliceSubDomain[1]
     const [{ data, loading, error }, refetch] = useAxios({
@@ -46,9 +43,6 @@ import {
         setSelectedRow(row);
         setIsEditModalOpen(true);
     };
-    useEffect(() => {
-      removeSession();
-    }, [refetch]);
     
     return (
         <>

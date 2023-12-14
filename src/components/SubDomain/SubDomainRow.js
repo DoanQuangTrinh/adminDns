@@ -53,7 +53,6 @@ function SubDomainRow(props) {
             duration: 9000,
           })
           refetch();
-          sessionStorage.removeItem('selectedIds')
         }
       }
       catch (error) {
@@ -77,53 +76,21 @@ function SubDomainRow(props) {
         const isRegisterOpen = isOpen;
         const onRegisterOpen = onOpen;
         const onRegisterClose = onClose;
-        const [isSelected, setIsSelected] = useState(false);
-        const [selectedIds, setSelectedIds] = useState([]); 
-        const [idTest , setIdTest] = useState([])
-        window.addEventListener('beforeunload', function (event) {
-          sessionStorage.removeItem('selectedIds');
-        });
-        window.addEventListener('unload', function (event) {
-          sessionStorage.removeItem('selectedIds');
-        });
-        
-        const toggleSelection = () => {
-          const storedIds = JSON.parse(sessionStorage.getItem('selectedIds')) || [];
-          const index = storedIds.indexOf(id);
-        
-          if (index !== -1) {
-            // Nếu id đã có trong danh sách, loại bỏ nó
-            storedIds.splice(index, 1);
-          } else {
-            // Nếu id không có trong danh sách, thêm vào
-            storedIds.push(id);
-          }
-        
-          // Lưu trữ danh sách selectedIds đã cập nhật vào sessionStorage
-          sessionStorage.setItem('selectedIds', JSON.stringify(storedIds));
-        
-          // Cập nhật state idTest
-          setIdTest(storedIds);
-        
-          // Cập nhật trạng thái isSelected
-          setIsSelected(!isSelected);
+        const [isChecked, setIsChecked] = useState(false);
+
+        const handleCheckboxChange = () => {
+          setIsChecked(!isChecked);
+
+          onIdTestChange(id, !isChecked);
         };
-        useEffect(() => {
-          onIdTestChange(idTest);
+
         
-          const storedIds = JSON.parse(sessionStorage.getItem('selectedIds')) || [];
-          const isChecked = storedIds.includes(id);
-          setIsSelected(isChecked);
-        }, [idTest]);
         
     return (
       <Tr>
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Checkbox
-        onChange={toggleSelection} 
-            isChecked={isSelected}
-        />
-        </Td>
+         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+         <Checkbox onChange={handleCheckboxChange} isChecked={isChecked} />
+    </Td>
 
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
