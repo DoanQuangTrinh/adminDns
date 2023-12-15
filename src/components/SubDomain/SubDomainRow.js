@@ -42,6 +42,7 @@ function SubDomainRow(props) {
     const [loading, setLoading] = useState(false);
     const handleDelete = async () => {
       const confirmDelete = window.confirm("Bạn có chắc muốn xóa không?");
+
       if (!confirmDelete) {
         return;
       }
@@ -80,15 +81,16 @@ function SubDomainRow(props) {
         const isRegisterOpen = isOpen;
         const onRegisterOpen = onOpen;
         const onRegisterClose = onClose;
-        const [isChecked, setIsChecked] = useState(true);
-
+        const [isChecked, setIsChecked] = useState(false);
+        
         const handleCheckboxChange = () => {
           setIsChecked(!isChecked);
           onIdChange(id, !isChecked);
         };
-        useEffect(() =>{
-          setIsChecked(false);
-        },[id])
+        
+        
+        
+        
     return (
       <Tr>
          <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>

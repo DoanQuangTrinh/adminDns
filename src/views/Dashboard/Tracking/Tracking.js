@@ -9,6 +9,7 @@ import {
     Tr,
     useColorModeValue,
     useDisclosure,
+    Select,
   } from "@chakra-ui/react";
   import useAxios from "axios-hooks";
   import Card from "components/Card/Card.js";
@@ -86,20 +87,18 @@ import {
             >
               Export
             </Button>
-            <Button
-              variant="primary"
+            <Select maxWidth="10%" 
               maxH="30px"
-              m="10px"
-            >
-              All
-            </Button>
-            <Button
-              variant="primary"
+              m="10px" placeholder='All'>
+              <option value='option1'>Option 1</option>
+              <option value='option1'>Option 2</option>
+            </Select>
+            <Select maxWidth="10%" 
               maxH="30px"
-              m="10px"
-            >
-              Unique Find
-            </Button>
+              m="10px" placeholder='Uniqued'>
+              <option value='option1'>IP</option>
+              <option value='option1'>Nation</option>
+            </Select>
         </CardHeader>
           <CardBody>
             <Table variant="simple" color={textColor}>
